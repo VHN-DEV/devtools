@@ -134,6 +134,163 @@ def show_version():
     input(Colors.muted("Nhấn Enter để quay lại..."))
 
 
+def _check_and_sync_missing_files(project_root: Path) -> bool:
+    """
+    Kiểm tra và đồng bộ file thiếu từ GitHub
+    
+    Args:
+        project_root: Đường dẫn root của project
+        
+    Returns:
+        bool: True nếu có file được đồng bộ, False nếu không có file thiếu
+    """
+    try:
+        # Lấy branch hiện tại trước
+        current_branch_result = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        
+        if current_branch_result.returncode != 0:
+            return False
+        
+        current_branch = current_branch_result.stdout.strip()
+        remote_branch = f"origin/{current_branch}"
+        
+        # Fetch thông tin mới nhất từ remote
+        fetch_result = subprocess.run(
+            ["git", "fetch", "origin"],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if fetch_result.returncode != 0:
+            return False
+        
+        # Kiểm tra xem remote branch có tồn tại không
+        check_remote_result = subprocess.run(
+            ["git", "ls-remote", "--heads", "origin", current_branch],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        # Nếu không có remote branch tương ứng, thử dùng origin/HEAD hoặc origin/main/master
+        if check_remote_result.returncode != 0 or not check_remote_result.stdout.strip():
+            # Thử các branch phổ biến
+            for default_branch in ["main", "master", "develop"]:
+                check_default = subprocess.run(
+                    ["git", "ls-remote", "--heads", "origin", default_branch],
+                    cwd=str(project_root),
+                    capture_output=True,
+                    text=True,
+                    timeout=10
+                )
+                if check_default.returncode == 0 and check_default.stdout.strip():
+                    remote_branch = f"origin/{default_branch}"
+                    break
+            else:
+                # Nếu không tìm thấy, dùng origin/HEAD
+                remote_branch = "origin/HEAD"
+        
+        # Lấy danh sách file được track trong git từ remote
+        ls_files_result = subprocess.run(
+            ["git", "ls-tree", "-r", "--name-only", remote_branch],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if ls_files_result.returncode != 0:
+            return False
+        
+        # Lấy danh sách file từ remote
+        remote_files = set(ls_files_result.stdout.strip().split('\n'))
+        remote_files = {f for f in remote_files if f.strip()}  # Loại bỏ empty
+        
+        # Kiểm tra file nào thiếu trong local
+        missing_files = []
+        for file_path in remote_files:
+            local_file = project_root / file_path
+            if not local_file.exists():
+                missing_files.append(file_path)
+        
+        if not missing_files:
+            return False
+        
+        # Hiển thị danh sách file thiếu
+        print()
+        print(Colors.warning(f"⚠️  Tìm thấy {len(missing_files)} file thiếu so với GitHub:"))
+        print()
+        for file_path in missing_files[:20]:  # Hiển thị tối đa 20 file đầu
+            print(Colors.muted(f"   - {file_path}"))
+        if len(missing_files) > 20:
+            print(Colors.muted(f"   ... và {len(missing_files) - 20} file khác"))
+        
+        print()
+        print(Colors.info("🔄 Đang đồng bộ file thiếu từ GitHub..."))
+        print()
+        
+        # Đồng bộ tất cả file thiếu cùng lúc bằng git checkout
+        checkout_result = subprocess.run(
+            ["git", "checkout", remote_branch, "--"] + missing_files,
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        
+        if checkout_result.returncode == 0:
+            print(Colors.success(f"✅ Đã đồng bộ thành công {len(missing_files)} file"))
+            return True
+        else:
+            # Nếu không thành công, thử từng file một
+            print(Colors.warning("⚠️  Đồng bộ hàng loạt thất bại, thử từng file..."))
+            print()
+            
+            synced_count = 0
+            for file_path in missing_files:
+                try:
+                    checkout_single = subprocess.run(
+                        ["git", "checkout", remote_branch, "--", file_path],
+                        cwd=str(project_root),
+                        capture_output=True,
+                        text=True,
+                        timeout=10
+                    )
+                    
+                    if checkout_single.returncode == 0:
+                        synced_count += 1
+                        print(Colors.success(f"   ✅ Đã đồng bộ: {file_path}"))
+                    else:
+                        print(Colors.error(f"   ❌ Không thể đồng bộ: {file_path}"))
+                except Exception as e:
+                    print(Colors.error(f"   ❌ Lỗi khi đồng bộ {file_path}: {e}"))
+            
+            if synced_count > 0:
+                print()
+                print(Colors.success(f"✅ Đã đồng bộ thành công {synced_count}/{len(missing_files)} file"))
+                return True
+            
+            return False
+        
+    except FileNotFoundError:
+        return False
+    except subprocess.TimeoutExpired:
+        print(Colors.error("   ❌ Quá trình kiểm tra quá lâu, đã hủy"))
+        return False
+    except Exception as e:
+        print(Colors.error(f"   ❌ Lỗi khi kiểm tra file thiếu: {e}"))
+        return False
+
+
 def update_version():
     """
     Update version mới của package
@@ -141,6 +298,7 @@ def update_version():
     Giải thích:
     - Kiểm tra xem có phải git repository không
     - Nếu có, thử git pull
+    - Sau đó kiểm tra và đồng bộ file thiếu từ GitHub
     - Nếu không, thử pip install --upgrade
     """
     print()
@@ -185,6 +343,18 @@ def update_version():
                         print()
                         print(Colors.muted("Chi tiết:"))
                         print(Colors.secondary(result.stdout.strip()))
+                
+                # Kiểm tra và đồng bộ file thiếu
+                print()
+                print_separator("─", 70, Colors.INFO)
+                print(Colors.info("🔍 Đang kiểm tra file thiếu so với GitHub..."))
+                print_separator("─", 70, Colors.INFO)
+                
+                has_synced = _check_and_sync_missing_files(project_root)
+                
+                if not has_synced:
+                    print()
+                    print(Colors.success("✅ Không có file nào thiếu"))
             else:
                 print(Colors.error("❌ Lỗi khi cập nhật từ Git"))
                 if result.stderr:
