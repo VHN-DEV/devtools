@@ -99,39 +99,294 @@ def get_current_version():
 
 
 def show_version():
-    """Hiển thị version hiện tại của package"""
+    """Hiển thị danh sách các version và cho phép chuyển version"""
     version = get_current_version()
     
     print()
     print_separator("═", 70, Colors.INFO)
-    print(Colors.bold(f"📦 PHIÊN BẢN HIỆN TẠI"))
+    print(Colors.bold(f"📦 DANH SÁCH PHIÊN BẢN"))
     print_separator("═", 70, Colors.INFO)
     print()
-    print(f"   {Colors.info('DevTools')}: {Colors.bold(Colors.success(version))}")
-    print()
     
-    # Hiển thị thông tin thêm
     project_root = Path(__file__).parent.parent
-    pyproject_path = project_root / "pyproject.toml"
+    git_dir = project_root / ".git"
     
-    if pyproject_path.exists():
-        try:
-            # Thử đọc thông tin từ pyproject.toml
-            with open(pyproject_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+    # Kiểm tra xem có phải git repository không
+    if not git_dir.exists():
+        print(f"   {Colors.info('DevTools')}: {Colors.bold(Colors.success(version))}")
+        print()
+        print_separator("═", 70, Colors.INFO)
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
+        return
+    
+    try:
+        # Lấy branch hiện tại
+        current_branch_result = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        current_branch = current_branch_result.stdout.strip() if current_branch_result.returncode == 0 else "Unknown"
+        
+        # Lấy danh sách các branch version (tool-v*)
+        branch_list_result = subprocess.run(
+            ["git", "branch", "-a"],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        # Danh sách các version branch cần hiển thị
+        version_branches = []
+        available_branches = []
+        
+        if branch_list_result.returncode == 0:
+            for line in branch_list_result.stdout.split('\n'):
+                line = line.strip()
+                if not line:
+                    continue
                 
-                # Tìm repository URL
-                repo_match = re.search(r'Repository\s*=\s*["\']([^"\']+)["\']', content)
-                if repo_match:
-                    repo_url = repo_match.group(1)
-                    print(f"   {Colors.muted('Repository')}: {Colors.secondary(repo_url)}")
-                    print()
-        except Exception:
-            pass
+                # Xử lý branch name
+                branch_name = None
+                
+                # Remote branch: remotes/origin/tool-v1.0.0
+                if line.startswith('remotes/'):
+                    # Lấy phần sau remotes/origin/ hoặc remotes/origin/develop/
+                    parts = line.split('/')
+                    if len(parts) >= 3:
+                        # Bỏ qua 'remotes', 'origin' và các phần khác, lấy phần cuối
+                        branch_name = parts[-1]
+                else:
+                    # Local branch: * tool-v1.0.0 hoặc   tool-v1.0.0
+                    branch_name = line.lstrip('*').strip()
+                
+                if not branch_name:
+                    continue
+                
+                # Thêm các branch version (tool-v*)
+                if branch_name.startswith('tool-v'):
+                    if branch_name not in available_branches:
+                        available_branches.append(branch_name)
+                
+                # Cũng thêm develop và main nếu có
+                elif branch_name in ['develop', 'main', 'master']:
+                    if branch_name not in available_branches:
+                        available_branches.append(branch_name)
+        
+        # Sắp xếp danh sách: develop/main trước, sau đó là các version theo thứ tự
+        priority_branches = ['develop', 'main', 'master']
+        sorted_branches = []
+        
+        # Thêm các branch ưu tiên trước
+        for priority in priority_branches:
+            if priority in available_branches:
+                sorted_branches.append(priority)
+        
+        # Thêm các version branch (sắp xếp theo version)
+        version_branches = [b for b in available_branches if b.startswith('tool-v')]
+        version_branches.sort(reverse=True)  # Mới nhất trước
+        sorted_branches.extend(version_branches)
+        
+        # Hiển thị danh sách version
+        if sorted_branches:
+            print(Colors.bold("   Các phiên bản có sẵn:"))
+            print()
+            
+            for idx, branch in enumerate(sorted_branches, start=1):
+                # Kiểm tra xem có phải branch hiện tại không
+                is_active = branch == current_branch
+                
+                # Định dạng tên branch để hiển thị
+                display_name = branch
+                if branch.startswith('tool-v'):
+                    display_name = branch.replace('tool-v', 'v')
+                
+                # Hiển thị với dấu hiệu active
+                if is_active:
+                    marker = Colors.success("✓")
+                    branch_color = Colors.success
+                    status_text = Colors.success("(Đang active)")
+                else:
+                    marker = " "
+                    branch_color = Colors.info
+                    status_text = ""
+                
+                print(f"   {marker} {Colors.warning(f'{idx}')}. {branch_color(display_name)} {status_text}")
+            
+            print()
+            print_separator("═", 70, Colors.INFO)
+            print()
+            print(f"   {Colors.muted('0')}. Quay lại menu chính")
+            print()
+            
+            # Cho phép chọn version để chuyển
+            while True:
+                choice = input(f"{Colors.info('Chọn version để chuyển')} [{Colors.muted('0')}]: ").strip()
+                
+                if not choice or choice == '0':
+                    break
+                
+                try:
+                    choice_num = int(choice)
+                    if 1 <= choice_num <= len(sorted_branches):
+                        selected_branch = sorted_branches[choice_num - 1]
+                        
+                        # Nếu đã là branch hiện tại, không cần chuyển
+                        if selected_branch == current_branch:
+                            print()
+                            print(Colors.info(f"ℹ️  Bạn đang ở version: {selected_branch}"))
+                            print()
+                            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                            break
+                        
+                        # Chuyển về version đã chọn
+                        switch_to_old_version(selected_branch)
+                        break
+                    else:
+                        print(Colors.error(f"❌ Lựa chọn phải từ 1 đến {len(sorted_branches)}"))
+                except ValueError:
+                    print(Colors.error("❌ Vui lòng nhập số!"))
+        else:
+            print(Colors.warning("⚠️  Không tìm thấy branch version nào"))
+            print()
+            print(f"   {Colors.info('Branch hiện tại')}: {Colors.bold(current_branch)}")
+            print(f"   {Colors.info('Version')}: {Colors.bold(Colors.success(version))}")
+            print()
+            print_separator("═", 70, Colors.INFO)
+            print()
+            input(Colors.muted("Nhấn Enter để quay lại..."))
+            
+    except FileNotFoundError:
+        print(Colors.error("❌ Không tìm thấy Git. Vui lòng cài đặt Git trước."))
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
+    except Exception as e:
+        print(Colors.error(f"❌ Lỗi: {e}"))
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
+
+
+def switch_to_old_version(branch_name: str):
+    """
+    Chuyển về phiên bản cũ bằng cách checkout về branch cụ thể
     
+    Args:
+        branch_name: Tên branch cần checkout (ví dụ: 'tool-v1.0.0', 'tool-v1.0.1')
+    """
+    print()
+    print_separator("═", 70, Colors.INFO)
+    print(Colors.bold(f"🔄 ĐANG CHUYỂN VỀ PHIÊN BẢN: {branch_name}"))
     print_separator("═", 70, Colors.INFO)
     print()
-    input(Colors.muted("Nhấn Enter để quay lại..."))
+    
+    project_root = Path(__file__).parent.parent
+    
+    try:
+        # Kiểm tra xem branch có tồn tại không (local hoặc remote)
+        check_branch_result = subprocess.run(
+            ["git", "branch", "-a"],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if check_branch_result.returncode != 0:
+            print(Colors.error("❌ Không thể kiểm tra danh sách branch"))
+            print(Colors.error(f"   {check_branch_result.stderr.strip()}"))
+            print()
+            input(Colors.muted("Nhấn Enter để quay lại..."))
+            return
+        
+        # Kiểm tra xem branch có tồn tại không (kiểm tra chính xác)
+        branch_exists_local = False
+        branch_exists_remote = False
+        
+        for line in check_branch_result.stdout.split('\n'):
+            line = line.strip()
+            if not line:
+                continue
+                
+            # Kiểm tra branch local (format: "* branch_name" hoặc "  branch_name")
+            if not line.startswith('remotes/'):
+                # Loại bỏ dấu * nếu có
+                branch_part = line.lstrip('*').strip()
+                if branch_part == branch_name:
+                    branch_exists_local = True
+            # Kiểm tra branch remote
+            else:
+                if f"remotes/origin/{branch_name}" in line or f"remotes/origin/develop/{branch_name}" in line:
+                    branch_exists_remote = True
+        
+        if not branch_exists_local and not branch_exists_remote:
+            print(Colors.error(f"❌ Không tìm thấy branch: {branch_name}"))
+            print()
+            print(Colors.info("💡 Các branch có sẵn:"))
+            print(Colors.secondary(check_branch_result.stdout))
+            print()
+            input(Colors.muted("Nhấn Enter để quay lại..."))
+            return
+        
+        # Nếu branch chỉ có trên remote, fetch trước
+        if not branch_exists_local and branch_exists_remote:
+            print(Colors.info(f"📥 Branch {branch_name} chỉ có trên remote, đang fetch..."))
+            fetch_result = subprocess.run(
+                ["git", "fetch", "origin", branch_name],
+                cwd=str(project_root),
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            
+            if fetch_result.returncode != 0:
+                print(Colors.error("❌ Không thể fetch branch từ remote"))
+                print(Colors.error(f"   {fetch_result.stderr.strip()}"))
+                print()
+                input(Colors.muted("Nhấn Enter để quay lại..."))
+                return
+        
+        # Checkout về branch
+        print(Colors.info(f"🔄 Đang checkout về branch: {branch_name}..."))
+        checkout_result = subprocess.run(
+            ["git", "checkout", branch_name],
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        
+        if checkout_result.returncode == 0:
+            print()
+            print(Colors.success(f"✅ Đã chuyển về branch: {branch_name}"))
+            print()
+            print(Colors.warning("⚠️  QUAN TRỌNG:"))
+            print(Colors.warning("   Bạn cần khởi động lại chương trình để áp dụng thay đổi!"))
+            print()
+            print_separator("═", 70, Colors.INFO)
+            print()
+            input(Colors.muted("Nhấn Enter để quay lại..."))
+        else:
+            print(Colors.error("❌ Lỗi khi checkout branch"))
+            print(Colors.error(f"   {checkout_result.stderr.strip()}"))
+            print()
+            input(Colors.muted("Nhấn Enter để quay lại..."))
+            
+    except FileNotFoundError:
+        print(Colors.error("❌ Không tìm thấy Git. Vui lòng cài đặt Git trước."))
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
+    except subprocess.TimeoutExpired:
+        print(Colors.error("❌ Quá trình checkout quá lâu, đã hủy"))
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
+    except Exception as e:
+        print(Colors.error(f"❌ Lỗi: {e}"))
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
 
 
 def _check_and_sync_missing_files(project_root: Path) -> bool:
