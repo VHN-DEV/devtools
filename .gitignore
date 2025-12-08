@@ -58,3 +58,6 @@ backup_metadata.json
 
 # Templates
 watermark_templates.json
+
+# export files
+exports/

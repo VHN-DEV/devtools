@@ -1283,6 +1283,26 @@ class ToolManager:
         
         print_box_empty()
         
+        # Tool Management
+        mgmt_title = "🛠️  QUẢN LÝ TOOL:"
+        print_box_title(Colors.bold(Colors.warning(mgmt_title)), mgmt_title)
+        
+        mgmt1 = f"{Colors.info('manage')}       - Export/Import/Xóa tool"
+        print_box_line(mgmt1, "manage       - Export/Import/Xóa tool")
+        
+        print_box_empty()
+        
+        mgmt_note1 = f"{Colors.muted('Export:')} Xuất tool thành file .zip"
+        print_box_line(mgmt_note1, "Export: Xuất tool thành file .zip")
+        
+        mgmt_note2 = f"{Colors.muted('Import:')} Nhập tool từ file .zip hoặc thư mục"
+        print_box_line(mgmt_note2, "Import: Nhập tool từ file .zip hoặc thư mục")
+        
+        mgmt_note3 = f"{Colors.muted('Xóa:')} Xóa tool riêng lẻ (có xác nhận)"
+        print_box_line(mgmt_note3, "Xóa: Xóa tool riêng lẻ (có xác nhận)")
+        
+        print_box_empty()
+        
         # Khác
         other_title = "🔄 KHÁC:"
         print_box_title(Colors.bold(Colors.warning(other_title)), other_title)
@@ -1394,6 +1414,327 @@ class ToolManager:
             print(Colors.muted(f"   Lỗi: {e}"))
             print_separator("═", 70, Colors.ERROR)
             print()
+            import traceback
+            traceback.print_exc()
+            return False
+    
+    def export_tool(self, tool: str, export_path: Optional[str] = None) -> Optional[str]:
+        """
+        Export tool thành file zip
+        
+        Args:
+            tool: Tên file tool (vd: backup-folder.py)
+            export_path: Đường dẫn file zip output (None = tự động tạo tên)
+        
+        Returns:
+            str: Đường dẫn file zip đã tạo, hoặc None nếu lỗi
+        
+        Giải thích:
+        - Tìm thư mục tool
+        - Nén toàn bộ thư mục thành file zip
+        - Lưu vào thư mục exports/ hoặc đường dẫn chỉ định
+        """
+        import shutil
+        import zipfile
+        from datetime import datetime
+        
+        tool_name = tool.replace('.py', '')
+        
+        # Tìm đường dẫn thư mục tool
+        tool_dir = None
+        tool_type = None
+        
+        # Thử tìm trong tools/py/
+        py_tool_dir = self.tool_dir / "py" / tool_name
+        if py_tool_dir.exists() and py_tool_dir.is_dir():
+            tool_dir = py_tool_dir
+            tool_type = 'py'
+        
+        # Thử tìm trong tools/sh/
+        if not tool_dir:
+            sh_tool_dir = self.tool_dir / "sh" / tool_name
+            if sh_tool_dir.exists() and sh_tool_dir.is_dir():
+                tool_dir = sh_tool_dir
+                tool_type = 'sh'
+        
+        # Thử cấu trúc cũ
+        if not tool_dir:
+            old_tool_dir = self.tool_dir / tool_name
+            if old_tool_dir.exists() and old_tool_dir.is_dir():
+                tool_dir = old_tool_dir
+                tool_type = 'py'  # Mặc định
+        
+        if not tool_dir or not tool_dir.exists():
+            print(Colors.error(f"❌ Không tìm thấy thư mục tool: {tool_name}"))
+            return None
+        
+        # Tạo thư mục exports nếu chưa có
+        project_root = Path(__file__).parent.parent
+        exports_dir = project_root / "exports"
+        exports_dir.mkdir(exist_ok=True)
+        
+        # Tạo tên file zip
+        if export_path:
+            zip_path = Path(export_path)
+        else:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            zip_filename = f"{tool_name}_{timestamp}.zip"
+            zip_path = exports_dir / zip_filename
+        
+        try:
+            # Tạo file zip
+            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                # Duyệt tất cả files trong thư mục tool
+                for root, dirs, files in os.walk(tool_dir):
+                    # Bỏ qua __pycache__ và .pyc files
+                    dirs[:] = [d for d in dirs if d != '__pycache__']
+                    
+                    for file in files:
+                        if file.endswith('.pyc'):
+                            continue
+                        
+                        file_path = Path(root) / file
+                        # Tạo đường dẫn tương đối trong zip (giữ nguyên cấu trúc: py/tool-name/ hoặc sh/tool-name/)
+                        # arcname phải là: py/tool-name/file hoặc sh/tool-name/file
+                        arcname = f"{tool_type}/{tool_name}/{file_path.relative_to(tool_dir)}"
+                        zipf.write(file_path, arcname)
+            
+            return str(zip_path)
+        except Exception as e:
+            print(Colors.error(f"❌ Lỗi khi export tool: {e}"))
+            import traceback
+            traceback.print_exc()
+            return None
+    
+    def import_tool(self, import_path: str, overwrite: bool = False) -> bool:
+        """
+        Import tool từ file zip hoặc thư mục
+        
+        Args:
+            import_path: Đường dẫn file zip hoặc thư mục tool
+            overwrite: Có ghi đè tool đã tồn tại không
+        
+        Returns:
+            bool: True nếu thành công, False nếu lỗi
+        
+        Giải thích:
+        - Nếu là file zip: giải nén vào tools/py/ hoặc tools/sh/
+        - Nếu là thư mục: copy vào tools/py/ hoặc tools/sh/
+        - Kiểm tra tool đã tồn tại và hỏi ghi đè nếu cần
+        """
+        import shutil
+        import zipfile
+        
+        import_path_obj = Path(import_path)
+        
+        if not import_path_obj.exists():
+            print(Colors.error(f"❌ Không tìm thấy file/thư mục: {import_path}"))
+            return False
+        
+        # Xác định tool name và type
+        tool_name = None
+        tool_type = None
+        
+        if import_path_obj.is_file() and import_path_obj.suffix == '.zip':
+            # File zip - cần giải nén và xác định tool name
+            try:
+                with zipfile.ZipFile(import_path_obj, 'r') as zipf:
+                    # Tìm file .py đầu tiên để xác định tool name
+                    for name in zipf.namelist():
+                        # Pattern: py/tool-name/tool-name.py hoặc sh/tool-name/tool-name.py
+                        parts = name.split('/')
+                        if len(parts) >= 3 and parts[0] in ['py', 'sh']:
+                            if parts[2].endswith('.py') and parts[2].replace('.py', '') == parts[1]:
+                                tool_name = parts[1]
+                                tool_type = parts[0]
+                                break
+                    
+                    # Nếu không tìm thấy, thử pattern cũ: tool-name/tool-name.py
+                    if not tool_name:
+                        for name in zipf.namelist():
+                            parts = name.split('/')
+                            if len(parts) >= 2 and parts[1].endswith('.py'):
+                                potential_name = parts[1].replace('.py', '')
+                                if parts[0] == potential_name:
+                                    tool_name = potential_name
+                                    tool_type = 'py'  # Mặc định
+                                    break
+                    
+                    if not tool_name:
+                        print(Colors.error("❌ Không thể xác định tên tool từ file zip"))
+                        return False
+                    
+                    # Kiểm tra tool đã tồn tại
+                    target_dir = self.tool_dir / tool_type / tool_name
+                    if target_dir.exists():
+                        if not overwrite:
+                            print(Colors.warning(f"⚠️  Tool '{tool_name}' đã tồn tại!"))
+                            confirm = input(Colors.warning("   Bạn có muốn ghi đè? (yes/no): ")).strip().lower()
+                            if confirm not in ['yes', 'y', 'có', 'c']:
+                                print(Colors.info("ℹ️  Đã hủy import"))
+                                return False
+                        # Xóa tool cũ
+                        shutil.rmtree(target_dir)
+                    
+                    # Giải nén vào thư mục tương ứng
+                    # Tạo thư mục đích nếu chưa có
+                    target_dir.parent.mkdir(parents=True, exist_ok=True)
+                    
+                    # Giải nén từng file và đặt vào đúng vị trí
+                    for name in zipf.namelist():
+                        # Bỏ qua thư mục
+                        if name.endswith('/'):
+                            continue
+                        
+                        # Lấy đường dẫn đích
+                        if name.startswith(f'{tool_type}/{tool_name}/'):
+                            # Loại bỏ prefix py/tool-name/ hoặc sh/tool-name/
+                            dest_name = name[len(f'{tool_type}/{tool_name}/'):]
+                            dest_path = target_dir / dest_name
+                            dest_path.parent.mkdir(parents=True, exist_ok=True)
+                            
+                            # Ghi file
+                            with zipf.open(name) as source:
+                                with open(dest_path, 'wb') as target:
+                                    target.write(source.read())
+                        elif name.startswith(f'{tool_name}/'):
+                            # Pattern cũ: tool-name/file
+                            dest_name = name[len(f'{tool_name}/'):]
+                            dest_path = target_dir / dest_name
+                            dest_path.parent.mkdir(parents=True, exist_ok=True)
+                            
+                            # Ghi file
+                            with zipf.open(name) as source:
+                                with open(dest_path, 'wb') as target:
+                                    target.write(source.read())
+                    
+                    print(Colors.success(f"✅ Đã import tool: {tool_name}"))
+                    return True
+            except Exception as e:
+                print(Colors.error(f"❌ Lỗi khi giải nén file zip: {e}"))
+                import traceback
+                traceback.print_exc()
+                return False
+        
+        elif import_path_obj.is_dir():
+            # Thư mục - copy vào tools/
+            tool_name = import_path_obj.name
+            
+            # Kiểm tra xem có file .py chính không
+            main_file = import_path_obj / f"{tool_name}.py"
+            if not main_file.exists():
+                print(Colors.error(f"❌ Không tìm thấy file chính: {main_file.name}"))
+                return False
+            
+            # Xác định tool type (mặc định là py)
+            tool_type = 'py'
+            
+            # Kiểm tra tool đã tồn tại
+            target_dir = self.tool_dir / tool_type / tool_name
+            if target_dir.exists():
+                if not overwrite:
+                    print(Colors.warning(f"⚠️  Tool '{tool_name}' đã tồn tại!"))
+                    confirm = input(Colors.warning("   Bạn có muốn ghi đè? (yes/no): ")).strip().lower()
+                    if confirm not in ['yes', 'y', 'có', 'c']:
+                        print(Colors.info("ℹ️  Đã hủy import"))
+                        return False
+                # Xóa tool cũ
+                shutil.rmtree(target_dir)
+            
+            # Copy thư mục vào tools/
+            target_dir.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(import_path_obj, target_dir)
+            
+            print(Colors.success(f"✅ Đã import tool: {tool_name}"))
+            return True
+        
+        else:
+            print(Colors.error("❌ Đường dẫn không hợp lệ (phải là file .zip hoặc thư mục)"))
+            return False
+    
+    def delete_tool(self, tool: str, confirm: bool = True) -> bool:
+        """
+        Xóa tool riêng lẻ
+        
+        Args:
+            tool: Tên file tool (vd: backup-folder.py)
+            confirm: Có hỏi xác nhận trước khi xóa không
+        
+        Returns:
+            bool: True nếu thành công, False nếu lỗi hoặc hủy
+        
+        Giải thích:
+        - Tìm thư mục tool
+        - Xóa toàn bộ thư mục
+        - Xóa khỏi favorites và recent nếu có
+        """
+        import shutil
+        
+        tool_name = tool.replace('.py', '')
+        tool_display_name = self.get_tool_display_name(tool)
+        
+        # Tìm đường dẫn thư mục tool
+        tool_dir = None
+        
+        # Thử tìm trong tools/py/
+        py_tool_dir = self.tool_dir / "py" / tool_name
+        if py_tool_dir.exists() and py_tool_dir.is_dir():
+            tool_dir = py_tool_dir
+        
+        # Thử tìm trong tools/sh/
+        if not tool_dir:
+            sh_tool_dir = self.tool_dir / "sh" / tool_name
+            if sh_tool_dir.exists() and sh_tool_dir.is_dir():
+                tool_dir = sh_tool_dir
+        
+        # Thử cấu trúc cũ
+        if not tool_dir:
+            old_tool_dir = self.tool_dir / tool_name
+            if old_tool_dir.exists() and old_tool_dir.is_dir():
+                tool_dir = old_tool_dir
+        
+        if not tool_dir or not tool_dir.exists():
+            print(Colors.error(f"❌ Không tìm thấy thư mục tool: {tool_name}"))
+            return False
+        
+        # Xác nhận xóa
+        if confirm:
+            print()
+            print(Colors.warning(f"⚠️  Bạn có chắc chắn muốn xóa tool: {Colors.bold(tool_display_name)}?"))
+            print(Colors.muted(f"   Đường dẫn: {tool_dir}"))
+            print()
+            user_confirm = input(Colors.warning("   Nhập 'yes' để xác nhận: ")).strip().lower()
+            if user_confirm not in ['yes', 'y', 'có', 'c']:
+                print(Colors.info("ℹ️  Đã hủy xóa"))
+                return False
+        
+        try:
+            # Xóa thư mục tool
+            shutil.rmtree(tool_dir)
+            
+            # Xóa khỏi favorites nếu có
+            if tool in self.config.get('favorites', []):
+                self.config['favorites'].remove(tool)
+            
+            # Xóa khỏi recent nếu có
+            if tool in self.config.get('recent', []):
+                self.config['recent'].remove(tool)
+            
+            # Xóa khỏi disabled nếu có
+            if tool in self.config.get('disabled_tools', []):
+                self.config['disabled_tools'].remove(tool)
+            
+            # Lưu config
+            self._save_config()
+            
+            print(Colors.success(f"✅ Đã xóa tool: {tool_display_name}"))
+            return True
+            
+        except PermissionError:
+            print(Colors.error(f"❌ Không có quyền xóa thư mục: {tool_dir}"))
+            return False
+        except Exception as e:
+            print(Colors.error(f"❌ Lỗi khi xóa tool: {e}"))
             import traceback
             traceback.print_exc()
             return False

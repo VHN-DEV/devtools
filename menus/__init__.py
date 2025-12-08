@@ -585,6 +585,165 @@ def _show_logs_menu(manager):
             input(Colors.muted("Nhấn Enter để tiếp tục..."))
 
 
+def _show_tool_management_menu(manager, tools):
+    """Hiển thị menu quản lý tool (export/import/delete)"""
+    while True:
+        print()
+        print_separator("─", 70, Colors.INFO)
+        print(Colors.bold("🛠️  QUẢN LÝ TOOL"))
+        print_separator("─", 70, Colors.INFO)
+        print()
+        
+        print(Colors.bold("📝 Lệnh:"))
+        print(f"   {Colors.info('1')} - Export tool (xuất tool thành file zip)")
+        print(f"   {Colors.info('2')} - Import tool (nhập tool từ file zip hoặc thư mục)")
+        print(f"   {Colors.info('3')} - Xóa tool")
+        print(f"   {Colors.info('0')} - Quay lại")
+        print()
+        
+        choice = input(f"{Colors.primary('Chọn lệnh')} (0-3): ").strip()
+        
+        if choice == '0':
+            break
+        elif choice == '1':
+            # Export tool
+            print()
+            print_separator("─", 70, Colors.INFO)
+            print(Colors.bold("📦 EXPORT TOOL"))
+            print_separator("─", 70, Colors.INFO)
+            print()
+            
+            # Hiển thị danh sách tools
+            displayed_tools = getattr(manager, 'displayed_tools_order', tools)
+            if not displayed_tools:
+                displayed_tools = tools
+            
+            manager.display_menu(displayed_tools, title="CHỌN TOOL ĐỂ EXPORT", group_by_category=False)
+            
+            tool_input = input(f"{Colors.primary('Nhập số thứ tự tool')} (hoặc Enter để hủy): ").strip()
+            
+            if not tool_input:
+                continue
+            
+            try:
+                idx = int(tool_input)
+                if 1 <= idx <= len(displayed_tools):
+                    tool = displayed_tools[idx - 1]
+                    tool_display_name = manager.get_tool_display_name(tool)
+                    
+                    print()
+                    print(Colors.info(f"📦 Đang export tool: {Colors.bold(tool_display_name)}..."))
+                    
+                    zip_path = manager.export_tool(tool)
+                    if zip_path:
+                        print()
+                        print(Colors.success(f"✅ Export thành công!"))
+                        print(f"   {Colors.secondary('File')}: {Colors.bold(zip_path)}")
+                        print()
+                        input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                    else:
+                        print()
+                        print(Colors.error("❌ Export thất bại"))
+                        print()
+                        input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                else:
+                    print(Colors.error(f"❌ Số không hợp lệ (phải từ 1 đến {len(displayed_tools)})"))
+                    print()
+                    input(Colors.muted("Nhấn Enter để tiếp tục..."))
+            except ValueError:
+                print(Colors.error("❌ Số không hợp lệ"))
+                print()
+                input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
+        elif choice == '2':
+            # Import tool
+            print()
+            print_separator("─", 70, Colors.INFO)
+            print(Colors.bold("📥 IMPORT TOOL"))
+            print_separator("─", 70, Colors.INFO)
+            print()
+            
+            print(Colors.info("💡 Nhập đường dẫn đến file .zip hoặc thư mục tool"))
+            print()
+            import_path = input(f"{Colors.primary('Đường dẫn')} (hoặc Enter để hủy): ").strip()
+            
+            if not import_path:
+                continue
+            
+            # Kiểm tra đường dẫn
+            import_path_obj = Path(import_path)
+            if not import_path_obj.exists():
+                print()
+                print(Colors.error(f"❌ Không tìm thấy: {import_path}"))
+                print()
+                input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                continue
+            
+            print()
+            print(Colors.info("📥 Đang import tool..."))
+            
+            success = manager.import_tool(import_path)
+            if success:
+                print()
+                print(Colors.success("✅ Import thành công!"))
+                print(Colors.info("💡 Khởi động lại chương trình để tool xuất hiện trong menu"))
+            else:
+                print()
+                print(Colors.error("❌ Import thất bại"))
+            
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
+        elif choice == '3':
+            # Delete tool
+            print()
+            print_separator("─", 70, Colors.INFO)
+            print(Colors.bold("🗑️  XÓA TOOL"))
+            print_separator("─", 70, Colors.INFO)
+            print()
+            
+            # Hiển thị danh sách tools
+            displayed_tools = getattr(manager, 'displayed_tools_order', tools)
+            if not displayed_tools:
+                displayed_tools = tools
+            
+            manager.display_menu(displayed_tools, title="CHỌN TOOL ĐỂ XÓA", group_by_category=False)
+            
+            tool_input = input(f"{Colors.primary('Nhập số thứ tự tool')} (hoặc Enter để hủy): ").strip()
+            
+            if not tool_input:
+                continue
+            
+            try:
+                idx = int(tool_input)
+                if 1 <= idx <= len(displayed_tools):
+                    tool = displayed_tools[idx - 1]
+                    
+                    success = manager.delete_tool(tool, confirm=True)
+                    if success:
+                        # Refresh tools list
+                        tools = manager.get_tool_list()
+                        print()
+                        print(Colors.info("💡 Tool đã bị xóa khỏi danh sách"))
+                        print()
+                        input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                    else:
+                        print()
+                        input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                else:
+                    print(Colors.error(f"❌ Số không hợp lệ (phải từ 1 đến {len(displayed_tools)})"))
+                    print()
+                    input(Colors.muted("Nhấn Enter để tiếp tục..."))
+            except ValueError:
+                print(Colors.error("❌ Số không hợp lệ"))
+                print()
+                input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        else:
+            print()
+            print(Colors.error("❌ Lựa chọn không hợp lệ"))
+            print()
+
+
 def _show_settings_menu(manager):
     """Hiển thị menu settings với các tùy chọn"""
     while True:
@@ -831,7 +990,7 @@ def main():
             prompt_prefix = Colors.primary("┌─") + " " + Colors.bold(Colors.info(prompt_title)) + Colors.primary(" " + "─" * prompt_title_padding + "┐")
             print(f"  {prompt_prefix}")
             
-            prompt_text = "Chọn tool (h=help, v=version, u=update, q=quit):"
+            prompt_text = "Chọn tool (h=help, q=quit):"
             prompt_text_display_width = get_display_width(prompt_text)
             # Tính padding cần thiết để đủ width
             prompt_text_padding = prompt_width - prompt_text_display_width - 3
@@ -1183,6 +1342,14 @@ def main():
             # Settings
             elif command == 'set':
                 _show_settings_menu(manager)
+            
+            # Tool Management (Export/Import/Delete)
+            elif command in ['manage', 'mgmt', 'tool-mgmt']:
+                _show_tool_management_menu(manager, tools)
+                # Refresh tools list sau khi quản lý
+                tools = manager.get_tool_list()
+                if tools:
+                    manager.display_menu(tools)
             
             # Logs
             elif command == 'log' or command == 'logs':
