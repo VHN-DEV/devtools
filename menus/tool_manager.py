@@ -1178,8 +1178,14 @@ class ToolManager:
         cmd_basic3 = f"{Colors.info('h, help')}      - Hiển thị hướng dẫn này"
         print_box_line(cmd_basic3, "h, help      - Hiển thị hướng dẫn này")
         
-        cmd_basic4 = f"{Colors.info('q, quit, 0')}   - Thoát chương trình"
-        print_box_line(cmd_basic4, "q, quit, 0   - Thoát chương trình")
+        cmd_basic4 = f"{Colors.info('v')}            - Kiểm tra version hiện tại"
+        print_box_line(cmd_basic4, "v            - Kiểm tra version hiện tại")
+        
+        cmd_basic5 = f"{Colors.info('u')}            - Cập nhật version mới"
+        print_box_line(cmd_basic5, "u            - Cập nhật version mới")
+        
+        cmd_basic6 = f"{Colors.info('q, quit, 0')}   - Thoát chương trình"
+        print_box_line(cmd_basic6, "q, quit, 0   - Thoát chương trình")
         
         print_box_empty()
         

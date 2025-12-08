@@ -38,6 +38,209 @@ from utils.helpers import print_welcome_tip, print_command_suggestions, suggest_
 from utils.logger import clear_logs, get_log_files
 
 
+def get_current_version():
+    """
+    Lấy version hiện tại của package
+    
+    Returns:
+        str: Version hiện tại hoặc "Unknown" nếu không tìm thấy
+    
+    Giải thích:
+    - Thử lấy từ package đã cài đặt trước (chính xác hơn)
+    - Nếu không có, đọc từ pyproject.toml
+    """
+    # Thử lấy từ package đã cài đặt
+    try:
+        import importlib.metadata
+        version = importlib.metadata.version("myPythonTool")
+        return version
+    except Exception:
+        pass
+    
+    # Thử lấy từ pkg_resources (setuptools cũ)
+    try:
+        import pkg_resources
+        version = pkg_resources.get_distribution("myPythonTool").version
+        return version
+    except Exception:
+        pass
+    
+    # Fallback: Đọc từ pyproject.toml
+    project_root = Path(__file__).parent.parent
+    pyproject_path = project_root / "pyproject.toml"
+    
+    if pyproject_path.exists():
+        # Thử dùng tomllib (Python 3.11+)
+        try:
+            import tomllib
+            with open(pyproject_path, 'rb') as f:
+                data = tomllib.load(f)
+                version = data.get('project', {}).get('version', 'Unknown')
+                if version != 'Unknown':
+                    return version
+        except ImportError:
+            # Python < 3.11, không có tomllib, dùng regex
+            pass
+        except Exception:
+            pass
+        
+        # Nếu không có tomllib hoặc lỗi, dùng regex
+        try:
+            with open(pyproject_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                # Tìm pattern: version = "1.0.0"
+                match = re.search(r'version\s*=\s*["\']([^"\']+)["\']', content)
+                if match:
+                    return match.group(1)
+        except Exception:
+            pass
+    
+    return "Unknown"
+
+
+def show_version():
+    """Hiển thị version hiện tại của package"""
+    version = get_current_version()
+    
+    print()
+    print_separator("═", 70, Colors.INFO)
+    print(Colors.bold(f"📦 PHIÊN BẢN HIỆN TẠI"))
+    print_separator("═", 70, Colors.INFO)
+    print()
+    print(f"   {Colors.info('myPythonTool')}: {Colors.bold(Colors.success(version))}")
+    print()
+    
+    # Hiển thị thông tin thêm
+    project_root = Path(__file__).parent.parent
+    pyproject_path = project_root / "pyproject.toml"
+    
+    if pyproject_path.exists():
+        try:
+            # Thử đọc thông tin từ pyproject.toml
+            with open(pyproject_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                
+                # Tìm repository URL
+                repo_match = re.search(r'Repository\s*=\s*["\']([^"\']+)["\']', content)
+                if repo_match:
+                    repo_url = repo_match.group(1)
+                    print(f"   {Colors.muted('Repository')}: {Colors.secondary(repo_url)}")
+                    print()
+        except Exception:
+            pass
+    
+    print_separator("═", 70, Colors.INFO)
+    print()
+    input(Colors.muted("Nhấn Enter để quay lại..."))
+
+
+def update_version():
+    """
+    Update version mới của package
+    
+    Giải thích:
+    - Kiểm tra xem có phải git repository không
+    - Nếu có, thử git pull
+    - Nếu không, thử pip install --upgrade
+    """
+    print()
+    print_separator("═", 70, Colors.INFO)
+    print(Colors.bold("🔄 CẬP NHẬT PHIÊN BẢN"))
+    print_separator("═", 70, Colors.INFO)
+    print()
+    
+    current_version = get_current_version()
+    print(f"   {Colors.info('Version hiện tại')}: {Colors.bold(current_version)}")
+    print()
+    
+    project_root = Path(__file__).parent.parent
+    git_dir = project_root / ".git"
+    
+    # Kiểm tra xem có phải git repository không
+    if git_dir.exists():
+        print(Colors.info("📥 Đang cập nhật từ Git repository..."))
+        print()
+        
+        try:
+            # Thực hiện git pull
+            result = subprocess.run(
+                ["git", "pull"],
+                cwd=str(project_root),
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            
+            if result.returncode == 0:
+                # Kiểm tra xem có thay đổi không
+                if "Already up to date" in result.stdout or "Đã cập nhật" in result.stdout:
+                    print(Colors.success("✅ Đã ở phiên bản mới nhất!"))
+                else:
+                    print(Colors.success("✅ Đã cập nhật thành công!"))
+                    print()
+                    print(Colors.info("💡 Khởi động lại chương trình để áp dụng thay đổi"))
+                    
+                    # Hiển thị output của git pull
+                    if result.stdout.strip():
+                        print()
+                        print(Colors.muted("Chi tiết:"))
+                        print(Colors.secondary(result.stdout.strip()))
+            else:
+                print(Colors.error("❌ Lỗi khi cập nhật từ Git"))
+                if result.stderr:
+                    print(Colors.error(f"   {result.stderr.strip()}"))
+        except FileNotFoundError:
+            print(Colors.error("❌ Không tìm thấy Git. Vui lòng cài đặt Git trước."))
+        except subprocess.TimeoutExpired:
+            print(Colors.error("❌ Quá trình cập nhật quá lâu, đã hủy"))
+        except Exception as e:
+            print(Colors.error(f"❌ Lỗi: {e}"))
+    else:
+        # Không phải git repository, thử pip install --upgrade
+        print(Colors.info("📦 Đang cập nhật từ PyPI..."))
+        print()
+        
+        try:
+            # Thực hiện pip install --upgrade
+            result = subprocess.run(
+                [sys.executable, "-m", "pip", "install", "--upgrade", "myPythonTool"],
+                capture_output=True,
+                text=True,
+                timeout=120
+            )
+            
+            if result.returncode == 0:
+                print(Colors.success("✅ Đã cập nhật thành công!"))
+                print()
+                print(Colors.info("💡 Khởi động lại chương trình để áp dụng thay đổi"))
+                
+                # Hiển thị output của pip
+                if result.stdout.strip():
+                    print()
+                    print(Colors.muted("Chi tiết:"))
+                    # Chỉ hiển thị dòng quan trọng
+                    for line in result.stdout.strip().split('\n'):
+                        if 'Successfully installed' in line or 'Requirement already satisfied' in line:
+                            print(Colors.secondary(line))
+            else:
+                print(Colors.error("❌ Lỗi khi cập nhật từ PyPI"))
+                if result.stderr:
+                    # Chỉ hiển thị dòng lỗi quan trọng
+                    error_lines = result.stderr.strip().split('\n')
+                    for line in error_lines[-5:]:  # 5 dòng cuối
+                        if line.strip():
+                            print(Colors.error(f"   {line.strip()}"))
+        except subprocess.TimeoutExpired:
+            print(Colors.error("❌ Quá trình cập nhật quá lâu, đã hủy"))
+        except Exception as e:
+            print(Colors.error(f"❌ Lỗi: {e}"))
+    
+    print()
+    print_separator("═", 70, Colors.INFO)
+    print()
+    input(Colors.muted("Nhấn Enter để quay lại..."))
+
+
 def safe_print(text, fallback_text=None):
     """
     In text an toàn với fallback cho encoding errors
@@ -628,7 +831,7 @@ def main():
             prompt_prefix = Colors.primary("┌─") + " " + Colors.bold(Colors.info(prompt_title)) + Colors.primary(" " + "─" * prompt_title_padding + "┐")
             print(f"  {prompt_prefix}")
             
-            prompt_text = "Chọn tool (h=help, q=quit):"
+            prompt_text = "Chọn tool (h=help, v=version, u=update, q=quit):"
             prompt_text_display_width = get_display_width(prompt_text)
             # Tính padding cần thiết để đủ width
             prompt_text_padding = prompt_width - prompt_text_display_width - 3
@@ -667,6 +870,16 @@ def main():
             # Help
             elif command in ['h', 'help', '?']:
                 manager.show_help()
+            
+            # Version
+            elif command == 'v':
+                show_version()
+                manager.display_menu(tools)
+            
+            # Update
+            elif command == 'u':
+                update_version()
+                manager.display_menu(tools)
             
             # List
             elif command in ['l', 'list']:
