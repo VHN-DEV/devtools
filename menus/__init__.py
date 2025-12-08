@@ -140,9 +140,8 @@ def show_version():
             timeout=30
         )
         
-        # Danh sách các version branch cần hiển thị
-        version_branches = []
-        available_branches = []
+        # Danh sách các version branch (chỉ lấy tool-v*)
+        available_versions = []
         
         if branch_list_result.returncode == 0:
             for line in branch_list_result.stdout.split('\n'):
@@ -167,29 +166,18 @@ def show_version():
                 if not branch_name:
                     continue
                 
-                # Thêm các branch version (tool-v*)
+                # Chỉ thêm các branch version (tool-v*)
                 if branch_name.startswith('tool-v'):
-                    if branch_name not in available_branches:
-                        available_branches.append(branch_name)
-                
-                # Cũng thêm develop và main nếu có
-                elif branch_name in ['develop', 'main', 'master']:
-                    if branch_name not in available_branches:
-                        available_branches.append(branch_name)
+                    if branch_name not in available_versions:
+                        available_versions.append(branch_name)
         
-        # Sắp xếp danh sách: develop/main trước, sau đó là các version theo thứ tự
-        priority_branches = ['develop', 'main', 'master']
-        sorted_branches = []
+        # Sắp xếp các version từ mới đến cũ
+        available_versions.sort(reverse=True)
         
-        # Thêm các branch ưu tiên trước
-        for priority in priority_branches:
-            if priority in available_branches:
-                sorted_branches.append(priority)
-        
-        # Thêm các version branch (sắp xếp theo version)
-        version_branches = [b for b in available_branches if b.startswith('tool-v')]
-        version_branches.sort(reverse=True)  # Mới nhất trước
-        sorted_branches.extend(version_branches)
+        # Version mới nhất là version đầu tiên (cao nhất) trong danh sách
+        # Nếu đang ở branch không phải tool-v*, coi như đang ở version mới nhất
+        is_current_a_version = current_branch.startswith('tool-v')
+        sorted_branches = available_versions
         
         # Hiển thị danh sách version
         if sorted_branches:
@@ -200,16 +188,25 @@ def show_version():
                 # Kiểm tra xem có phải branch hiện tại không
                 is_active = branch == current_branch
                 
+                # Nếu đang ở branch không phải tool-v*, coi như đang ở version mới nhất (version đầu tiên)
+                if not is_current_a_version and idx == 1:
+                    is_active = True
+                
                 # Định dạng tên branch để hiển thị
-                display_name = branch
-                if branch.startswith('tool-v'):
-                    display_name = branch.replace('tool-v', 'v')
+                display_name = branch.replace('tool-v', 'v')
+                
+                # Version đầu tiên (mới nhất) hiển thị thêm "Mới nhất"
+                if idx == 1:
+                    display_name = f"{display_name} (Mới nhất)"
                 
                 # Hiển thị với dấu hiệu active
                 if is_active:
                     marker = Colors.success("✓")
                     branch_color = Colors.success
-                    status_text = Colors.success("(Đang active)")
+                    if is_current_a_version:
+                        status_text = Colors.success(f"(Đang active - {current_branch})")
+                    else:
+                        status_text = Colors.success(f"(Đang active - {current_branch} = Mới nhất)")
                 else:
                     marker = " "
                     branch_color = Colors.info
@@ -235,17 +232,50 @@ def show_version():
                     if 1 <= choice_num <= len(sorted_branches):
                         selected_branch = sorted_branches[choice_num - 1]
                         
-                        # Nếu đã là branch hiện tại, không cần chuyển
-                        if selected_branch == current_branch:
+                        # Nếu chọn version mới nhất (version đầu tiên) và đang ở branch không phải tool-v*
+                        if choice_num == 1 and not is_current_a_version:
                             print()
-                            print(Colors.info(f"ℹ️  Bạn đang ở version: {selected_branch}"))
+                            print(Colors.info(f"ℹ️  Bạn đang ở version mới nhất ({selected_branch.replace('tool-v', 'v')}) - branch: {current_branch}"))
                             print()
                             input(Colors.muted("Nhấn Enter để tiếp tục..."))
                             break
                         
-                        # Chuyển về version đã chọn
-                        switch_to_old_version(selected_branch)
-                        break
+                        # Nếu đã là branch hiện tại, không cần chuyển
+                        if selected_branch == current_branch:
+                            print()
+                            version_display = selected_branch.replace('tool-v', 'v')
+                            if choice_num == 1:
+                                version_display += " (Mới nhất)"
+                            print(Colors.info(f"ℹ️  Bạn đang ở version: {version_display}"))
+                            print()
+                            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                            break
+                        
+                        # Nếu chọn version mới nhất (version đầu tiên) nhưng đang ở tool-v* khác
+                        if choice_num == 1:
+                            # Cần chuyển về develop hoặc main để có version mới nhất
+                            print()
+                            print(Colors.warning("⚠️  Để chuyển về version mới nhất, bạn cần checkout về branch develop hoặc main"))
+                            print()
+                            print(f"   {Colors.info('1')}. Chuyển về develop")
+                            print(f"   {Colors.info('2')}. Chuyển về main")
+                            print(f"   {Colors.muted('0')}. Hủy")
+                            print()
+                            
+                            branch_choice = input(f"{Colors.info('Chọn branch')} [{Colors.muted('0')}]: ").strip()
+                            
+                            if branch_choice == '1':
+                                switch_to_old_version('develop')
+                                break
+                            elif branch_choice == '2':
+                                switch_to_old_version('main')
+                                break
+                            else:
+                                break
+                        else:
+                            # Chuyển về version đã chọn (tool-v*)
+                            switch_to_old_version(selected_branch)
+                            break
                     else:
                         print(Colors.error(f"❌ Lựa chọn phải từ 1 đến {len(sorted_branches)}"))
                 except ValueError:
