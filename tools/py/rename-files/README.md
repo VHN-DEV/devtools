@@ -20,7 +20,7 @@ Tool đổi tên file hàng loạt với nhiều tùy chọn: thêm prefix/suffi
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "rename-files"
 ```
 

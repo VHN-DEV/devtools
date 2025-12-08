@@ -21,7 +21,7 @@ Tool tìm kiếm và thay thế text trong nhiều file cùng lúc. Hỗ trợ R
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "find-and-replace"
 ```
 

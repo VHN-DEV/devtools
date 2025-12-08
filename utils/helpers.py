@@ -171,7 +171,7 @@ def print_banner():
     width = 55
     
     # Tính toán padding chính xác (không tính ANSI codes)
-    title1 = "MY PYTHON TOOLS"
+    title1 = "DEV TOOLS"
     title1_len = len(title1)
     title1_padding_left = (width - title1_len) // 2
     title1_padding_right = width - title1_len - title1_padding_left

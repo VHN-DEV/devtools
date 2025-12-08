@@ -1,18 +1,18 @@
 #!/bin/bash
 # ============================================================
-# myPythonTool - Shell wrapper để chạy từ bất kỳ đâu
+# DevTools - Shell wrapper để chạy từ bất kỳ đâu
 # ============================================================
 
 # Mục đích: 
-#   Cho phép chạy myPythonTool từ bất kỳ thư mục nào
+#   Cho phép chạy DevTools từ bất kỳ thư mục nào
 #   mà không cần cài đặt bằng pip
 #
 # Cách sử dụng:
-#   1. (Khuyến nghị) Đặt file này trong thư mục dự án: scripts/myptool.sh
-#      Chạy: ./scripts/myptool.sh
+#   1. (Khuyến nghị) Đặt file này trong thư mục dự án: scripts/devtools.sh
+#      Chạy: ./scripts/devtools.sh
 #   2. (Tùy chọn) Tạo symlink hoặc thêm vào PATH:
-#      - ln -s /path/to/my-python-tool/scripts/myptool.sh /usr/local/bin/myptool
-#      - Hoặc thêm vào ~/.bashrc: export PATH="$PATH:/path/to/my-python-tool/scripts"
+#      - ln -s /path/to/devtools/scripts/devtools.sh /usr/local/bin/devtools
+#      - Hoặc thêm vào ~/.bashrc: export PATH="$PATH:/path/to/devtools/scripts"
 #
 # Lưu ý:
 #   - Script tự động phát hiện đường dẫn, không cần cấu hình
@@ -50,7 +50,7 @@ run_tool() {
     if [ $EXIT_CODE -ne 0 ]; then
         echo ""
         echo "==============================================="
-        echo "   Có lỗi xảy ra khi chạy myPythonTool"
+        echo "   Có lỗi xảy ra khi chạy DevTools"
         echo "==============================================="
         echo ""
         if [ $EXIT_CODE -eq 127 ]; then
@@ -68,13 +68,13 @@ run_tool() {
     exit $EXIT_CODE
 }
 
-# Ưu tiên 1: Kiểm tra biến môi trường MYPYTHONTOOL_DIR
-if [ -n "$MYPYTHONTOOL_DIR" ] && [ -f "$MYPYTHONTOOL_DIR/__main__.py" ]; then
-    TOOL_DIR="$MYPYTHONTOOL_DIR"
+# Ưu tiên 1: Kiểm tra biến môi trường DEVTOOLS_DIR
+if [ -n "$DEVTOOLS_DIR" ] && [ -f "$DEVTOOLS_DIR/__main__.py" ]; then
+    TOOL_DIR="$DEVTOOLS_DIR"
     run_tool "$@"
 fi
 
-# Ưu tiên 2: Nếu file .sh nằm trong project (scripts/myptool.sh)
+# Ưu tiên 2: Nếu file .sh nằm trong project (scripts/devtools.sh)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 if [ -f "$PROJECT_ROOT/__main__.py" ]; then
@@ -103,33 +103,33 @@ fi
 # Không tìm thấy
 echo ""
 echo "==============================================="
-echo "   ERROR: Không tìm thấy thư mục myPythonTool"
+echo "   ERROR: Không tìm thấy thư mục DevTools"
 echo "==============================================="
 echo ""
 echo "Giải pháp:"
 echo ""
 echo "   Cách 1: Set biến môi trường (khuyến nghị)"
 echo "   ============================================"
-echo "   export MYPYTHONTOOL_DIR=\"/path/to/my-python-tool\""
+echo "   export DEVTOOLS_DIR=\"/path/to/devtools\""
 echo "   # Hoặc thêm vào ~/.bashrc hoặc ~/.zshrc:"
-echo "   echo 'export MYPYTHONTOOL_DIR=\"/path/to/my-python-tool\"' >> ~/.bashrc"
+echo "   echo 'export DEVTOOLS_DIR=\"/path/to/devtools\"' >> ~/.bashrc"
 echo "   source ~/.bashrc"
 echo ""
 echo "   Cách 2: Chạy trực tiếp từ thư mục project"
 echo "   ============================================"
-echo "   cd /path/to/my-python-tool"
+echo "   cd /path/to/devtools"
 echo "   python3 ."
 echo ""
 echo "   Cách 3: Cài đặt bằng pip (khuyến nghị nhất)"
 echo "   ============================================"
-echo "   cd /path/to/my-python-tool"
+echo "   cd /path/to/devtools"
 echo "   pip3 install -e ."
-echo "   # Sau đó chạy: myptool (từ bất kỳ đâu)"
+echo "   # Sau đó chạy: devtools (từ bất kỳ đâu)"
 echo ""
 echo "   Cách 4: Đặt file .sh trong thư mục scripts"
 echo "   ============================================"
-echo "   Copy myptool.sh vào: scripts/myptool.sh"
-echo "   Chạy: ./scripts/myptool.sh"
+echo "   Copy devtools.sh vào: scripts/devtools.sh"
+echo "   Chạy: ./scripts/devtools.sh"
 echo ""
 exit 1
 

@@ -23,7 +23,7 @@ Không cần cài đặt thư viện bên ngoài (sử dụng thư viện chuẩ
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "json-formatter"
 ```
 

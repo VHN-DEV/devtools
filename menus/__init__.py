@@ -52,7 +52,7 @@ def get_current_version():
     # Thử lấy từ package đã cài đặt
     try:
         import importlib.metadata
-        version = importlib.metadata.version("myPythonTool")
+        version = importlib.metadata.version("DevTools")
         return version
     except Exception:
         pass
@@ -60,7 +60,7 @@ def get_current_version():
     # Thử lấy từ pkg_resources (setuptools cũ)
     try:
         import pkg_resources
-        version = pkg_resources.get_distribution("myPythonTool").version
+        version = pkg_resources.get_distribution("DevTools").version
         return version
     except Exception:
         pass
@@ -107,7 +107,7 @@ def show_version():
     print(Colors.bold(f"📦 PHIÊN BẢN HIỆN TẠI"))
     print_separator("═", 70, Colors.INFO)
     print()
-    print(f"   {Colors.info('myPythonTool')}: {Colors.bold(Colors.success(version))}")
+    print(f"   {Colors.info('DevTools')}: {Colors.bold(Colors.success(version))}")
     print()
     
     # Hiển thị thông tin thêm
@@ -373,7 +373,7 @@ def update_version():
         try:
             # Thực hiện pip install --upgrade
             result = subprocess.run(
-                [sys.executable, "-m", "pip", "install", "--upgrade", "myPythonTool"],
+                [sys.executable, "-m", "pip", "install", "--upgrade", "DevTools"],
                 capture_output=True,
                 text=True,
                 timeout=120
@@ -1151,7 +1151,7 @@ def main():
     while True:
         try:
             # Nhận input với prompt đẹp và rõ ràng hơn - đồng nhất với content_width
-            prompt_title = "myptool"
+            prompt_title = "devtools"
             prompt_title_display_width = get_display_width(prompt_title)
             prompt_title_padding = prompt_width - prompt_title_display_width - 3
             if prompt_title_padding < 0:

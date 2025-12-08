@@ -1,20 +1,20 @@
 @echo off
 REM ============================================================
-REM myPythonTool - Batch wrapper để chạy từ bất kỳ đâu
+REM DevTools - Batch wrapper để chạy từ bất kỳ đâu
 REM ============================================================
 
 REM Set console to UTF-8 to support Vietnamese and emoji
 chcp 65001 >nul 2>&1
 REM 
 REM Mục đích: 
-REM   Cho phép chạy myPythonTool từ bất kỳ thư mục nào
+REM   Cho phép chạy DevTools từ bất kỳ thư mục nào
 REM   mà không cần cài đặt bằng pip
 REM
 REM Cách sử dụng:
-REM   1. (Khuyến nghị) Đặt file này trong thư mục dự án: scripts/myptool.bat
-REM      Chạy: scripts\myptool.bat
+REM   1. (Khuyến nghị) Đặt file này trong thư mục dự án: scripts/devtools.bat
+REM      Chạy: scripts\devtools.bat
 REM   2. (Tùy chọn) Copy vào PATH để chạy từ bất kỳ đâu:
-REM      - Set biến môi trường MYPYTHONTOOL_DIR
+REM      - Set biến môi trường DEVTOOLS_DIR
 REM      - Hoặc để script tự động tìm trong các thư mục phổ biến
 REM
 REM Lưu ý:
@@ -23,15 +23,15 @@ REM   - Đảm bảo Python đã được thêm vào PATH
 REM ============================================================
 
 REM ==================== TỰ ĐỘNG PHÁT HIỆN ĐƯỜNG DẪN ====================
-REM Ưu tiên 1: Kiểm tra biến môi trường MYPYTHONTOOL_DIR
-if defined MYPYTHONTOOL_DIR (
-    if exist "%MYPYTHONTOOL_DIR%\__main__.py" (
-        set "TOOL_DIR=%MYPYTHONTOOL_DIR%"
+REM Ưu tiên 1: Kiểm tra biến môi trường DEVTOOLS_DIR
+if defined DEVTOOLS_DIR (
+    if exist "%DEVTOOLS_DIR%\__main__.py" (
+        set "TOOL_DIR=%DEVTOOLS_DIR%"
         goto :found
     )
 )
 
-REM Ưu tiên 2: Nếu file .bat nằm trong project (scripts/myptool.bat)
+REM Ưu tiên 2: Nếu file .bat nằm trong project (scripts/devtools.bat)
 REM Lấy đường dẫn thư mục chứa file .bat hiện tại
 set "SCRIPT_DIR=%~dp0"
 REM Đi lên 1 cấp từ scripts/ lên project root
@@ -71,31 +71,31 @@ REM Không tìm thấy
 :not_found
 echo.
 echo ===============================================
-echo   ERROR: Khong tim thay thu muc myPythonTool
+echo   ERROR: Khong tim thay thu muc DevTools
 echo ===============================================
 echo.
 echo Giai phap:
 echo.
 echo   Cach 1: Set bien moi truong (khuyen nghi)
 echo   ============================================
-echo   setx MYPYTHONTOOL_DIR "C:\duong\dan\toi\my-python-tool"
-echo   REM Sau do mo cmd moi va chay lai: myptool
+echo   setx DEVTOOLS_DIR "C:\duong\dan\toi\devtools"
+echo   REM Sau do mo cmd moi va chay lai: devtools
 echo.
 echo   Cach 2: Chay truc tiep tu thu muc project
 echo   ============================================
-echo   cd C:\duong\dan\toi\my-python-tool
+echo   cd C:\duong\dan\toi\devtools
 echo   python .
 echo.
 echo   Cach 3: Cai dat bang pip (khuyen nghi nhat)
 echo   ============================================
-echo   cd C:\duong\dan\toi\my-python-tool
+echo   cd C:\duong\dan\toi\devtools
 echo   pip install -e .
-echo   REM Sau do chay: myptool (tu bat ky dau)
+echo   REM Sau do chay: devtools (tu bat ky dau)
 echo.
 echo   Cach 4: Dat file .bat trong thu muc scripts
 echo   ============================================
-echo   Copy myptool.bat vao: scripts\myptool.bat
-echo   Chay: scripts\myptool.bat
+echo   Copy devtools.bat vao: scripts\devtools.bat
+echo   Chay: scripts\devtools.bat
 echo.
 pause
 exit /b 1
@@ -134,7 +134,7 @@ REM Nếu có lỗi, hiển thị thông báo
 if %EXIT_CODE% neq 0 (
     echo.
     echo ===============================================
-    echo   Co loi xay ra khi chay myPythonTool
+    echo   Co loi xay ra khi chay DevTools
     echo ===============================================
     echo.
     if %EXIT_CODE%==9009 (

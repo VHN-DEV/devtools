@@ -19,7 +19,7 @@ Tool tìm và xóa file trùng lặp trong thư mục. Hỗ trợ tìm bằng ha
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "duplicate-finder"
 ```
 

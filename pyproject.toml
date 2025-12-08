@@ -7,15 +7,15 @@
 #     pip install -e .        # Development mode (khuyến nghị)
 #     pip install .           # Cài đặt bình thường
 #
-# Sau khi cài, chạy bằng lệnh: myptool
+# Sau khi cài, chạy bằng lệnh: devtools
 
 [build-system]
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "myPythonTool"
-version = "1.0.0"
+name = "DevTools"
+version = "1.0.1"
 description = "Bộ công cụ Python đa năng cho các tác vụ hàng ngày"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -58,15 +58,15 @@ classifiers = [
 
 # URL liên quan đến dự án
 [project.urls]
-Homepage = "https://github.com/VHN-DEV/myPythonTool"
-Documentation = "https://github.com/VHN-DEV/myPythonTool/blob/main/README.md"
-Repository = "https://github.com/VHN-DEV/myPythonTool"
-Changelog = "https://github.com/VHN-DEV/myPythonTool/blob/main/docs/CHANGELOG.md"
+Homepage = "https://github.com/VHN-DEV/DevTools"
+Documentation = "https://github.com/VHN-DEV/DevTools/blob/main/README.md"
+Repository = "https://github.com/VHN-DEV/DevTools"
+Changelog = "https://github.com/VHN-DEV/DevTools/blob/main/docs/CHANGELOG.md"
 
-# Entry points - Tạo command "myptool"
-# Khi gõ "myptool" ở bất kỳ đâu, sẽ chạy hàm main() trong menus/__init__.py
+# Entry points - Tạo command "devtools"
+# Khi gõ "devtools" ở bất kỳ đâu, sẽ chạy hàm main() trong menus/__init__.py
 [project.scripts]
-myptool = "menus:main"
+devtools = "menus:main"
 
 # Optional dependencies cho các tính năng mở rộng
 [project.optional-dependencies]

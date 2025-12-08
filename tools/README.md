@@ -208,7 +208,7 @@ EOF
 echo '"""Tool: my-tool"""' > tools/py/my-tool/__init__.py
 ```
 
-**Xong!** Tool sẽ tự động xuất hiện trong menu khi chạy `python .` hoặc `myptool`.
+**Xong!** Tool sẽ tự động xuất hiện trong menu khi chạy `python .` hoặc `devtools`.
 
 ## Lưu ý
 

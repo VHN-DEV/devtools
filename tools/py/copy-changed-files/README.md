@@ -27,7 +27,7 @@ Tool sao chép file thay đổi từ Git repository theo commit range. Giữ ngu
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "copy-changed-files"
 ```
 

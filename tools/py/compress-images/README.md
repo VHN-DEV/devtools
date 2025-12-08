@@ -24,7 +24,7 @@ JPG, JPEG, PNG, WEBP, GIF, BMP
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "compress-images"
 ```
 

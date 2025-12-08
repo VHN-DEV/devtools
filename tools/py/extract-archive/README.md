@@ -36,7 +36,7 @@ pip install rarfile
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "extract-archive"
 ```
 

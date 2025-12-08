@@ -15,18 +15,18 @@
 
 ```bash
 # Cách 1: Clone từ Git (khuyến nghị)
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 
 # Cách 2: Copy thư mục dự án
-# Copy toàn bộ thư mục my-python-tool sang máy mới
+# Copy toàn bộ thư mục devtools sang máy mới
 ```
 
 #### Bước 2: Cài đặt dependencies
 
 ```bash
 # Vào thư mục dự án
-cd my-python-tool
+cd devtools
 
 # Cài đặt tất cả thư viện Python cần thiết
 pip install -r requirements.txt
@@ -47,21 +47,21 @@ python -c "import PIL, chardet; print('✅ Cài đặt thành công!')"
 # Chạy thử menu
 python .
 # Hoặc nếu đã cài bằng pip install -e .
-myptool
+devtools
 ```
 
 ---
 
 ## 🔧 Cấu hình lại các đường dẫn
 
-### 1. File `scripts/myptool.bat` (nếu dùng Windows)
+### 1. File `scripts/devtools.bat` (nếu dùng Windows)
 
 **File này đã được cập nhật để tự động phát hiện đường dẫn**, không cần hardcode nữa!
 
 Script sẽ tự động tìm project theo thứ tự ưu tiên:
 
-1. **Biến môi trường `MYPYTHONTOOL_DIR`** (nếu có)
-2. **File .bat nằm trong project** (`scripts/myptool.bat`)
+1. **Biến môi trường `DEVTOOLS_DIR`** (nếu có)
+2. **File .bat nằm trong project** (`scripts/devtools.bat`)
 3. **Tìm từ thư mục hiện tại lên trên** (tự động phát hiện)
 4. **Thử tìm trong thư mục scripts** (nếu file .bat được copy vào PATH)
 
@@ -69,22 +69,22 @@ Script sẽ tự động tìm project theo thứ tự ưu tiên:
 
 **Cách 1: Chạy từ thư mục project (khuyến nghị)**
 ```batch
-cd C:\duong\dan\toi\my-python-tool
-scripts\myptool.bat
+cd C:\duong\dan\toi\devtools
+scripts\devtools.bat
 ```
 
 **Cách 2: Set biến môi trường (nếu copy vào PATH)**
 ```batch
 # Set biến môi trường một lần
-setx MYPYTHONTOOL_DIR "C:\duong\dan\toi\my-python-tool"
+setx DEVTOOLS_DIR "C:\duong\dan\toi\devtools"
 
 # Sau đó mở cmd mới và chạy từ bất kỳ đâu
-myptool
+devtools
 ```
 
 **Cách 3: Chạy trực tiếp bằng Python (đơn giản nhất)**
 ```batch
-cd C:\duong\dan\toi\my-python-tool
+cd C:\duong\dan\toi\devtools
 python .
 ```
 
@@ -231,8 +231,8 @@ Các file sau sẽ được tạo tự động khi chạy tool lần đầu, **k
 
 ```bash
 # 1. Copy/clone dự án
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 
 # 2. Cài đặt dependencies
 pip install -r requirements.txt
@@ -241,7 +241,7 @@ pip install -r requirements.txt
 pip install -e .
 
 # 4. Kiểm tra
-myptool  # hoặc python .
+devtools  # hoặc python .
 
 # 5. Cấu hình lại các tool (nếu cần)
 # - SSH Manager: sửa ssh_config.json
@@ -301,8 +301,8 @@ Dự án đã được thiết kế để hỗ trợ đa nền tảng. Hầu h�
 
 ```bash
 # Clone từ Git
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 
 # Hoặc copy thư mục dự án
 ```
@@ -326,53 +326,53 @@ python3 .
 python3 __main__.py
 
 # Cách 2: Dùng shell script wrapper
-chmod +x scripts/myptool.sh
-./scripts/myptool.sh
+chmod +x scripts/devtools.sh
+./scripts/devtools.sh
 
 # Cách 3: Nếu đã cài bằng pip install -e .
-myptool
+devtools
 ```
 
 ### 🔧 Cấu hình trên Linux/macOS
 
-#### 1. Shell Script Wrapper (`scripts/myptool.sh`)
+#### 1. Shell Script Wrapper (`scripts/devtools.sh`)
 
-**Script này đã được tạo để tự động phát hiện đường dẫn**, tương tự như `myptool.bat` trên Windows.
+**Script này đã được tạo để tự động phát hiện đường dẫn**, tương tự như `devtools.bat` trên Windows.
 
 **Cách sử dụng:**
 
 **Cách 1: Chạy từ thư mục project**
 ```bash
-cd /path/to/my-python-tool
-chmod +x scripts/myptool.sh
-./scripts/myptool.sh
+cd /path/to/devtools
+chmod +x scripts/devtools.sh
+./scripts/devtools.sh
 ```
 
 **Cách 2: Tạo symlink để chạy từ bất kỳ đâu**
 ```bash
 # Tạo symlink
-sudo ln -s /path/to/my-python-tool/scripts/myptool.sh /usr/local/bin/myptool
+sudo ln -s /path/to/devtools/scripts/devtools.sh /usr/local/bin/devtools
 
 # Sau đó chạy từ bất kỳ đâu
-myptool
+devtools
 ```
 
 **Cách 3: Thêm vào PATH**
 ```bash
 # Thêm vào ~/.bashrc hoặc ~/.zshrc
-export PATH="$PATH:/path/to/my-python-tool/scripts"
+export PATH="$PATH:/path/to/devtools/scripts"
 
 # Reload shell
 source ~/.bashrc  # hoặc source ~/.zshrc
 
 # Sau đó chạy
-myptool.sh
+devtools.sh
 ```
 
 **Cách 4: Set biến môi trường**
 ```bash
 # Thêm vào ~/.bashrc hoặc ~/.zshrc
-export MYPYTHONTOOL_DIR="/path/to/my-python-tool"
+export DEVTOOLS_DIR="/path/to/devtools"
 
 # Reload shell
 source ~/.bashrc
@@ -479,8 +479,8 @@ Các tool khác đều hoạt động tốt trên Linux/macOS!
 
 ```bash
 # 1. Copy/clone dự án
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 
 # 2. Cài đặt dependencies
 pip3 install -r requirements.txt
@@ -489,7 +489,7 @@ pip3 install -r requirements.txt
 pip3 install -e .
 
 # 4. Kiểm tra
-python3 .  # hoặc myptool nếu đã cài bằng pip
+python3 .  # hoặc devtools nếu đã cài bằng pip
 
 # 5. Cấu hình lại các tool (nếu cần)
 # - SSH Manager: sửa ssh_config.json (đường dẫn SSH key)
@@ -499,7 +499,7 @@ python3 .  # hoặc myptool nếu đã cài bằng pip
 ### 📝 Lưu ý đặc biệt cho Linux/macOS
 
 1. **Python command**: Trên Linux/macOS, dùng `python3` thay vì `python`
-2. **File permissions**: Có thể cần `chmod +x scripts/myptool.sh`
+2. **File permissions**: Có thể cần `chmod +x scripts/devtools.sh`
 3. **Path separator**: Linux/macOS dùng `/` thay vì `\`
 4. **Home directory**: Linux/macOS dùng `~` hoặc `$HOME`
 5. **Package manager**: 
@@ -520,7 +520,7 @@ python3 .
 
 **A:** Cấp quyền execute:
 ```bash
-chmod +x scripts/myptool.sh
+chmod +x scripts/devtools.sh
 ```
 
 **Q: Tool xampp-project-manager có chạy được không?**
@@ -563,7 +563,7 @@ Nếu gặp vấn đề khi di chuyển, hãy:
 1. Kiểm tra Python version: `python --version`
 2. Kiểm tra dependencies: `pip list`
 3. Xem log lỗi trong `logs/` (nếu có)
-4. Tạo Issue trên GitHub: https://github.com/VHN-DEV/myPythonTool/issues
+4. Tạo Issue trên GitHub: https://github.com/VHN-DEV/DevTools/issues
 
 ---
 

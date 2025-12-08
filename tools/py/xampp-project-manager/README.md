@@ -27,7 +27,7 @@ Tool quản lý và cài đặt dự án trên XAMPP Windows. Quản lý dự á
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "xampp-project-manager"
 ```
 

@@ -128,7 +128,7 @@ Chọn số để SSH hoặc lệnh: v
 
 ===== FILE CONFIG =====
 
-Đường dẫn: D:\myPythonTool\tool\ssh-manager\ssh_config.json
+Đường dẫn: D:\DevTools\tool\ssh-manager\ssh_config.json
 
 Nội dung:
 ------------------------------------------------------------
@@ -269,5 +269,5 @@ s remote       # Tìm theo keyword "remote"
 
 **Happy SSHing! 🔌**
 
-_myPythonTool v2.1 - SSH Manager Tool_
+_DevTools v2.1 - SSH Manager Tool_
 

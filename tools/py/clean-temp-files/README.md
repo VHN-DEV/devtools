@@ -19,7 +19,7 @@ Tool dọn dẹp file tạm, cache và file rác để giải phóng dung lượ
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "clean-temp-files"
 ```
 

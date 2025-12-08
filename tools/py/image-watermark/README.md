@@ -25,7 +25,7 @@ pip install Pillow
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "image-watermark"
 ```
 

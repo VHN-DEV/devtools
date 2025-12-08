@@ -4,17 +4,17 @@ Thư mục này chứa các script hỗ trợ cho project.
 
 ## Files
 
-### `myptool.bat`
-Batch script để chạy myPythonTool trên Windows (không cần cài đặt pip).
+### `devtools.bat`
+Batch script để chạy DevTools trên Windows (không cần cài đặt pip).
 
 **Cách sử dụng:**
 ```cmd
-scripts\myptool.bat
+scripts\devtools.bat
 ```
 
 **Hoặc** thêm thư mục `scripts/` vào PATH để chạy từ mọi nơi:
 ```cmd
-myptool
+devtools
 ```
 
 ### `create-tool.py` / `create-tool.bat`

@@ -18,7 +18,7 @@ Tool sắp xếp file tự động theo loại, extension, hoặc ngày tháng. 
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "file-organizer"
 ```
 

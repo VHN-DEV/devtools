@@ -214,7 +214,7 @@ def compress_pdf(input_file, output_file, compression_level='medium'):
         
         # Remove metadata to reduce size
         writer.add_metadata({
-            '/Producer': 'myPythonTool PDF Compressor',
+            '/Producer': 'DevTools PDF Compressor',
         })
         
         # Write compressed PDF

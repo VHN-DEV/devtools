@@ -43,7 +43,7 @@ brew install ffmpeg
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "video-converter"
 ```
 

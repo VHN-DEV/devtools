@@ -4,6 +4,66 @@ Tất cả các thay đổi quan trọng của dự án sẽ được ghi lại 
 
 ---
 
+## [1.0.1] - 2025-12-01
+
+### 🎉 Major Update - Đổi tên dự án
+
+Bản cập nhật lớn này đổi tên dự án từ `myPythonTool` sang **DevTools** để phản ánh tốt hơn mục đích và tính chất của bộ công cụ.
+
+#### ✨ Thay đổi chính
+
+- **Package name**: `myPythonTool` → `DevTools`
+- **Command name**: `myptool` → `devtools`
+- **Biến môi trường**: `MYPYTHONTOOL_DIR` → `DEVTOOLS_DIR`
+- **Tên hiển thị**: "MY PYTHON TOOLS" → "DEV TOOLS"
+
+#### 📝 Files đã cập nhật
+
+- ✅ `pyproject.toml` - Package name và entry points
+- ✅ `README.md` - Tất cả references và URLs
+- ✅ `menus/__init__.py` - Package name và version detection
+- ✅ `utils/helpers.py` - Banner title
+- ✅ `utils/logger.py` - Default logger name
+- ✅ Tất cả scripts (`.bat`, `.sh`) - Biến môi trường và references
+- ✅ Tất cả documentation files
+- ✅ Tất cả tool README files
+
+#### 🔄 Migration Guide
+
+**Nếu bạn đã cài đặt phiên bản cũ:**
+
+```bash
+# Gỡ cài đặt phiên bản cũ
+pip uninstall myPythonTool
+
+# Cài đặt phiên bản mới
+pip install -e .
+# hoặc
+pip install DevTools
+```
+
+**Sau khi cài đặt, sử dụng lệnh mới:**
+```bash
+devtools  # Thay vì myptool
+```
+
+**Cập nhật biến môi trường (nếu có):**
+```bash
+# Windows
+setx DEVTOOLS_DIR "C:\path\to\devtools"
+
+# Linux/macOS
+export DEVTOOLS_DIR="/path/to/devtools"
+```
+
+#### 📌 Breaking Changes
+
+- ⚠️ Command `myptool` không còn hoạt động, phải dùng `devtools`
+- ⚠️ Biến môi trường `MYPYTHONTOOL_DIR` đã đổi thành `DEVTOOLS_DIR`
+- ⚠️ Package name đã đổi, cần cài lại nếu đã cài bằng pip
+
+---
+
 ## [2.2.0] - 2025-10-30
 
 ### 🗂️ Major Restructure - Tổ chức lại cấu trúc thư mục tools

@@ -1,4 +1,4 @@
-# Requirements cho myPythonTool
+# Requirements cho DevTools
 # Cài đặt: pip install -r requirements.txt
 
 # Tool compress-images

@@ -32,8 +32,8 @@ def _get_project_root():
     # Project root sẽ là parent của thư mục utils
     try:
         current_file = Path(__file__).resolve()
-        # current_file sẽ là: .../my-python-tool/utils/logger.py
-        # Project root sẽ là: .../my-python-tool/
+        # current_file sẽ là: .../devtools/utils/logger.py
+        # Project root sẽ là: .../devtools/
         project_root = current_file.parent.parent
         
         # Kiểm tra xem có phải project root không (có file __main__.py hoặc pyproject.toml)
@@ -52,7 +52,7 @@ def _get_project_root():
     return current
 
 
-def setup_logger(name: str = 'myPythonTool', 
+def setup_logger(name: str = 'DevTools', 
                  log_dir: str = 'logs',
                  log_to_file: bool = True,
                  log_to_console: bool = True,

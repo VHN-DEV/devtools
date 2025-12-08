@@ -34,7 +34,7 @@ pip install pyperclip
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "qr-code"
 ```
 

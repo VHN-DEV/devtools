@@ -18,7 +18,7 @@ Tool tạo sơ đồ cây thư mục dự án với icon đẹp mắt. Hỗ tr�
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "generate-tree"
 ```
 

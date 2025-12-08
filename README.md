@@ -1,9 +1,9 @@
-# 🛠️ myPythonTool - Bộ Công Cụ Python Tiện Ích
+# 🛠️ DevTools - Bộ Công Cụ Python Tiện Ích
 
-[![GitHub](https://img.shields.io/badge/GitHub-VHN--DEV-blue?logo=github)](https://github.com/VHN-DEV/myPythonTool)
+[![GitHub](https://img.shields.io/badge/GitHub-VHN--DEV-blue?logo=github)](https://github.com/VHN-DEV/DevTools)
 [![Python](https://img.shields.io/badge/Python-3.7+-blue?logo=python)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/VHN-DEV/myPythonTool?style=social)](https://github.com/VHN-DEV/myPythonTool/stargazers)
+[![Stars](https://img.shields.io/github/stars/VHN-DEV/DevTools?style=social)](https://github.com/VHN-DEV/DevTools/stargazers)
 
 > Bộ công cụ Python đa năng giúp tự động hóa các tác vụ thường gặp khi làm việc với file và thư mục. Giao diện tiếng Việt thân thiện, dễ sử dụng!
 
@@ -28,7 +28,7 @@
 
 ## 🎯 Giới thiệu
 
-**myPythonTool** là bộ công cụ Python được thiết kế để giúp bạn tiết kiệm thời gian trong các công việc xử lý file hàng ngày:
+**DevTools** là bộ công cụ Python được thiết kế để giúp bạn tiết kiệm thời gian trong các công việc xử lý file hàng ngày:
 
 - 🖼️ Xử lý hình ảnh chuyên nghiệp (nén, resize, watermark)
 - 🎬 Xử lý video (convert, compress, trim)
@@ -97,13 +97,13 @@
 
 ### Cách 1: Cài đặt toàn cục (Khuyến nghị) ⭐
 
-Sau khi cài đặt, bạn có thể chạy `myptool` từ bất kỳ đâu!
+Sau khi cài đặt, bạn có thể chạy `devtools` từ bất kỳ đâu!
 
 #### Bước 1: Clone repository
 
 ```bash
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 ```
 
 #### Bước 2: Cài đặt
@@ -116,7 +116,7 @@ pip install -e .
 
 ```bash
 # Có thể chạy từ bất kỳ thư mục nào
-myptool
+devtools
 ```
 
 📖 **Chi tiết:** 
@@ -131,8 +131,8 @@ myptool
 #### Bước 1: Clone repository
 
 ```bash
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 ```
 
 #### Bước 2: Cài đặt thư viện
@@ -153,7 +153,7 @@ python __main__.py
 
 ```
 ╔══════════════════════════════════════════════════════════╗
-║                  MY PYTHON TOOLS                         ║
+║                  DEV TOOLS                              ║
 ║              Bộ công cụ Python tiện ích                  ║
 ║                                                          ║
 ║         Nhập 'h' hoặc 'help' để xem hướng dẫn            ║
@@ -1481,7 +1481,7 @@ Bạn muốn thêm tool mới hoặc cải thiện tool hiện tại? Rất hoan
 1. **Fork repository**
    ```bash
    # Clone fork của bạn
-   git clone https://github.com/YOUR_USERNAME/myPythonTool.git
+   git clone https://github.com/YOUR_USERNAME/DevTools.git
    ```
 
 2. **Tạo branch mới**
@@ -1586,7 +1586,7 @@ copies or substantial portions of the Software.
 
 - 🌐 GitHub: [@VHN-DEV](https://github.com/VHN-DEV)
 - 📧 Email: vhnam18032002@gmail.com
-- 🔗 Repository: [myPythonTool](https://github.com/VHN-DEV/myPythonTool)
+- 🔗 Repository: [DevTools](https://github.com/VHN-DEV/DevTools)
 
 ---
 
@@ -1594,7 +1594,7 @@ copies or substantial portions of the Software.
 
 ### Báo lỗi (Bug Report)
 
-Nếu gặp lỗi, hãy tạo [Issue](https://github.com/VHN-DEV/myPythonTool/issues) với thông tin:
+Nếu gặp lỗi, hãy tạo [Issue](https://github.com/VHN-DEV/DevTools/issues) với thông tin:
 - 🐛 Mô tả lỗi
 - 💻 Hệ điều hành & Python version
 - 📋 Steps to reproduce
@@ -1602,7 +1602,7 @@ Nếu gặp lỗi, hãy tạo [Issue](https://github.com/VHN-DEV/myPythonTool/is
 
 ### Đề xuất tính năng (Feature Request)
 
-Có ý tưởng tool mới? Tạo [Issue](https://github.com/VHN-DEV/myPythonTool/issues) với label `enhancement`
+Có ý tưởng tool mới? Tạo [Issue](https://github.com/VHN-DEV/DevTools/issues) với label `enhancement`
 
 ### Hỗ trợ
 
@@ -1645,6 +1645,6 @@ Tool này đã giúp:
 
 **Made with ❤️ by V.H.Nam**
 
-[⬆ Back to top](#-mypythontool---bộ-công-cụ-python-tiện-ích)
+[⬆ Back to top](#-devtools---bộ-công-cụ-python-tiện-ích)
 
 </div>

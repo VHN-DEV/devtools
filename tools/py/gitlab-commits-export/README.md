@@ -28,7 +28,7 @@ pip install openpyxl
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "gitlab-commits-export"
 ```
 

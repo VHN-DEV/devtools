@@ -24,7 +24,7 @@ pip install fonttools brotli
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "font-generator"
 ```
 

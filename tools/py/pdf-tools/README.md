@@ -43,7 +43,7 @@ brew install poppler
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "pdf-tools"
 ```
 

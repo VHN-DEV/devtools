@@ -18,7 +18,7 @@ Tool sao lưu và nén thư mục với timestamp tự động. Hỗ trợ nhi�
 ### Chạy từ menu chính
 
 ```bash
-myptool
+devtools
 # Chọn tool "backup-folder"
 ```
 
