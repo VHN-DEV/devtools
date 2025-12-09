@@ -49,6 +49,16 @@ class ToolManager:
         self._cache_timestamp = None
         self._cache_ttl = 60  # Cache trong 60 giây
         
+        # Smart cache cho metadata và tool info
+        try:
+            from utils.smart_cache import SmartCache
+            self.smart_cache = SmartCache(default_ttl=3600)  # 1 giờ
+        except ImportError:
+            self.smart_cache = None
+        
+        # Lazy loading: chỉ load metadata khi cần
+        self._lazy_loaded_metadata = set()
+        
         # Danh sách tools theo đúng thứ tự hiển thị (được cập nhật mỗi khi hiển thị menu)
         self.displayed_tools_order = []
         
@@ -162,18 +172,28 @@ class ToolManager:
         
         return None
     
-    def _load_tool_metadata(self, tool: str) -> Dict:
+    def _load_tool_metadata(self, tool: str, force_reload: bool = False) -> Dict:
         """
-        Load metadata cho tool từ tool_info.json hoặc tự động generate
+        Load metadata cho tool từ tool_info.json hoặc tự động generate (với lazy loading)
         
         Args:
             tool: Tên file tool (vd: backup-folder.py)
+            force_reload: Bỏ qua cache và load lại
         
         Returns:
             dict: Metadata gồm 'name' và 'tags'
         """
-        # Kiểm tra cache trước
-        if tool in self.tool_names:
+        # Kiểm tra smart cache trước (nếu có)
+        if self.smart_cache and not force_reload:
+            cache_key = f"tool_metadata:{tool}"
+            cached = self.smart_cache.get(cache_key)
+            if cached is not None:
+                self.tool_names[tool] = cached.get('name')
+                self.tool_tags[tool] = cached.get('tags', [])
+                return cached
+        
+        # Kiểm tra memory cache trước
+        if tool in self.tool_names and not force_reload:
             return {
                 'name': self.tool_names[tool],
                 'tags': self.tool_tags.get(tool, [])
@@ -205,10 +225,20 @@ class ToolManager:
         self.tool_names[tool] = display_name
         self.tool_tags[tool] = tags
         
-        return {
+        metadata = {
             'name': display_name,
             'tags': tags
         }
+        
+        # Lưu vào smart cache nếu có
+        if self.smart_cache:
+            cache_key = f"tool_metadata:{tool}"
+            self.smart_cache.set(cache_key, metadata, ttl=3600)
+        
+        # Đánh dấu đã lazy load
+        self._lazy_loaded_metadata.add(tool)
+        
+        return metadata
     
     def _generate_display_name(self, tool: str) -> str:
         """
@@ -1469,6 +1499,12 @@ class ToolManager:
         
         other5 = f"{Colors.info('qa, quick')}     - Quick actions menu"
         print_box_line(other5, "qa, quick     - Quick actions menu")
+        
+        other6 = f"{Colors.info('mp, marketplace')} - Tool marketplace (tải/cài tools từ cộng đồng)"
+        print_box_line(other6, "mp, marketplace - Tool marketplace (tải/cài tools từ cộng đồng)")
+        
+        other7 = f"{Colors.info('theme')}         - Đổi theme (dark/light/custom)"
+        print_box_line(other7, "theme         - Đổi theme (dark/light/custom)")
         
         print("  " + Colors.primary("╚" + "═" * content_width + "╝"))
         print()

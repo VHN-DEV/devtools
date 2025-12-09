@@ -61,3 +61,20 @@ watermark_templates.json
 
 # export files
 exports/
+*.zip
+
+# Cache và temp files
+plugins/cache/
+*.cache
+*.tmp
+
+# Theme config (có thể tùy chỉnh)
+menus/theme_config.json
+
+# Marketplace cache
+plugins/cache/marketplace/registry_cache.json
+
+# Build files
+*.egg-info/
+build/
+dist/

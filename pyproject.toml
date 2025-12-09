@@ -38,6 +38,8 @@ dependencies = [
     "pyzbar>=0.1.9",  # Giải mã QR code và barcode
     "numpy>=1.24.0",  # Xử lý ảnh (cho opencv)
     "pyperclip>=1.8.2",  # Hỗ trợ clipboard
+    "rich>=13.0.0",  # Rich TUI library - Tables, panels, progress bars
+    "requests>=2.31.0",  # HTTP library for marketplace API calls
 ]
 
 # Phân loại dự án

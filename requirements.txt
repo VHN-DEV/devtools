@@ -28,4 +28,7 @@ moviepy>=1.0.3       # Cần cài thêm ffmpeg (xem hướng dẫn trong README)
 
 # UI/UX improvements
 colorama>=0.4.6        # Cross-platform colored terminal output
+rich>=13.0.0           # Rich TUI library - Tables, panels, progress bars, syntax highlighting
+typer>=0.9.0           # Modern CLI framework (optional, for future CLI commands)
+requests>=2.31.0       # HTTP library for marketplace API calls
 

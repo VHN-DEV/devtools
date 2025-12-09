@@ -1384,6 +1384,107 @@ def _show_statistics(manager):
     input(Colors.muted("Nhấn Enter để quay lại..."))
 
 
+def _show_theme_menu():
+    """Hiển thị menu đổi theme"""
+    from utils.theme import ThemeManager
+    
+    theme_manager = ThemeManager()
+    current_theme = theme_manager.current_theme
+    themes = theme_manager.list_themes()
+    
+    while True:
+        print()
+        print_separator("─", 70, Colors.INFO)
+        print(Colors.bold("🎨 QUẢN LÝ THEME"))
+        print_separator("─", 70, Colors.INFO)
+        print()
+        
+        print(Colors.info(f"📌 Theme hiện tại: {Colors.bold(current_theme)}"))
+        print()
+        print(Colors.bold("📋 Themes có sẵn:"))
+        print()
+        
+        theme_list = list(themes.keys())
+        for idx, theme_name in enumerate(theme_list, 1):
+            theme_colors = themes[theme_name]
+            is_current = theme_name == current_theme
+            
+            if is_current:
+                marker = Colors.success("✓")
+                name_color = Colors.success
+            else:
+                marker = " "
+                name_color = Colors.info
+            
+            # Hiển thị màu sắc preview
+            color_preview = f"{Colors.colorize('█', theme_colors.primary)}{Colors.colorize('█', theme_colors.success)}{Colors.colorize('█', theme_colors.warning)}{Colors.colorize('█', theme_colors.error)}"
+            
+            print(f"   {marker} {Colors.warning(str(idx))}. {name_color(Colors.bold(theme_name))} {color_preview}")
+            
+            # Hiển thị mô tả theme
+            if theme_name == 'default':
+                desc = "Theme mặc định - Sáng, dễ nhìn"
+            elif theme_name == 'dark':
+                desc = "Dark mode - Tối, dễ nhìn ban đêm"
+            elif theme_name == 'light':
+                desc = "Light mode - Sáng, tương phản cao"
+            elif theme_name == 'blue':
+                desc = "Blue theme - Tông màu xanh dương"
+            elif theme_name == 'green':
+                desc = "Green theme - Tông màu xanh lá"
+            else:
+                desc = "Custom theme"
+            
+            print(f"      {Colors.muted(desc)}")
+            print()
+        
+        print_separator("─", 70, Colors.INFO)
+        print()
+        print(f"   {Colors.muted('0')}. Quay lại")
+        print()
+        
+        choice = input(f"{Colors.primary('Chọn theme')} (0-{len(theme_list)}): ").strip()
+        
+        if choice == '0':
+            break
+        elif choice.isdigit():
+            idx = int(choice)
+            if 1 <= idx <= len(theme_list):
+                selected_theme = theme_list[idx - 1]
+                
+                if selected_theme == current_theme:
+                    print()
+                    print(Colors.info(f"ℹ️  Bạn đang dùng theme: {selected_theme}"))
+                    print()
+                    input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                else:
+                    if theme_manager.set_theme(selected_theme):
+                        print()
+                        print(Colors.success(f"✅ Đã đổi theme sang: {Colors.bold(selected_theme)}"))
+                        print()
+                        print(Colors.warning("⚠️  Lưu ý: Theme hiện tại chỉ lưu config."))
+                        print(Colors.info("💡 Để áp dụng theme đầy đủ (màu sắc), cần tích hợp Rich library."))
+                        print(Colors.info("💡 Khởi động lại chương trình để theme có hiệu lực."))
+                        print()
+                        current_theme = selected_theme
+                        input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                    else:
+                        print()
+                        print(Colors.error("❌ Không thể đổi theme"))
+                        print()
+                        input(Colors.muted("Nhấn Enter để tiếp tục..."))
+            else:
+                print()
+                print(Colors.error(f"❌ Số không hợp lệ (phải từ 1 đến {len(theme_list)})"))
+                print()
+                input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        else:
+            print()
+            print(Colors.error("❌ Vui lòng nhập số!"))
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+
+
 def _show_settings_menu(manager):
     """Hiển thị menu settings với các tùy chọn"""
     while True:
@@ -1405,17 +1506,27 @@ def _show_settings_menu(manager):
         if disabled_count > 0:
             print(f"   {Colors.info('disabled_tools')}: {Colors.error(str(disabled_count))}")
         
+        # Hiển thị theme hiện tại
+        try:
+            from utils.theme import ThemeManager
+            theme_manager = ThemeManager()
+            current_theme = theme_manager.current_theme
+            print(f"   {Colors.info('theme')}: {Colors.secondary(current_theme)}")
+        except Exception:
+            pass
+        
         print()
         print_separator("─", 70, Colors.INFO)
         print()
         print(Colors.bold("📝 Tùy chọn:"))
         print(f"   1. {Colors.info('show_descriptions')} - Hiển thị mô tả tool")
         print(f"   2. {Colors.info('max_recent')} - Số lượng recent tools tối đa")
-        print(f"   3. {Colors.info('create-tool')} - Tạo tool mới")
+        print(f"   3. {Colors.info('theme')} - Đổi theme (dark/light/custom)")
+        print(f"   4. {Colors.info('create-tool')} - Tạo tool mới")
         print(f"   0. {Colors.muted('Quay lại')}")
         print()
         
-        choice = input(f"{Colors.primary('Chọn tùy chọn')} (0-3): ").strip()
+        choice = input(f"{Colors.primary('Chọn tùy chọn')} (0-4): ").strip()
         
         if choice == '0':
             break
@@ -1447,8 +1558,251 @@ def _show_settings_menu(manager):
                 print(Colors.error("❌ Giá trị không hợp lệ"))
                 print()
         elif choice == '3':
+            # Đổi theme
+            _show_theme_menu()
+        elif choice == '4':
             # Chạy script create-tool
             _run_create_tool_script(manager)
+        else:
+            print()
+            print(Colors.error("❌ Lựa chọn không hợp lệ"))
+            print()
+
+
+def _show_marketplace_menu(manager, tools):
+    """Hiển thị menu marketplace"""
+    from utils.marketplace import MarketplaceManager
+    from utils.rich_ui import get_rich_ui
+    
+    rich_ui = get_rich_ui(use_rich=True)
+    marketplace = MarketplaceManager(str(manager.tool_dir))
+    
+    while True:
+        print()
+        print_separator("─", 70, Colors.INFO)
+        print(Colors.bold("🛒 TOOL MARKETPLACE"))
+        print_separator("─", 70, Colors.INFO)
+        print()
+        
+        print(Colors.bold("📝 Lệnh:"))
+        print(f"   {Colors.info('1')} - Tìm kiếm tools")
+        print(f"   {Colors.info('2')} - Xem danh sách tools có sẵn")
+        print(f"   {Colors.info('3')} - Cài đặt tool từ marketplace")
+        print(f"   {Colors.info('4')} - Xem tools đã cài từ marketplace")
+        print(f"   {Colors.info('5')} - Cập nhật tools")
+        print(f"   {Colors.info('6')} - Gỡ cài đặt tool")
+        print(f"   {Colors.info('0')} - Quay lại")
+        print()
+        
+        choice = input(f"{Colors.primary('Chọn lệnh')} (0-6): ").strip()
+        
+        if choice == '0':
+            break
+        elif choice == '1':
+            # Tìm kiếm tools
+            print()
+            query = input(f"{Colors.primary('Nhập từ khóa tìm kiếm')}: ").strip()
+            if not query:
+                continue
+            
+            results = marketplace.search_tools(query)
+            if results:
+                print()
+                print(Colors.success(f"🔍 Tìm thấy {len(results)} tool(s):"))
+                print()
+                
+                # Hiển thị với Rich table nếu có
+                if rich_ui.use_rich:
+                    headers = ["#", "Tên", "Mô tả", "Version", "Category"]
+                    rows = []
+                    for idx, tool in enumerate(results[:20], 1):  # Giới hạn 20 kết quả
+                        rows.append([
+                            str(idx),
+                            tool.get('name', 'N/A'),
+                            tool.get('description', '')[:50] + ('...' if len(tool.get('description', '')) > 50 else ''),
+                            tool.get('version', 'N/A'),
+                            tool.get('category', 'N/A')
+                        ])
+                    rich_ui.print_table("KẾT QUẢ TÌM KIẾM", headers, rows)
+                else:
+                    # Fallback: in danh sách đơn giản
+                    for idx, tool in enumerate(results[:20], 1):
+                        print(f"   {idx}. {Colors.bold(tool.get('name', 'N/A'))}")
+                        print(f"      {Colors.muted(tool.get('description', ''))}")
+                        print()
+                
+                # Cho phép cài đặt
+                if results:
+                    tool_choice = input(f"{Colors.primary('Chọn tool để cài đặt')} (số hoặc Enter để hủy): ").strip()
+                    if tool_choice.isdigit():
+                        idx = int(tool_choice)
+                        if 1 <= idx <= len(results):
+                            tool = results[idx - 1]
+                            marketplace.install_tool(tool, overwrite=False)
+                            # Refresh tools list
+                            tools = manager.get_tool_list()
+            else:
+                print(Colors.warning(f"⚠️  Không tìm thấy tool nào với từ khóa: '{query}'"))
+            
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
+        elif choice == '2':
+            # Xem danh sách tools
+            print()
+            print(Colors.info("📥 Đang tải danh sách tools..."))
+            registry = marketplace.fetch_registry()
+            if registry:
+                available_tools = marketplace.list_available_tools(registry)
+                print()
+                if available_tools:
+                    print(Colors.success(f"📦 Tìm thấy {len(available_tools)} tool(s) có sẵn:"))
+                else:
+                    print(Colors.warning("⚠️  Registry trống hoặc không có tool nào"))
+                    print(Colors.info("💡 Xem hướng dẫn tại: docs/MARKETPLACE_SETUP.md"))
+                    print()
+                    input(Colors.muted("Nhấn Enter để tiếp tục..."))
+                    continue
+                print()
+                
+                # Hiển thị với Rich table
+                if rich_ui.use_rich:
+                    headers = ["#", "Tên", "Mô tả", "Version", "Category"]
+                    rows = []
+                    for idx, tool in enumerate(available_tools[:30], 1):  # Giới hạn 30 tools
+                        rows.append([
+                            str(idx),
+                            tool.get('name', 'N/A'),
+                            tool.get('description', '')[:50] + ('...' if len(tool.get('description', '')) > 50 else ''),
+                            tool.get('version', 'N/A'),
+                            tool.get('category', 'N/A')
+                        ])
+                    rich_ui.print_table("TOOLS CÓ SẴN", headers, rows)
+                else:
+                    # Fallback
+                    for idx, tool in enumerate(available_tools[:30], 1):
+                        print(f"   {idx}. {Colors.bold(tool.get('name', 'N/A'))} (v{tool.get('version', 'N/A')})")
+                        print(f"      {Colors.muted(tool.get('description', ''))}")
+                        print()
+            else:
+                print(Colors.error("❌ Không thể tải danh sách tools"))
+            
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
+        elif choice == '3':
+            # Cài đặt tool
+            print()
+            tool_id = input(f"{Colors.primary('Nhập ID tool cần cài')} (hoặc Enter để hủy): ").strip()
+            if not tool_id:
+                continue
+            
+            registry = marketplace.fetch_registry()
+            if registry:
+                tool_info = marketplace.get_tool_info(tool_id, registry)
+                if tool_info:
+                    marketplace.install_tool(tool_info, overwrite=False)
+                    # Refresh tools list
+                    tools = manager.get_tool_list()
+                else:
+                    print(Colors.error(f"❌ Không tìm thấy tool: {tool_id}"))
+            else:
+                print(Colors.error("❌ Không thể tải registry"))
+            
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
+        elif choice == '4':
+            # Xem tools đã cài
+            print()
+            installed = marketplace.list_installed_tools()
+            if installed:
+                print(Colors.success(f"📦 Đã cài {len(installed)} tool(s) từ marketplace:"))
+                print()
+                
+                if rich_ui.use_rich:
+                    headers = ["#", "ID", "Tên", "Version", "Cài đặt lúc"]
+                    rows = []
+                    for idx, tool in enumerate(installed, 1):
+                        installed_at = tool.get('installed_at', 'N/A')
+                        if installed_at != 'N/A':
+                            try:
+                                from datetime import datetime
+                                dt = datetime.fromisoformat(installed_at)
+                                installed_at = dt.strftime('%Y-%m-%d %H:%M')
+                            except:
+                                pass
+                        rows.append([
+                            str(idx),
+                            tool.get('id', 'N/A'),
+                            tool.get('name', 'N/A'),
+                            tool.get('version', 'N/A'),
+                            installed_at
+                        ])
+                    rich_ui.print_table("TOOLS ĐÃ CÀI", headers, rows)
+                else:
+                    for idx, tool in enumerate(installed, 1):
+                        print(f"   {idx}. {Colors.bold(tool.get('name', 'N/A'))} ({tool.get('id', 'N/A')})")
+                        print(f"      Version: {tool.get('version', 'N/A')} | Cài đặt: {tool.get('installed_at', 'N/A')}")
+                        print()
+            else:
+                print(Colors.info("ℹ️  Chưa cài tool nào từ marketplace"))
+            
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
+        elif choice == '5':
+            # Cập nhật tools
+            print()
+            print(Colors.info("🔄 Đang kiểm tra updates..."))
+            registry = marketplace.fetch_registry()
+            if registry:
+                installed = marketplace.list_installed_tools()
+                if installed:
+                    updated_count = 0
+                    for tool in installed:
+                        tool_id = tool.get('id')
+                        if marketplace.update_tool(tool_id, registry):
+                            updated_count += 1
+                    
+                    if updated_count == 0:
+                        print(Colors.info("ℹ️  Tất cả tools đã ở phiên bản mới nhất"))
+                    else:
+                        print(Colors.success(f"✅ Đã cập nhật {updated_count} tool(s)"))
+                        # Refresh tools list
+                        tools = manager.get_tool_list()
+                else:
+                    print(Colors.info("ℹ️  Chưa cài tool nào từ marketplace"))
+            else:
+                print(Colors.error("❌ Không thể tải registry"))
+            
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
+        elif choice == '6':
+            # Gỡ cài đặt
+            print()
+            installed = marketplace.list_installed_tools()
+            if installed:
+                print(Colors.info("📦 Tools đã cài từ marketplace:"))
+                for idx, tool in enumerate(installed, 1):
+                    print(f"   {idx}. {Colors.bold(tool.get('name', 'N/A'))} ({tool.get('id', 'N/A')})")
+                print()
+                
+                tool_choice = input(f"{Colors.primary('Chọn tool để gỡ')} (số hoặc Enter để hủy): ").strip()
+                if tool_choice.isdigit():
+                    idx = int(tool_choice)
+                    if 1 <= idx <= len(installed):
+                        tool_id = installed[idx - 1].get('id')
+                        if marketplace.uninstall_tool(tool_id):
+                            # Refresh tools list
+                            tools = manager.get_tool_list()
+            else:
+                print(Colors.info("ℹ️  Chưa cài tool nào từ marketplace"))
+            
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        
         else:
             print()
             print(Colors.error("❌ Lựa chọn không hợp lệ"))
@@ -2014,6 +2368,11 @@ def main():
             elif command == 'set':
                 _show_settings_menu(manager)
             
+            # Theme
+            elif command == 'theme':
+                _show_theme_menu()
+                manager.display_menu(tools)
+            
             # Statistics
             elif command in ['stats', 'statistics', 'stat']:
                 _show_statistics(manager)
@@ -2034,6 +2393,10 @@ def main():
             # Logs
             elif command == 'log' or command == 'logs':
                 _show_logs_menu(manager)
+            
+            # Marketplace
+            elif command in ['marketplace', 'mp', 'store']:
+                _show_marketplace_menu(manager, tools)
             
             # Hiển thị hướng dẫn tool (pattern: số+h, ví dụ: 1h, 4h)
             elif command.endswith('h') and len(command) > 1 and command[:-1].isdigit():
@@ -2084,7 +2447,7 @@ def main():
                 print(Colors.error("  │") + " " * 65 + Colors.error("│"))
                 
                 # Gợi ý commands
-                valid_commands = ['h', 'help', 'q', 'quit', 'l', 'list', 's', 'search', 'f', 'r', 'set', 'log', 'clear', 'clear-log', 'stats', 'qa', 'quick']
+                valid_commands = ['h', 'help', 'q', 'quit', 'l', 'list', 's', 'search', 'f', 'r', 'set', 'log', 'clear', 'clear-log', 'stats', 'qa', 'quick', 'marketplace', 'mp', 'store', 'theme']
                 suggestions = suggest_command(command, valid_commands)
                 
                 if suggestions:
