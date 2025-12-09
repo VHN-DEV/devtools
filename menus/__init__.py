@@ -1658,7 +1658,7 @@ def main():
                 prompt_text_padding = 0
             
             # In prompt text không có padding (để input() hiển thị text ngay sau)
-            prompt_input = "  " + Colors.primary("└─ ") + Colors.secondary("▶") + " " + Colors.bold(prompt_text)
+            prompt_input = "  " + Colors.primary("└─ ") + Colors.secondary("➤") + " " + Colors.bold(prompt_text)
             user_input = input(prompt_input).strip()
             
             # Lưu vào history (trừ các lệnh rỗng)
