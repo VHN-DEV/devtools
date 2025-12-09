@@ -9,6 +9,11 @@ import os
 import sys
 from pathlib import Path
 
+# Thêm thư mục cha vào sys.path để import utils
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils import install_library
+
 
 def print_header():
     """In header của tool"""
@@ -28,15 +33,21 @@ def check_dependencies():
     try:
         import PyPDF2
     except ImportError:
-        print("❌ Thiếu thư viện PyPDF2!")
-        print("Cài đặt: pip install PyPDF2")
+        install_library(
+            package_name="PyPDF2",
+            install_command="pip install PyPDF2",
+            library_display_name="PyPDF2"
+        )
         return False
     
     try:
         from PIL import Image
     except ImportError:
-        print("❌ Thiếu thư viện Pillow!")
-        print("Cài đặt: pip install Pillow")
+        install_library(
+            package_name="Pillow",
+            install_command="pip install Pillow",
+            library_display_name="Pillow"
+        )
         return False
     
     return True
@@ -203,7 +214,7 @@ def compress_pdf(input_file, output_file, compression_level='medium'):
         
         # Remove metadata to reduce size
         writer.add_metadata({
-            '/Producer': 'myPythonTool PDF Compressor',
+            '/Producer': 'DevTools PDF Compressor',
         })
         
         # Write compressed PDF
@@ -244,8 +255,11 @@ def pdf_to_images(input_file, output_folder, image_format='PNG', dpi=200):
     try:
         from pdf2image import convert_from_path
     except ImportError:
-        print("❌ Thiếu thư viện pdf2image!")
-        print("Cài đặt: pip install pdf2image")
+        install_library(
+            package_name="pdf2image",
+            install_command="pip install pdf2image",
+            library_display_name="pdf2image"
+        )
         print("Lưu ý: Cần cài thêm poppler-utils")
         return False
     

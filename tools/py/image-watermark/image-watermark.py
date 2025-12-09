@@ -6,8 +6,14 @@ Mục đích: Bảo vệ bản quyền ảnh, thêm logo/text branding
 """
 
 import os
+import sys
 import datetime
 from pathlib import Path
+
+# Thêm thư mục cha vào sys.path để import utils
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils import install_library
 
 
 def get_templates_file():
@@ -74,8 +80,11 @@ def check_dependencies():
         from PIL import Image
         return True
     except ImportError:
-        print("❌ Thiếu thư viện Pillow!")
-        print("Cài đặt: pip install Pillow")
+        install_library(
+            package_name="Pillow",
+            install_command="pip install Pillow",
+            library_display_name="Pillow"
+        )
         return False
 
 

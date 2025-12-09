@@ -11,6 +11,11 @@ import subprocess
 import json
 from pathlib import Path
 
+# Thêm thư mục cha vào sys.path để import utils
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils import install_library
+
 
 def print_header():
     """In header của tool"""
@@ -32,21 +37,11 @@ def check_dependencies():
         import fontTools
         print("✅ Thư viện fonttools: OK")
     except ImportError:
-        print("❌ Thiếu thư viện fonttools!")
-        print("\n💡 Cài đặt:")
-        print(f"   {sys.executable} -m pip install fonttools")
-        
-        choice = input("\nBạn có muốn cài đặt tự động không? (y/n, mặc định: y): ").strip().lower()
-        if not choice or choice == 'y':
-            try:
-                print("\n📦 Đang cài đặt fonttools...")
-                subprocess.run([sys.executable, "-m", "pip", "install", "fonttools"], check=True)
-                print("✅ Đã cài đặt fonttools thành công!")
-                print("💡 Tool cần restart để nhận package mới.")
-                return False
-            except Exception as e:
-                print(f"❌ Lỗi khi cài đặt: {e}")
-                return False
+        install_library(
+            package_name="fonttools",
+            install_command="pip install fonttools",
+            library_display_name="fonttools"
+        )
         return False
     
     try:
@@ -55,18 +50,14 @@ def check_dependencies():
         print("✅ Thư viện brotli: OK")
     except ImportError:
         print("⚠️  Thư viện brotli chưa được cài (cần cho WOFF2)")
-        print("\n💡 Cài đặt:")
-        print(f"   {sys.executable} -m pip install brotli")
-        
-        choice = input("\nBạn có muốn cài đặt tự động không? (y/n, mặc định: y): ").strip().lower()
-        if not choice or choice == 'y':
-            try:
-                print("\n📦 Đang cài đặt brotli...")
-                subprocess.run([sys.executable, "-m", "pip", "install", "brotli"], check=True)
-                print("✅ Đã cài đặt brotli thành công!")
-            except Exception as e:
-                print(f"⚠️  Lỗi khi cài đặt brotli: {e}")
-                print("⚠️  Tool vẫn có thể hoạt động nhưng không thể tạo WOFF2.")
+        if install_library(
+            package_name="brotli",
+            install_command="pip install brotli",
+            library_display_name="brotli"
+        ):
+            print("✅ Đã cài đặt brotli thành công!")
+        else:
+            print("⚠️  Tool vẫn có thể hoạt động nhưng không thể tạo WOFF2.")
     
     return True
 

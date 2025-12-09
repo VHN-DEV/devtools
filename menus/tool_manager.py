@@ -17,6 +17,7 @@ from utils.colors import Colors
 from utils.format import print_header, print_separator
 from utils.categories import group_tools_by_category, get_category_info
 from utils.helpers import highlight_keyword, strip_ansi
+from utils.logger import log_error_to_file
 
 
 class ToolManager:
@@ -42,6 +43,21 @@ class ToolManager:
         self.tool_names = {}
         self.tool_tags = {}
         self.tool_types = {}  # Cache loại tool: 'py' hoặc 'sh'
+        
+        # Cache tool list để tránh scan lại nhiều lần
+        self._cached_tool_list = None
+        self._cache_timestamp = None
+        self._cache_ttl = 60  # Cache trong 60 giây
+        
+        # Smart cache cho metadata và tool info
+        try:
+            from utils.smart_cache import SmartCache
+            self.smart_cache = SmartCache(default_ttl=3600)  # 1 giờ
+        except ImportError:
+            self.smart_cache = None
+        
+        # Lazy loading: chỉ load metadata khi cần
+        self._lazy_loaded_metadata = set()
         
         # Danh sách tools theo đúng thứ tự hiển thị (được cập nhật mỗi khi hiển thị menu)
         self.displayed_tools_order = []
@@ -73,6 +89,10 @@ class ToolManager:
             'settings': {
                 'show_descriptions': True,
                 'max_recent': 10
+            },
+            'statistics': {
+                'tool_usage': {},  # Số lần sử dụng mỗi tool
+                'last_used': {}    # Timestamp lần cuối sử dụng
             }
         }
         
@@ -91,6 +111,17 @@ class ToolManager:
                         for key, value in default_config['settings'].items():
                             if key not in loaded_config['settings']:
                                 loaded_config['settings'][key] = value
+                    
+                    # Đảm bảo statistics có trong config
+                    if 'statistics' not in loaded_config:
+                        loaded_config['statistics'] = default_config['statistics']
+                    else:
+                        # Đảm bảo các field statistics có đầy đủ
+                        if 'tool_usage' not in loaded_config['statistics']:
+                            loaded_config['statistics']['tool_usage'] = {}
+                        if 'last_used' not in loaded_config['statistics']:
+                            loaded_config['statistics']['last_used'] = {}
+                    
                     return loaded_config
             except Exception:
                 pass
@@ -103,6 +134,9 @@ class ToolManager:
         try:
             with open(self.config_file, 'w', encoding='utf-8') as f:
                 json.dump(self.config, f, indent=2, ensure_ascii=False)
+            # Invalidate cache khi config thay đổi
+            self._cached_tool_list = None
+            self._cache_timestamp = None
         except Exception as e:
             print(f"⚠️  Lỗi lưu config: {e}")
     
@@ -138,18 +172,28 @@ class ToolManager:
         
         return None
     
-    def _load_tool_metadata(self, tool: str) -> Dict:
+    def _load_tool_metadata(self, tool: str, force_reload: bool = False) -> Dict:
         """
-        Load metadata cho tool từ tool_info.json hoặc tự động generate
+        Load metadata cho tool từ tool_info.json hoặc tự động generate (với lazy loading)
         
         Args:
             tool: Tên file tool (vd: backup-folder.py)
+            force_reload: Bỏ qua cache và load lại
         
         Returns:
             dict: Metadata gồm 'name' và 'tags'
         """
-        # Kiểm tra cache trước
-        if tool in self.tool_names:
+        # Kiểm tra smart cache trước (nếu có)
+        if self.smart_cache and not force_reload:
+            cache_key = f"tool_metadata:{tool}"
+            cached = self.smart_cache.get(cache_key)
+            if cached is not None:
+                self.tool_names[tool] = cached.get('name')
+                self.tool_tags[tool] = cached.get('tags', [])
+                return cached
+        
+        # Kiểm tra memory cache trước
+        if tool in self.tool_names and not force_reload:
             return {
                 'name': self.tool_names[tool],
                 'tags': self.tool_tags.get(tool, [])
@@ -181,10 +225,20 @@ class ToolManager:
         self.tool_names[tool] = display_name
         self.tool_tags[tool] = tags
         
-        return {
+        metadata = {
             'name': display_name,
             'tags': tags
         }
+        
+        # Lưu vào smart cache nếu có
+        if self.smart_cache:
+            cache_key = f"tool_metadata:{tool}"
+            self.smart_cache.set(cache_key, metadata, ttl=3600)
+        
+        # Đánh dấu đã lazy load
+        self._lazy_loaded_metadata.add(tool)
+        
+        return metadata
     
     def _generate_display_name(self, tool: str) -> str:
         """
@@ -450,27 +504,35 @@ class ToolManager:
         # Ghép lại: priority + regular
         return priority + regular
     
-    def get_tool_list(self) -> List[str]:
+    def get_tool_list(self, force_refresh: bool = False) -> List[str]:
         """
-        Lấy danh sách file .py trong thư mục tool
+        Lấy danh sách file .py trong thư mục tool (với caching)
+        
+        Args:
+            force_refresh: Bỏ qua cache và scan lại (mặc định: False)
         
         Returns:
             list: Danh sách tên file tool (priority tools trước, sau đó alphabet, đã filter disabled)
         
         Giải thích:
-        - Bước 1: Tìm tools trong tools/py/ (các tool Python)
-        - Bước 2: Tìm tools trong tools/sh/ (các tool shell/đặc biệt)
-        - Bước 3: Tách ra priority tools và tools thường
-        - Bước 4: Sắp xếp priority tools theo thứ tự định sẵn
-        - Bước 5: Sắp xếp tools thường theo alphabet
-        - Bước 6: Ghép lại: priority + alphabet
-        - Bước 7: Filter ra các tool bị disabled
+        - Sử dụng cache để tránh scan lại nhiều lần
+        - Cache tự động expire sau TTL (60 giây)
+        - Có thể force refresh nếu cần
         
         Lý do tìm trong thư mục con:
         - Hỗ trợ cấu trúc mới: mỗi tool có thư mục riêng
         - Ví dụ: tools/py/backup-folder/backup-folder.py
         - Ví dụ: tools/sh/setup-project-linux/setup-project-linux.py
         """
+        import time
+        
+        # Kiểm tra cache
+        if not force_refresh and self._cached_tool_list is not None and self._cache_timestamp is not None:
+            elapsed = time.time() - self._cache_timestamp
+            if elapsed < self._cache_ttl:
+                # Cache còn hiệu lực, trả về cache
+                return self._cached_tool_list
+        
         # Scan tools từ thư mục
         all_tools = self._scan_tools_from_directory()
         
@@ -488,6 +550,10 @@ class ToolManager:
         # Filter ra các tool bị disabled
         disabled_tools = set(self.config.get('disabled_tools', []))
         active_tools = [t for t in sorted_tools if t not in disabled_tools]
+        
+        # Lưu vào cache
+        self._cached_tool_list = active_tools
+        self._cache_timestamp = time.time()
         
         return active_tools
     
@@ -512,42 +578,85 @@ class ToolManager:
         # Sắp xếp và ưu tiên (bao gồm cả disabled)
         return self._sort_and_prioritize_tools(unique_tools)
     
-    def search_tools(self, query: str) -> List[str]:
+    def search_tools(self, query: str, use_fuzzy: bool = True) -> List[str]:
         """
-        Tìm kiếm tool theo keyword
+        Tìm kiếm tool theo keyword với fuzzy matching
         
         Args:
             query: Từ khóa tìm kiếm
+            use_fuzzy: Sử dụng fuzzy matching (mặc định: True)
         
         Returns:
-            list: Danh sách tool phù hợp
+            list: Danh sách tool phù hợp (sắp xếp theo độ liên quan)
         
         Giải thích:
-        - Tìm trong tên file
-        - Tìm trong description
-        - Tìm trong tags
+        - Tìm trong tên file (exact match có điểm cao nhất)
+        - Tìm trong description (exact match)
+        - Tìm trong tags (exact match)
+        - Sử dụng fuzzy matching để tìm gần đúng
+        - Sắp xếp kết quả theo độ liên quan
         """
-        query = query.lower()
-        results = []
+        from difflib import SequenceMatcher
+        
+        query_lower = query.lower()
+        results_with_score = []
         
         for tool in self.get_tool_list():
-            # Tìm trong tên file
-            if query in tool.lower():
-                results.append(tool)
-                continue
+            score = 0.0
+            matched = False
+            
+            # Tìm trong tên file (exact match = điểm cao nhất)
+            tool_lower = tool.lower()
+            if query_lower in tool_lower:
+                if tool_lower == query_lower:
+                    score = 1.0  # Exact match
+                elif tool_lower.startswith(query_lower):
+                    score = 0.9  # Starts with
+                else:
+                    score = 0.7  # Contains
+                matched = True
             
             # Tìm trong description
             description = self.get_tool_display_name(tool)
-            if query in description.lower():
-                results.append(tool)
-                continue
+            description_lower = description.lower()
+            if query_lower in description_lower:
+                if description_lower.startswith(query_lower):
+                    score = max(score, 0.8)
+                else:
+                    score = max(score, 0.6)
+                matched = True
             
             # Tìm trong tags
             tags = self.get_tool_tags(tool)
-            if any(query in tag.lower() for tag in tags):
-                results.append(tool)
+            for tag in tags:
+                tag_lower = tag.lower()
+                if query_lower in tag_lower:
+                    score = max(score, 0.5)
+                    matched = True
+                    break
+            
+            # Fuzzy matching nếu chưa tìm thấy exact match
+            if use_fuzzy and not matched:
+                # So sánh với tên file
+                file_ratio = SequenceMatcher(None, query_lower, tool_lower).ratio()
+                if file_ratio > 0.5:  # Ngưỡng 50%
+                    score = file_ratio * 0.4  # Fuzzy match có điểm thấp hơn
+                    matched = True
+                
+                # So sánh với description
+                desc_ratio = SequenceMatcher(None, query_lower, description_lower).ratio()
+                if desc_ratio > 0.5:
+                    score = max(score, desc_ratio * 0.3)
+                    matched = True
+            
+            if matched:
+                results_with_score.append((tool, score))
         
-        return results
+        # Sắp xếp theo điểm số (cao -> thấp)
+        results_with_score.sort(key=lambda x: x[1], reverse=True)
+        
+        # Trả về danh sách tools (không có điểm số)
+        return [tool for tool, score in results_with_score]
     
     def add_to_favorites(self, tool: str):
         """Thêm tool vào favorites"""
@@ -599,7 +708,7 @@ class ToolManager:
     
     def add_to_recent(self, tool: str):
         """
-        Thêm tool vào recent
+        Thêm tool vào recent và cập nhật statistics
         
         Args:
             tool: Tên file tool
@@ -608,15 +717,39 @@ class ToolManager:
         - Xóa tool nếu đã có trong list (để move lên đầu)
         - Thêm vào đầu list
         - Giới hạn số lượng recent
+        - Tự động dọn dẹp tools đã bị xóa (chỉ giữ tools còn tồn tại)
+        - Cập nhật usage statistics
         """
         if tool in self.config['recent']:
             self.config['recent'].remove(tool)
         
         self.config['recent'].insert(0, tool)
         
+        # Dọn dẹp: Loại bỏ tools không còn tồn tại
+        all_tools = self._scan_tools_from_directory()
+        all_tools_set = set(all_tools)
+        self.config['recent'] = [t for t in self.config['recent'] if t in all_tools_set]
+        
         # Giới hạn số recent
         max_recent = self.config['settings'].get('max_recent', 10)
         self.config['recent'] = self.config['recent'][:max_recent]
+        
+        # Cập nhật usage statistics
+        if 'statistics' not in self.config:
+            self.config['statistics'] = {}
+        if 'tool_usage' not in self.config['statistics']:
+            self.config['statistics']['tool_usage'] = {}
+        
+        # Tăng usage count
+        if tool not in self.config['statistics']['tool_usage']:
+            self.config['statistics']['tool_usage'][tool] = 0
+        self.config['statistics']['tool_usage'][tool] += 1
+        
+        # Cập nhật last used timestamp
+        import time
+        if 'last_used' not in self.config['statistics']:
+            self.config['statistics']['last_used'] = {}
+        self.config['statistics']['last_used'][tool] = time.time()
         
         self._save_config()
     
@@ -649,23 +782,68 @@ class ToolManager:
         tool_path = self._find_tool_path(tool)
         
         if not tool_path or not tool_path.exists():
+            error_msg = FileNotFoundError(f"Tool not found: {tool}")
+            log_file = log_error_to_file(
+                error=error_msg,
+                tool_name=tool,
+                context="Tool file not found"
+            )
+            if log_file:
+                print()
+                print(Colors.warning(f"📝 Lỗi đã được ghi vào file: {log_file}"))
+            
             print(Colors.error(f"❌ Tool không tồn tại: {tool}"))
             return 1
         
         tool_display_name = self.get_tool_display_name(tool)
         print()
         print_separator("═", 70, Colors.PRIMARY)
+        
+        # Hiển thị loading indicator với spinner
+        from utils.progress import Spinner
+        spinner = Spinner(f"Đang khởi động: {tool_display_name}")
+        spinner.start()
+        
+        # Dừng spinner sau một chút để hiển thị loading
+        import time
+        time.sleep(0.3)  # Hiển thị spinner trong 0.3 giây
+        spinner.stop()
+        
         print(Colors.primary(f"  ▶ Đang chạy: {Colors.bold(tool_display_name)}"))
+        print(Colors.muted(f"  📁 Đường dẫn: {tool_path}"))
         print_separator("═", 70, Colors.PRIMARY)
         print()
         
         try:
+            # Chạy tool bình thường để người dùng thấy output trực tiếp
             result = subprocess.run(["python", str(tool_path)])
             
+            # Nếu tool chạy thành công (exit code 0), không cần log
+            # Nếu tool chạy thất bại (exit code != 0), log lỗi
+            if result.returncode != 0:
+                # Log lỗi vào file
+                error_msg = Exception(f"Tool exited with code {result.returncode}")
+                log_file = log_error_to_file(
+                    error=error_msg,
+                    tool_name=tool_display_name,
+                    context=f"Tool execution failed with exit code {result.returncode}. Check console output above for details."
+                )
+                if log_file:
+                    print()
+                    print(Colors.warning(f"📝 Lỗi đã được ghi vào file: {log_file}"))
+            
             print()
-            print_separator("═", 70, Colors.SUCCESS)
-            print(Colors.success(f"  ✅ Tool đã chạy xong!"))
-            print_separator("═", 70, Colors.SUCCESS)
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
+            
+            if result.returncode == 0:
+                print(Colors.success(f"  ✅ Tool đã chạy xong thành công!"))
+                print(Colors.muted(f"  📊 Exit code: {Colors.info('0')} (Success)"))
+            else:
+                print(Colors.error(f"  ❌ Tool đã kết thúc với lỗi"))
+                print(Colors.error(f"  📊 Exit code: {Colors.bold(str(result.returncode))}"))
+                print(Colors.muted(f"  💡 Kiểm tra output phía trên để xem chi tiết lỗi"))
+            
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
             print()
             
             # Lưu vào recent
@@ -679,6 +857,16 @@ class ToolManager:
             return 130
             
         except Exception as e:
+            # Log lỗi vào file
+            log_file = log_error_to_file(
+                error=e,
+                tool_name=tool_display_name,
+                context="Exception occurred while running tool"
+            )
+            if log_file:
+                print()
+                print(Colors.warning(f"📝 Lỗi đã được ghi vào file: {log_file}"))
+            
             print()
             print(Colors.error(f"❌ Lỗi khi chạy tool: {e}"))
             return 1
@@ -695,13 +883,37 @@ class ToolManager:
         app_sh = script_dir / "app.sh"
         
         if not app_sh.exists():
+            error_msg = FileNotFoundError(f"File app.sh not found at {app_sh}")
+            log_file = log_error_to_file(
+                error=error_msg,
+                tool_name=self.get_tool_display_name('setup-project-linux.py'),
+                context="setup-project-linux: File app.sh not found"
+            )
+            if log_file:
+                print()
+                print(Colors.warning(f"📝 Lỗi đã được ghi vào file: {log_file}"))
+            
             print(f"❌ Không tìm thấy file app.sh!")
             print(f"   Đường dẫn: {app_sh}")
             return 1
         
-        print(f"\n{'='*60}")
-        print(f">>> Đang chạy: {self.get_tool_display_name('setup-project-linux.py')}")
-        print(f"{'='*60}\n")
+        tool_display_name = self.get_tool_display_name('setup-project-linux.py')
+        print()
+        print_separator("═", 70, Colors.PRIMARY)
+        
+        # Hiển thị loading indicator
+        from utils.progress import Spinner
+        spinner = Spinner(f"Đang khởi động: {tool_display_name}")
+        spinner.start()
+        
+        import time
+        time.sleep(0.3)
+        spinner.stop()
+        
+        print(Colors.primary(f"  ▶ Đang chạy: {Colors.bold(tool_display_name)}"))
+        print(Colors.muted(f"  📁 Script: {app_sh}"))
+        print_separator("═", 70, Colors.PRIMARY)
+        print()
         
         try:
             # Tìm bash
@@ -738,6 +950,16 @@ class ToolManager:
                     bash_cmd = [bash_path]
             
             if not bash_cmd:
+                error_msg = FileNotFoundError("Bash not found. On Windows, need Git Bash or WSL")
+                log_file = log_error_to_file(
+                    error=error_msg,
+                    tool_name=self.get_tool_display_name('setup-project-linux.py'),
+                    context="setup-project-linux: Bash command not found"
+                )
+                if log_file:
+                    print()
+                    print(Colors.warning(f"📝 Lỗi đã được ghi vào file: {log_file}"))
+                
                 print("❌ Không tìm thấy bash!")
                 print("   Trên Windows, cần cài Git Bash hoặc WSL")
                 return 1
@@ -759,9 +981,17 @@ class ToolManager:
             result = subprocess.run(cmd, check=False)
             
             print()
-            print_separator("═", 70, Colors.SUCCESS)
-            print(Colors.success(f"  ✅ Tool đã chạy xong!"))
-            print_separator("═", 70, Colors.SUCCESS)
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
+            
+            if result.returncode == 0:
+                print(Colors.success(f"  ✅ Tool đã chạy xong thành công!"))
+                print(Colors.muted(f"  📊 Exit code: {Colors.info('0')} (Success)"))
+            else:
+                print(Colors.error(f"  ❌ Tool đã kết thúc với lỗi"))
+                print(Colors.error(f"  📊 Exit code: {Colors.bold(str(result.returncode))}"))
+                print(Colors.muted(f"  💡 Kiểm tra output phía trên để xem chi tiết lỗi"))
+            
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
             print()
             
             # Lưu vào recent
@@ -775,6 +1005,16 @@ class ToolManager:
             return 130
             
         except Exception as e:
+            # Log lỗi vào file
+            log_file = log_error_to_file(
+                error=e,
+                tool_name=self.get_tool_display_name('setup-project-linux.py'),
+                context="setup-project-linux: Exception occurred while running bash script"
+            )
+            if log_file:
+                print()
+                print(Colors.warning(f"📝 Lỗi đã được ghi vào file: {log_file}"))
+            
             print()
             print(Colors.error(f"❌ Lỗi khi chạy tool: {e}"))
             return 1
@@ -905,12 +1145,18 @@ class ToolManager:
         favorites_count = len([t for t in tools if t in self.config['favorites']])
         recent_count = len([t for t in self.config['recent'] if t in tools])
         
+        # Tính tổng số lần sử dụng từ statistics
+        total_usage = sum(self.config.get('statistics', {}).get('tool_usage', {}).values())
+        
         # Build stats text
         stats_text_parts = []
         if disabled_count > 0:
             stats_text_parts.extend([f"📊 Active: {total}", f"🔒 Disabled: {disabled_count}", f"⭐ Favorites: {favorites_count}", f"📚 Recent: {recent_count}"])
         else:
             stats_text_parts.extend([f"📊 Active: {total}", f"⭐ Favorites: {favorites_count}", f"📚 Recent: {recent_count}"])
+        
+        if total_usage > 0:
+            stats_text_parts.append(f"📈 Usage: {total_usage}")
         
         stats_text = " | ".join(stats_text_parts)
         stats_display_width = get_display_width(stats_text)
@@ -920,9 +1166,9 @@ class ToolManager:
             Colors.info(f"📊 Active: {Colors.bold(str(total))}"),
         ]
         if disabled_count > 0:
-            stats_parts.append(Colors.error(f"🔒 Disabled: {Colors.bold(str(disabled_count))}"))
-        stats_parts.append(Colors.warning(f"⭐ Favorites: {Colors.bold(str(favorites_count))}"))
-        stats_parts.append(Colors.secondary(f"📚 Recent: {Colors.bold(str(recent_count))}"))
+            stats_parts.append(Colors.error(f" 🔒 Disabled: {Colors.bold(str(disabled_count))} "))
+        stats_parts.append(Colors.warning(f" ⭐ Favorites: {Colors.bold(str(favorites_count))} "))
+        stats_parts.append(Colors.secondary(f" 📚 Recent: {Colors.bold(str(recent_count))} "))
         
         stats_colored = " | ".join(stats_parts)
         # Tính padding: 1 space + stats + padding = content_width
@@ -1028,8 +1274,13 @@ class ToolManager:
         # Lưu danh sách tools theo đúng thứ tự hiển thị để dùng khi chọn số
         self.displayed_tools_order = displayed_tools_order
     
-    def show_help(self):
-        """Hiển thị help với UI/UX đẹp hơn"""
+    def show_help(self, show_examples: bool = True):
+        """
+        Hiển thị help với UI/UX đẹp hơn
+        
+        Args:
+            show_examples: Có hiển thị ví dụ sử dụng không
+        """
         # Độ rộng content area = độ dài của dòng dài nhất (note4 = 71 ký tự)
         content_width = 71
         
@@ -1103,8 +1354,14 @@ class ToolManager:
         cmd_basic3 = f"{Colors.info('h, help')}      - Hiển thị hướng dẫn này"
         print_box_line(cmd_basic3, "h, help      - Hiển thị hướng dẫn này")
         
-        cmd_basic4 = f"{Colors.info('q, quit, 0')}   - Thoát chương trình"
-        print_box_line(cmd_basic4, "q, quit, 0   - Thoát chương trình")
+        cmd_basic4 = f"{Colors.info('v')}            - Kiểm tra version hiện tại"
+        print_box_line(cmd_basic4, "v            - Kiểm tra version hiện tại")
+        
+        cmd_basic5 = f"{Colors.info('u')}            - Cập nhật version mới"
+        print_box_line(cmd_basic5, "u            - Cập nhật version mới")
+        
+        cmd_basic6 = f"{Colors.info('q, quit, 0')}   - Thoát chương trình"
+        print_box_line(cmd_basic6, "q, quit, 0   - Thoát chương trình")
         
         print_box_empty()
         
@@ -1202,6 +1459,26 @@ class ToolManager:
         
         print_box_empty()
         
+        # Tool Management
+        mgmt_title = "🛠️  QUẢN LÝ TOOL:"
+        print_box_title(Colors.bold(Colors.warning(mgmt_title)), mgmt_title)
+        
+        mgmt1 = f"{Colors.info('manage')}       - Export/Import/Xóa tool"
+        print_box_line(mgmt1, "manage       - Export/Import/Xóa tool")
+        
+        print_box_empty()
+        
+        mgmt_note1 = f"{Colors.muted('Export:')} Xuất tool thành file .zip"
+        print_box_line(mgmt_note1, "Export: Xuất tool thành file .zip")
+        
+        mgmt_note2 = f"{Colors.muted('Import:')} Nhập tool từ file .zip hoặc thư mục"
+        print_box_line(mgmt_note2, "Import: Nhập tool từ file .zip hoặc thư mục")
+        
+        mgmt_note3 = f"{Colors.muted('Xóa:')} Xóa tool riêng lẻ (có xác nhận)"
+        print_box_line(mgmt_note3, "Xóa: Xóa tool riêng lẻ (có xác nhận)")
+        
+        print_box_empty()
+        
         # Khác
         other_title = "🔄 KHÁC:"
         print_box_title(Colors.bold(Colors.warning(other_title)), other_title)
@@ -1212,7 +1489,119 @@ class ToolManager:
         other2 = f"{Colors.info('clear')}        - Xóa màn hình"
         print_box_line(other2, "clear        - Xóa màn hình")
         
+        other3 = f"{Colors.info('log')}          - Xem và quản lý file log"
+        print_box_line(other3, "log          - Xem và quản lý file log")
+        
+        other4 = f"{Colors.info('stats')}         - Xem thống kê sử dụng tools"
+        print_box_line(other4, "stats         - Xem thống kê sử dụng tools")
+        
+        other5 = f"{Colors.info('qa, quick')}     - Quick actions menu"
+        print_box_line(other5, "qa, quick     - Quick actions menu")
+        
+        other6 = f"{Colors.info('mp, marketplace')} - Tool marketplace (tải/cài tools từ cộng đồng)"
+        print_box_line(other6, "mp, marketplace - Tool marketplace (tải/cài tools từ cộng đồng)")
+        
+        other7 = f"{Colors.info('theme')}         - Đổi theme (dark/light/custom)"
+        print_box_line(other7, "theme         - Đổi theme (dark/light/custom)")
+        
         print("  " + Colors.primary("╚" + "═" * content_width + "╝"))
+        print()
+        
+        # Hiển thị ví dụ sử dụng nếu được yêu cầu
+        if show_examples:
+            self._show_help_examples()
+    
+    def _show_help_examples(self):
+        """Hiển thị các ví dụ sử dụng phổ biến"""
+        examples = [
+            ("Chạy tool", "1", "Chạy tool số 1"),
+            ("Xem hướng dẫn tool", "1h", "Xem hướng dẫn của tool số 1"),
+            ("Tìm kiếm", "s backup", "Tìm các tool liên quan đến backup"),
+            ("Thêm favorite", "f+ 3", "Thêm tool số 3 vào favorites"),
+            ("Chạy recent", "r1", "Chạy tool recent đầu tiên"),
+            ("Vô hiệu hóa", "off 2 3", "Vô hiệu hóa tool số 2 và 3"),
+        ]
+        
+        # Tính chiều dài của từng dòng (không màu) để tìm dòng dài nhất
+        max_line_length = 0
+        formatted_lines = []
+        
+        for desc, cmd, explanation in examples:
+            # Format text không màu trước để tính padding chính xác
+            desc_text = desc + ":"
+            cmd_text = f"'{cmd}'"
+            expl_text = explanation
+            
+            # Format với padding chính xác (không màu)
+            desc_formatted = f"{desc_text:20s}"
+            cmd_formatted = f"{cmd_text:15s}"
+            
+            # Tính chiều dài hiển thị thực tế của nội dung (không có "  " ở đầu)
+            # Format: "  " + "║" + " " + line_content + padding + "║"
+            # Vậy line_content = desc_formatted + " " + cmd_formatted + " " + expl_text
+            line_content = f"{desc_formatted} {cmd_formatted} {expl_text}"
+            line_length = len(line_content)
+            
+            if line_length > max_line_length:
+                max_line_length = line_length
+            
+            formatted_lines.append({
+                'desc_text': desc_text,
+                'cmd_text': cmd_text,
+                'expl_text': expl_text,
+                'desc_formatted': desc_formatted,
+                'cmd_formatted': cmd_formatted,
+                'line_content': line_content,
+            })
+        
+        # Dùng chiều dài dòng dài nhất làm content_width
+        content_width = max_line_length
+        
+        # Thêm 1 ký tự để các dòng border đều với nội dung
+        border_width = content_width + 1
+        
+        print("  " + Colors.primary("╔" + "═" * border_width + "╗"))
+        title = "VÍ DỤ SỬ DỤNG"
+        # Format: "  " + "║" + " " + title_with_padding + "║"
+        # title_with_padding phải có chiều dài = border_width - 1 (trừ 1 space trước ║)
+        # Tính padding để center title
+        total_padding = border_width - 1 - len(title)
+        padding_before = total_padding // 2
+        padding_after = total_padding - padding_before
+        title_line = "  " + Colors.primary("║") + " " + " " * padding_before + Colors.bold(Colors.info(title)) + " " * padding_after + Colors.primary("║")
+        print(title_line)
+        print("  " + Colors.primary("╠" + "═" * border_width + "╣"))
+        
+        # Render các dòng với padding chính xác
+        for line_data in formatted_lines:
+            desc_text = line_data['desc_text']
+            cmd_text = line_data['cmd_text']
+            expl_text = line_data['expl_text']
+            desc_formatted = line_data['desc_formatted']
+            cmd_formatted = line_data['cmd_formatted']
+            line_content = line_data['line_content']
+            
+            # Tính padding để đảm bảo tất cả dòng có cùng chiều dài
+            # border_width - 1 vì có 1 space trước ║
+            padding = (border_width - 1) - len(line_content)
+            if padding < 0:
+                padding = 0
+            
+            # Thêm màu vào từng phần đã được format
+            desc_colored = Colors.bold(Colors.warning(desc_text))
+            cmd_colored = Colors.info(cmd_text)
+            expl_colored = Colors.muted(expl_text)
+            
+            # Tính padding cho desc và cmd để giữ nguyên chiều dài hiển thị
+            desc_padding = len(desc_formatted) - len(desc_text)
+            cmd_padding = len(cmd_formatted) - len(cmd_text)
+            
+            # Tạo line với màu và padding chính xác (không có "  " ở đầu)
+            line = f"{desc_colored}{' ' * desc_padding} {cmd_colored}{' ' * cmd_padding} {expl_colored}"
+            
+            print("  " + Colors.primary("║") + " " + line + " " * padding + Colors.primary("║"))
+        
+        print("  " + Colors.primary("╚" + "═" * border_width + "╝"))
         print()
     
     def show_tool_help(self, tool: str) -> bool:
@@ -1310,6 +1699,327 @@ class ToolManager:
             print(Colors.muted(f"   Lỗi: {e}"))
             print_separator("═", 70, Colors.ERROR)
             print()
+            import traceback
+            traceback.print_exc()
+            return False
+    
+    def export_tool(self, tool: str, export_path: Optional[str] = None) -> Optional[str]:
+        """
+        Export tool thành file zip
+        
+        Args:
+            tool: Tên file tool (vd: backup-folder.py)
+            export_path: Đường dẫn file zip output (None = tự động tạo tên)
+        
+        Returns:
+            str: Đường dẫn file zip đã tạo, hoặc None nếu lỗi
+        
+        Giải thích:
+        - Tìm thư mục tool
+        - Nén toàn bộ thư mục thành file zip
+        - Lưu vào thư mục exports/ hoặc đường dẫn chỉ định
+        """
+        import shutil
+        import zipfile
+        from datetime import datetime
+        
+        tool_name = tool.replace('.py', '')
+        
+        # Tìm đường dẫn thư mục tool
+        tool_dir = None
+        tool_type = None
+        
+        # Thử tìm trong tools/py/
+        py_tool_dir = self.tool_dir / "py" / tool_name
+        if py_tool_dir.exists() and py_tool_dir.is_dir():
+            tool_dir = py_tool_dir
+            tool_type = 'py'
+        
+        # Thử tìm trong tools/sh/
+        if not tool_dir:
+            sh_tool_dir = self.tool_dir / "sh" / tool_name
+            if sh_tool_dir.exists() and sh_tool_dir.is_dir():
+                tool_dir = sh_tool_dir
+                tool_type = 'sh'
+        
+        # Thử cấu trúc cũ
+        if not tool_dir:
+            old_tool_dir = self.tool_dir / tool_name
+            if old_tool_dir.exists() and old_tool_dir.is_dir():
+                tool_dir = old_tool_dir
+                tool_type = 'py'  # Mặc định
+        
+        if not tool_dir or not tool_dir.exists():
+            print(Colors.error(f"❌ Không tìm thấy thư mục tool: {tool_name}"))
+            return None
+        
+        # Tạo thư mục exports nếu chưa có
+        project_root = Path(__file__).parent.parent
+        exports_dir = project_root / "exports"
+        exports_dir.mkdir(exist_ok=True)
+        
+        # Tạo tên file zip
+        if export_path:
+            zip_path = Path(export_path)
+        else:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            zip_filename = f"{tool_name}_{timestamp}.zip"
+            zip_path = exports_dir / zip_filename
+        
+        try:
+            # Tạo file zip
+            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                # Duyệt tất cả files trong thư mục tool
+                for root, dirs, files in os.walk(tool_dir):
+                    # Bỏ qua __pycache__ và .pyc files
+                    dirs[:] = [d for d in dirs if d != '__pycache__']
+                    
+                    for file in files:
+                        if file.endswith('.pyc'):
+                            continue
+                        
+                        file_path = Path(root) / file
+                        # Tạo đường dẫn tương đối trong zip (giữ nguyên cấu trúc: py/tool-name/ hoặc sh/tool-name/)
+                        # arcname phải là: py/tool-name/file hoặc sh/tool-name/file
+                        arcname = f"{tool_type}/{tool_name}/{file_path.relative_to(tool_dir)}"
+                        zipf.write(file_path, arcname)
+            
+            return str(zip_path)
+        except Exception as e:
+            print(Colors.error(f"❌ Lỗi khi export tool: {e}"))
+            import traceback
+            traceback.print_exc()
+            return None
+    
+    def import_tool(self, import_path: str, overwrite: bool = False) -> bool:
+        """
+        Import tool từ file zip hoặc thư mục
+        
+        Args:
+            import_path: Đường dẫn file zip hoặc thư mục tool
+            overwrite: Có ghi đè tool đã tồn tại không
+        
+        Returns:
+            bool: True nếu thành công, False nếu lỗi
+        
+        Giải thích:
+        - Nếu là file zip: giải nén vào tools/py/ hoặc tools/sh/
+        - Nếu là thư mục: copy vào tools/py/ hoặc tools/sh/
+        - Kiểm tra tool đã tồn tại và hỏi ghi đè nếu cần
+        """
+        import shutil
+        import zipfile
+        
+        import_path_obj = Path(import_path)
+        
+        if not import_path_obj.exists():
+            print(Colors.error(f"❌ Không tìm thấy file/thư mục: {import_path}"))
+            return False
+        
+        # Xác định tool name và type
+        tool_name = None
+        tool_type = None
+        
+        if import_path_obj.is_file() and import_path_obj.suffix == '.zip':
+            # File zip - cần giải nén và xác định tool name
+            try:
+                with zipfile.ZipFile(import_path_obj, 'r') as zipf:
+                    # Tìm file .py đầu tiên để xác định tool name
+                    for name in zipf.namelist():
+                        # Pattern: py/tool-name/tool-name.py hoặc sh/tool-name/tool-name.py
+                        parts = name.split('/')
+                        if len(parts) >= 3 and parts[0] in ['py', 'sh']:
+                            if parts[2].endswith('.py') and parts[2].replace('.py', '') == parts[1]:
+                                tool_name = parts[1]
+                                tool_type = parts[0]
+                                break
+                    
+                    # Nếu không tìm thấy, thử pattern cũ: tool-name/tool-name.py
+                    if not tool_name:
+                        for name in zipf.namelist():
+                            parts = name.split('/')
+                            if len(parts) >= 2 and parts[1].endswith('.py'):
+                                potential_name = parts[1].replace('.py', '')
+                                if parts[0] == potential_name:
+                                    tool_name = potential_name
+                                    tool_type = 'py'  # Mặc định
+                                    break
+                    
+                    if not tool_name:
+                        print(Colors.error("❌ Không thể xác định tên tool từ file zip"))
+                        return False
+                    
+                    # Kiểm tra tool đã tồn tại
+                    target_dir = self.tool_dir / tool_type / tool_name
+                    if target_dir.exists():
+                        if not overwrite:
+                            print(Colors.warning(f"⚠️  Tool '{tool_name}' đã tồn tại!"))
+                            confirm = input(Colors.warning("   Bạn có muốn ghi đè? (yes/no): ")).strip().lower()
+                            if confirm not in ['yes', 'y', 'có', 'c']:
+                                print(Colors.info("ℹ️  Đã hủy import"))
+                                return False
+                        # Xóa tool cũ
+                        shutil.rmtree(target_dir)
+                    
+                    # Giải nén vào thư mục tương ứng
+                    # Tạo thư mục đích nếu chưa có
+                    target_dir.parent.mkdir(parents=True, exist_ok=True)
+                    
+                    # Giải nén từng file và đặt vào đúng vị trí
+                    for name in zipf.namelist():
+                        # Bỏ qua thư mục
+                        if name.endswith('/'):
+                            continue
+                        
+                        # Lấy đường dẫn đích
+                        if name.startswith(f'{tool_type}/{tool_name}/'):
+                            # Loại bỏ prefix py/tool-name/ hoặc sh/tool-name/
+                            dest_name = name[len(f'{tool_type}/{tool_name}/'):]
+                            dest_path = target_dir / dest_name
+                            dest_path.parent.mkdir(parents=True, exist_ok=True)
+                            
+                            # Ghi file
+                            with zipf.open(name) as source:
+                                with open(dest_path, 'wb') as target:
+                                    target.write(source.read())
+                        elif name.startswith(f'{tool_name}/'):
+                            # Pattern cũ: tool-name/file
+                            dest_name = name[len(f'{tool_name}/'):]
+                            dest_path = target_dir / dest_name
+                            dest_path.parent.mkdir(parents=True, exist_ok=True)
+                            
+                            # Ghi file
+                            with zipf.open(name) as source:
+                                with open(dest_path, 'wb') as target:
+                                    target.write(source.read())
+                    
+                    print(Colors.success(f"✅ Đã import tool: {tool_name}"))
+                    return True
+            except Exception as e:
+                print(Colors.error(f"❌ Lỗi khi giải nén file zip: {e}"))
+                import traceback
+                traceback.print_exc()
+                return False
+        
+        elif import_path_obj.is_dir():
+            # Thư mục - copy vào tools/
+            tool_name = import_path_obj.name
+            
+            # Kiểm tra xem có file .py chính không
+            main_file = import_path_obj / f"{tool_name}.py"
+            if not main_file.exists():
+                print(Colors.error(f"❌ Không tìm thấy file chính: {main_file.name}"))
+                return False
+            
+            # Xác định tool type (mặc định là py)
+            tool_type = 'py'
+            
+            # Kiểm tra tool đã tồn tại
+            target_dir = self.tool_dir / tool_type / tool_name
+            if target_dir.exists():
+                if not overwrite:
+                    print(Colors.warning(f"⚠️  Tool '{tool_name}' đã tồn tại!"))
+                    confirm = input(Colors.warning("   Bạn có muốn ghi đè? (yes/no): ")).strip().lower()
+                    if confirm not in ['yes', 'y', 'có', 'c']:
+                        print(Colors.info("ℹ️  Đã hủy import"))
+                        return False
+                # Xóa tool cũ
+                shutil.rmtree(target_dir)
+            
+            # Copy thư mục vào tools/
+            target_dir.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(import_path_obj, target_dir)
+            
+            print(Colors.success(f"✅ Đã import tool: {tool_name}"))
+            return True
+        
+        else:
+            print(Colors.error("❌ Đường dẫn không hợp lệ (phải là file .zip hoặc thư mục)"))
+            return False
+    
+    def delete_tool(self, tool: str, confirm: bool = True) -> bool:
+        """
+        Xóa tool riêng lẻ
+        
+        Args:
+            tool: Tên file tool (vd: backup-folder.py)
+            confirm: Có hỏi xác nhận trước khi xóa không
+        
+        Returns:
+            bool: True nếu thành công, False nếu lỗi hoặc hủy
+        
+        Giải thích:
+        - Tìm thư mục tool
+        - Xóa toàn bộ thư mục
+        - Xóa khỏi favorites và recent nếu có
+        """
+        import shutil
+        
+        tool_name = tool.replace('.py', '')
+        tool_display_name = self.get_tool_display_name(tool)
+        
+        # Tìm đường dẫn thư mục tool
+        tool_dir = None
+        
+        # Thử tìm trong tools/py/
+        py_tool_dir = self.tool_dir / "py" / tool_name
+        if py_tool_dir.exists() and py_tool_dir.is_dir():
+            tool_dir = py_tool_dir
+        
+        # Thử tìm trong tools/sh/
+        if not tool_dir:
+            sh_tool_dir = self.tool_dir / "sh" / tool_name
+            if sh_tool_dir.exists() and sh_tool_dir.is_dir():
+                tool_dir = sh_tool_dir
+        
+        # Thử cấu trúc cũ
+        if not tool_dir:
+            old_tool_dir = self.tool_dir / tool_name
+            if old_tool_dir.exists() and old_tool_dir.is_dir():
+                tool_dir = old_tool_dir
+        
+        if not tool_dir or not tool_dir.exists():
+            print(Colors.error(f"❌ Không tìm thấy thư mục tool: {tool_name}"))
+            return False
+        
+        # Xác nhận xóa
+        if confirm:
+            print()
+            print(Colors.warning(f"⚠️  Bạn có chắc chắn muốn xóa tool: {Colors.bold(tool_display_name)}?"))
+            print(Colors.muted(f"   Đường dẫn: {tool_dir}"))
+            print()
+            user_confirm = input(Colors.warning("   Nhập 'yes' để xác nhận: ")).strip().lower()
+            if user_confirm not in ['yes', 'y', 'có', 'c']:
+                print(Colors.info("ℹ️  Đã hủy xóa"))
+                return False
+        
+        try:
+            # Xóa thư mục tool
+            shutil.rmtree(tool_dir)
+            
+            # Xóa khỏi favorites nếu có
+            if tool in self.config.get('favorites', []):
+                self.config['favorites'].remove(tool)
+            
+            # Xóa khỏi recent nếu có
+            if tool in self.config.get('recent', []):
+                self.config['recent'].remove(tool)
+            
+            # Xóa khỏi disabled nếu có
+            if tool in self.config.get('disabled_tools', []):
+                self.config['disabled_tools'].remove(tool)
+            
+            # Lưu config
+            self._save_config()
+            
+            print(Colors.success(f"✅ Đã xóa tool: {tool_display_name}"))
+            return True
+            
+        except PermissionError:
+            print(Colors.error(f"❌ Không có quyền xóa thư mục: {tool_dir}"))
+            return False
+        except Exception as e:
+            print(Colors.error(f"❌ Lỗi khi xóa tool: {e}"))
             import traceback
             traceback.print_exc()
             return False

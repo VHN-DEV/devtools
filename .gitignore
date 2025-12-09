@@ -31,6 +31,7 @@ env/
 *.swp
 *.swo
 *~
+*.code-workspace
 
 # OS
 .DS_Store
@@ -44,10 +45,36 @@ logs/
 output/
 
 # Config riêng (có thể chứa thông tin nhạy cảm)
-tools/ssh-manager/ssh_config.json
+tools/py/ssh-manager/ssh_config.json
+tools/py/database-manager/database_config.json
+
+# Environment variables
+.env
+.env.*
+!.env.example
 
 # Backup metadata
 backup_metadata.json
 
 # Templates
 watermark_templates.json
+
+# export files
+exports/
+*.zip
+
+# Cache và temp files
+plugins/cache/
+*.cache
+*.tmp
+
+# Theme config (có thể tùy chỉnh)
+menus/theme_config.json
+
+# Marketplace cache
+plugins/cache/marketplace/registry_cache.json
+
+# Build files
+*.egg-info/
+build/
+dist/

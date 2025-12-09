@@ -124,6 +124,7 @@ def format_tips() -> List[str]:
         "💡 Tip: Nhập 'clear' để xóa màn hình",
         "💡 Tip: Dùng 'f' để xem tất cả favorites",
         "💡 Tip: Nhập 'set' để xem settings",
+        "💡 Tip: Nhập 'log' để xem logs",
     ]
     
     return tips
@@ -139,9 +140,160 @@ def print_welcome_tip():
     print(Colors.muted(f"  {tip}"))
 
 
+def print_welcome_message():
+    """
+    In welcome message thân thiện với onboarding tips
+    
+    Mục đích: Giúp người dùng mới hiểu cách sử dụng nhanh chóng
+    """
+    print()
+    print(Colors.primary("  ┌─ " + "─" * 65 + " ┐"))
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    
+    welcome_text = "👋 Chào mừng đến với DevTools!"
+    welcome_padding = (67 - len(welcome_text) + 1) // 2  # +1 cho emoji
+    print(Colors.primary("  │") + " " * welcome_padding + Colors.bold(Colors.info(welcome_text)) + " " * (67 - len(welcome_text) - welcome_padding + 1) + Colors.primary("│"))
+    
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    
+    quick_start = "🚀 Bắt đầu nhanh:"
+    print(Colors.primary("  │") + "  " + Colors.bold(Colors.warning(quick_start)) + " " * (67 - len(quick_start) - 2) + Colors.primary("│"))
+    
+    tips = [
+        ("• Nhập", Colors.muted, "số", Colors.info, "để chạy tool (vd: 1, 2, 3)"),
+        ("• Nhập", Colors.muted, "h", Colors.info, "để xem hướng dẫn đầy đủ"),
+        ("• Nhập", Colors.muted, "s [từ khóa]", Colors.info, "để tìm kiếm tool"),
+        ("• Nhập", Colors.muted, "f+ [số]", Colors.info, "để thêm vào favorites"),
+    ]
+    
+    for tip_parts in tips:
+        tip_line = ""
+        for part in tip_parts:
+            if isinstance(part, str):
+                tip_line += part
+            else:
+                tip_line += part("") if callable(part) else str(part)
+        
+        # Tính độ dài thực tế (không tính ANSI codes)
+        tip_plain = strip_ansi(tip_line)
+        tip_padding = 67 - len(tip_plain) - 2
+        if tip_padding < 0:
+            tip_padding = 0
+        
+        print(Colors.primary("  │") + "  " + tip_line + " " * tip_padding + Colors.primary("│"))
+    
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    
+    help_text = "💡 Tip: Nhập 'h' để xem tất cả lệnh có sẵn"
+    help_padding = (67 - len(help_text) + 1) // 2
+    print(Colors.primary("  │") + " " * help_padding + Colors.muted(help_text) + " " * (67 - len(help_text) - help_padding + 1) + Colors.primary("│"))
+    
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    print(Colors.primary("  └─ " + "─" * 65 + " ┘"))
+    print()
+
+
+def print_keyboard_shortcuts():
+    """
+    In danh sách keyboard shortcuts phổ biến
+    
+    Mục đích: Giúp người dùng biết các shortcuts tiện lợi
+    """
+    shortcuts = [
+        ("Số (1-9)", "Chạy tool theo số thứ tự"),
+        ("s [keyword]", "Tìm kiếm tool"),
+        ("f", "Xem favorites"),
+        ("r", "Xem recent tools"),
+        ("h", "Xem help"),
+        ("q", "Thoát"),
+        ("clear", "Xóa màn hình"),
+    ]
+    
+    # Tính chiều dài của từng dòng (không màu) để tìm dòng dài nhất
+    max_line_length = 0
+    formatted_lines = []
+    title = " ⌨️  KEYBOARD SHORTCUTS"
+    
+    # Tính chiều dài của từng dòng nội dung (không tính border)
+    for shortcut, description in shortcuts:
+        # Format text không màu trước để tính padding chính xác
+        shortcut_formatted = f"{shortcut:20s}"
+        # Tính chiều dài hiển thị thực tế của nội dung
+        # Format: "  " + "║" + " " + "  " + line_content + padding + "║"
+        # Có thêm 2 spaces ở đầu mỗi dòng content (tổng 3 spaces sau ║)
+        # Vậy line_content = "  " + shortcut_formatted + "  " + description
+        line_content = f"  {shortcut_formatted}  {description}"
+        line_length = len(line_content)
+        
+        if line_length > max_line_length:
+            max_line_length = line_length
+        
+        formatted_lines.append({
+            'shortcut': shortcut,
+            'description': description,
+            'shortcut_formatted': shortcut_formatted,
+            'line_content': line_content,
+        })
+    
+    # Dùng cùng border_width với khối "VÍ DỤ SỬ DỤNG" để đồng đều
+    # border_width = 67 (tính từ khối "VÍ DỤ SỬ DỤNG")
+    border_width = 71
+    
+    print()
+    # Render với double box drawing characters để đồng đều với các khối khác
+    # Top border: "  " + "╔" + "═" * border_width + "╗"
+    print("  " + Colors.primary("╔" + "═" * border_width + "╗"))
+    
+    # Title line: "  " + "║" + " " + title với padding + "║"
+    # Tính padding để center title
+    total_padding = border_width - 1 - len(title)
+    padding_before = total_padding // 2
+    padding_after = total_padding - padding_before
+    title_colored = Colors.bold(Colors.info(title))
+    print("  " + Colors.primary("║") + " " + " " * padding_before + title_colored + " " * padding_after + Colors.primary("║"))
+    
+    # Separator: "  " + "╠" + "═" * border_width + "╣"
+    print("  " + Colors.primary("╠" + "═" * border_width + "╣"))
+    
+    # Empty line
+    print("  " + Colors.primary("║") + " " * border_width + Colors.primary("║"))
+    
+    # Render các dòng với padding chính xác
+    for line_data in formatted_lines:
+        shortcut = line_data['shortcut']
+        description = line_data['description']
+        shortcut_formatted = line_data['shortcut_formatted']
+        line_content = line_data['line_content']
+        
+        # Thêm màu vào từng phần đã được format
+        shortcut_colored = Colors.bold(Colors.info(shortcut))
+        desc_colored = Colors.muted(description)
+        
+        # Tính padding cho shortcut để giữ nguyên chiều dài hiển thị
+        shortcut_padding = len(shortcut_formatted) - len(shortcut)
+        
+        # Tạo line với màu và padding chính xác (có "  " ở đầu để khớp với output mẫu)
+        line = f"  {shortcut_colored}{' ' * shortcut_padding}  {desc_colored}"
+        
+        # Tính độ dài thực tế của line (không tính ANSI codes) để đảm bảo padding chính xác
+        line_plain = strip_ansi(line)
+        actual_padding = (border_width - 1) - len(line_plain)
+        if actual_padding < 0:
+            actual_padding = 0
+        
+        print("  " + Colors.primary("║") + " " + line + " " * actual_padding + Colors.primary("║"))
+    
+    # Empty line
+    print("  " + Colors.primary("║") + " " * border_width + Colors.primary("║"))
+    
+    # Bottom border: "  " + "╚" + "═" * border_width + "╝"
+    print("  " + Colors.primary("╚" + "═" * border_width + "╝"))
+    print()
+
+
 def print_command_suggestions(user_input: str, suggestions: List[str]):
     """
-    In gợi ý commands khi user nhập sai
+    In gợi ý commands khi user nhập sai với UI đẹp hơn
     
     Args:
         user_input: Input từ user
@@ -151,13 +303,32 @@ def print_command_suggestions(user_input: str, suggestions: List[str]):
         return
     
     print()
-    print(Colors.warning(f"⚠️  Không tìm thấy lệnh: '{user_input}'"))
+    print(Colors.error("  ┌─ " + "─" * 63 + " ┐"))
+    print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+    
+    error_msg = f"⚠️  Không tìm thấy lệnh: '{user_input}'"
+    error_padding = (65 - len(error_msg) + 1) // 2
+    print(Colors.error("  │") + " " * error_padding + Colors.bold(error_msg) + " " * (65 - len(error_msg) - error_padding + 1) + Colors.error("│"))
+    
+    print(Colors.error("  │") + " " * 65 + Colors.error("│"))
     
     if len(suggestions) == 1:
-        print(Colors.info(f"💡 Có phải bạn muốn: {Colors.bold(suggestions[0])}?"))
+        suggest_msg = f"💡 Có phải bạn muốn: {Colors.bold(suggestions[0])}?"
+        suggest_plain = strip_ansi(suggest_msg)
+        suggest_padding = (65 - len(suggest_plain) + 1) // 2
+        print(Colors.error("  │") + " " * suggest_padding + Colors.info(suggest_msg) + " " * (65 - len(suggest_plain) - suggest_padding + 1) + Colors.error("│"))
     else:
-        print(Colors.info(f"💡 Gợi ý ({len(suggestions)}): {', '.join([Colors.bold(s) for s in suggestions])}"))
+        suggest_title = f"💡 Gợi ý ({len(suggestions)}):"
+        suggest_title_padding = (65 - len(suggest_title) + 1) // 2
+        print(Colors.error("  │") + " " * suggest_title_padding + Colors.info(suggest_title) + " " * (65 - len(suggest_title) - suggest_title_padding + 1) + Colors.error("│"))
+        
+        suggestions_text = ", ".join([Colors.bold(s) for s in suggestions])
+        suggestions_plain = strip_ansi(suggestions_text)
+        suggestions_padding = (65 - len(suggestions_plain)) // 2
+        print(Colors.error("  │") + " " * suggestions_padding + suggestions_text + " " * (65 - len(suggestions_plain) - suggestions_padding) + Colors.error("│"))
     
+    print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+    print(Colors.error("  └─ " + "─" * 63 + " ┘"))
     print()
 
 
@@ -167,10 +338,10 @@ def print_banner():
     
     Mục đích: Tạo ấn tượng ban đầu tốt, thu hút người dùng
     """
-    width = 55
+    width = 70
     
     # Tính toán padding chính xác (không tính ANSI codes)
-    title1 = "MY PYTHON TOOLS"
+    title1 = "DEV TOOLS"
     title1_len = len(title1)
     title1_padding_left = (width - title1_len) // 2
     title1_padding_right = width - title1_len - title1_padding_left

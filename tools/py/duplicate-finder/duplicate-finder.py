@@ -325,6 +325,10 @@ def display_duplicates(duplicates: dict, by_hash: bool = True, limit: int = 20) 
     log_info(f"Tìm thấy {duplicate_groups} nhóm, {total_duplicates} file duplicate")
     
     for idx, (key, files) in enumerate(list(duplicates.items())[:limit], 1):
+        # Kiểm tra files không rỗng
+        if not files:
+            continue
+            
         if by_hash:
             # files là list của tuple (path, size)
             file_size = files[0][1]
@@ -379,6 +383,10 @@ def save_report(duplicates: dict, output_file: str, by_hash: bool = True):
         f.write(f"Tổng số file trùng lặp: {total_duplicates}\n\n")
         
         for idx, (key, files) in enumerate(duplicates.items(), 1):
+            # Kiểm tra files không rỗng
+            if not files:
+                continue
+                
             if by_hash:
                 file_size = files[0][1]
                 file_paths = [f[0] for f in files]

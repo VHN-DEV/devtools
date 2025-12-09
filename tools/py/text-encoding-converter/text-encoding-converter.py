@@ -5,8 +5,19 @@ Tool: Chuyển đổi encoding của file text
 """
 
 import os
-import chardet
+import sys
 from pathlib import Path
+
+# Thêm thư mục cha vào sys.path để import utils
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils import install_library
+
+# Thử import chardet
+try:
+    import chardet
+except ImportError:
+    chardet = None
 
 
 def print_header():
@@ -64,7 +75,7 @@ def convert_encoding(file_path, source_encoding, target_encoding, backup=True):
         return True
     
     except Exception as e:
-        print(f"   ❌ Loi: {e}")
+        print(f"   ❌ Lỗi: {e}")
         return False
 
 
@@ -182,11 +193,16 @@ def main():
     print_header()
     
     # Kiểm tra thư viện chardet
-    try:
-        import chardet
-    except ImportError:
-        print("❌ Cần cài thư viện chardet: pip install chardet")
-        return
+    global chardet
+    if chardet is None:
+        if install_library(
+            package_name="chardet",
+            install_command="pip install chardet",
+            library_display_name="chardet"
+        ):
+            import chardet
+        else:
+            return
     
     # Nhập thư mục
     folder_input = input("Nhập đường dẫn thư mục: ").strip('"')

@@ -44,8 +44,16 @@ def print_success_box(message: str, title: Optional[str] = "Thành công"):
     print()
 
 
-def print_error_box(message: str, title: Optional[str] = "Lỗi", suggestions: Optional[List[str]] = None):
-    """In thông báo lỗi trong box đẹp với suggestions"""
+def print_error_box(message: str, title: Optional[str] = "Lỗi", suggestions: Optional[List[str]] = None, solutions: Optional[List[str]] = None):
+    """
+    In thông báo lỗi trong box đẹp với suggestions và solutions
+    
+    Args:
+        message: Thông báo lỗi
+        title: Tiêu đề (mặc định: "Lỗi")
+        suggestions: Danh sách gợi ý
+        solutions: Danh sách giải pháp cụ thể
+    """
     print()
     print("  " + Colors.error("╔" + "═" * 66 + "╗"))
     title_padding = (66 - len(title) - 2) // 2
@@ -80,6 +88,14 @@ def print_error_box(message: str, title: Optional[str] = "Lỗi", suggestions: O
             sug_text = f"   • {suggestion}"
             padding = max(0, 64 - len(sug_text))
             print("  " + Colors.error("║") + " " + Colors.muted(sug_text) + " " * padding + " " + Colors.error("║"))
+    
+    if solutions:
+        print("  " + Colors.error("╠" + "─" * 66 + "╣"))
+        print("  " + Colors.error("║") + " " + Colors.success("✅ Giải pháp:") + " " * (66 - 16) + Colors.error("║"))
+        for solution in solutions:
+            sol_text = f"   • {solution}"
+            padding = max(0, 64 - len(sol_text))
+            print("  " + Colors.error("║") + " " + Colors.success(sol_text) + " " * padding + " " + Colors.error("║"))
     
     print("  " + Colors.error("╚" + "═" * 66 + "╝"))
     print()

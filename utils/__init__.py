@@ -26,7 +26,8 @@ from .validation import (
     normalize_path,
     confirm_action,
     validate_path,
-    parse_size_string
+    parse_size_string,
+    install_library
 )
 
 from .file_ops import (
@@ -80,6 +81,7 @@ __all__ = [
     'confirm_action',
     'validate_path',
     'parse_size_string',
+    'install_library',
     
     # File operations
     'get_file_list',

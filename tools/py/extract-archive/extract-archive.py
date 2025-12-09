@@ -5,10 +5,16 @@ Tool: Giải nén nhiều file nén cùng lúc
 """
 
 import os
+import sys
 import zipfile
 import tarfile
 import shutil
 from pathlib import Path
+
+# Thêm thư mục cha vào sys.path để import utils
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils import install_library
 
 
 def print_header():
@@ -77,7 +83,12 @@ def extract_archive(archive_path, extract_to):
                 archive.extractall(extract_to)
             success = True
         except ImportError:
-            error = "Cần cài thư viện py7zr: pip install py7zr"
+            install_library(
+                package_name="py7zr",
+                install_command="pip install py7zr",
+                library_display_name="py7zr"
+            )
+            error = "Cần cài thư viện py7zr"
         except Exception as e:
             error = str(e)
     elif archive_ext == '.rar':
@@ -88,7 +99,12 @@ def extract_archive(archive_path, extract_to):
                 rar_ref.extractall(extract_to)
             success = True
         except ImportError:
-            error = "Cần cài thư viện rarfile: pip install rarfile"
+            install_library(
+                package_name="rarfile",
+                install_command="pip install rarfile",
+                library_display_name="rarfile"
+            )
+            error = "Cần cài thư viện rarfile"
         except Exception as e:
             error = str(e)
     else:

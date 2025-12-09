@@ -10,6 +10,11 @@ import sys
 import subprocess
 from pathlib import Path
 
+# Thêm thư mục cha vào sys.path để import utils
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from utils import install_library
+
 
 def print_header():
     """In header của tool"""
@@ -31,21 +36,11 @@ def check_dependencies():
         import pydub
         print("✅ Thư viện pydub: OK")
     except ImportError:
-        print("❌ Thiếu thư viện pydub!")
-        print("\n💡 Cài đặt:")
-        print(f"   {sys.executable} -m pip install pydub")
-        
-        choice = input("\nBạn có muốn cài đặt tự động không? (y/n, mặc định: y): ").strip().lower()
-        if not choice or choice == 'y':
-            try:
-                print("\n📦 Đang cài đặt pydub...")
-                subprocess.run([sys.executable, "-m", "pip", "install", "pydub"], check=True)
-                print("✅ Đã cài đặt pydub thành công!")
-                print("💡 Tool cần restart để nhận package mới.")
-                return False
-            except Exception as e:
-                print(f"❌ Lỗi khi cài đặt: {e}")
-                return False
+        install_library(
+            package_name="pydub",
+            install_command="pip install pydub",
+            library_display_name="pydub"
+        )
         return False
     
     try:
@@ -53,21 +48,11 @@ def check_dependencies():
         from moviepy import VideoFileClip
         print("✅ Thư viện moviepy: OK")
     except ImportError:
-        print("❌ Thiếu thư viện moviepy!")
-        print("\n💡 Cài đặt:")
-        print(f"   {sys.executable} -m pip install moviepy")
-        
-        choice = input("\nBạn có muốn cài đặt tự động không? (y/n, mặc định: y): ").strip().lower()
-        if not choice or choice == 'y':
-            try:
-                print("\n📦 Đang cài đặt moviepy...")
-                subprocess.run([sys.executable, "-m", "pip", "install", "moviepy"], check=True)
-                print("✅ Đã cài đặt moviepy thành công!")
-                print("💡 Tool cần restart để nhận package mới.")
-                return False
-            except Exception as e:
-                print(f"❌ Lỗi khi cài đặt: {e}")
-                return False
+        install_library(
+            package_name="moviepy",
+            install_command="pip install moviepy",
+            library_display_name="moviepy"
+        )
         return False
     
     # Kiểm tra ffmpeg

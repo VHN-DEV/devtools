@@ -26,6 +26,33 @@ tools/
 
 ## Cách thêm tool mới
 
+### ⚡ Cách nhanh nhất: Dùng script tự động
+
+Sử dụng script `create-tool.py` để tạo tool mới với template sẵn có:
+
+**Windows:**
+```cmd
+scripts\create-tool.bat
+```
+
+**Linux/Mac hoặc chạy Python trực tiếp:**
+```bash
+python scripts/create-tool.py
+```
+
+Script sẽ tự động:
+- ✅ Tạo thư mục tool
+- ✅ Tạo file chính với template đầy đủ
+- ✅ Tạo `__init__.py`
+- ✅ Tạo `tool_info.json`
+- ✅ (Optional) Tạo `doc.py`
+
+Sau đó chỉ cần mở file `.py` và thêm logic của tool!
+
+---
+
+### Cách thủ công: Tạo tool từ đầu
+
 ### Bước 1: Tạo thư mục tool
 
 Tạo thư mục mới trong `tools/py/` (cho tool Python) hoặc `tools/sh/` (cho tool shell script):
@@ -181,7 +208,7 @@ EOF
 echo '"""Tool: my-tool"""' > tools/py/my-tool/__init__.py
 ```
 
-**Xong!** Tool sẽ tự động xuất hiện trong menu khi chạy `python .` hoặc `myptool`.
+**Xong!** Tool sẽ tự động xuất hiện trong menu khi chạy `python .` hoặc `devtools`.
 
 ## Lưu ý
 

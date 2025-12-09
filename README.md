@@ -1,9 +1,9 @@
-# 🛠️ myPythonTool - Bộ Công Cụ Python Tiện Ích
+# 🛠️ DevTools - Bộ Công Cụ Python Tiện Ích
 
-[![GitHub](https://img.shields.io/badge/GitHub-VHN--DEV-blue?logo=github)](https://github.com/VHN-DEV/myPythonTool)
+[![GitHub](https://img.shields.io/badge/GitHub-VHN--DEV-blue?logo=github)](https://github.com/VHN-DEV/DevTools)
 [![Python](https://img.shields.io/badge/Python-3.7+-blue?logo=python)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/VHN-DEV/myPythonTool?style=social)](https://github.com/VHN-DEV/myPythonTool/stargazers)
+[![Stars](https://img.shields.io/github/stars/VHN-DEV/DevTools?style=social)](https://github.com/VHN-DEV/DevTools/stargazers)
 
 > Bộ công cụ Python đa năng giúp tự động hóa các tác vụ thường gặp khi làm việc với file và thư mục. Giao diện tiếng Việt thân thiện, dễ sử dụng!
 
@@ -28,7 +28,7 @@
 
 ## 🎯 Giới thiệu
 
-**myPythonTool** là bộ công cụ Python được thiết kế để giúp bạn tiết kiệm thời gian trong các công việc xử lý file hàng ngày:
+**DevTools** là bộ công cụ Python được thiết kế để giúp bạn tiết kiệm thời gian trong các công việc xử lý file hàng ngày:
 
 - 🖼️ Xử lý hình ảnh chuyên nghiệp (nén, resize, watermark)
 - 🎬 Xử lý video (convert, compress, trim)
@@ -97,13 +97,13 @@
 
 ### Cách 1: Cài đặt toàn cục (Khuyến nghị) ⭐
 
-Sau khi cài đặt, bạn có thể chạy `myptool` từ bất kỳ đâu!
+Sau khi cài đặt, bạn có thể chạy `devtools` từ bất kỳ đâu!
 
 #### Bước 1: Clone repository
 
 ```bash
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 ```
 
 #### Bước 2: Cài đặt
@@ -116,10 +116,13 @@ pip install -e .
 
 ```bash
 # Có thể chạy từ bất kỳ thư mục nào
-myptool
+devtools
 ```
 
-📖 **Chi tiết:** Xem [INSTALL.md](docs/INSTALL.md) để biết thêm cách cài đặt khác
+📖 **Chi tiết:** 
+- Xem [INSTALL.md](docs/INSTALL.md) để biết thêm cách cài đặt khác
+- Xem [PORTABILITY.md](docs/PORTABILITY.md) để biết cách di chuyển dự án sang máy khác
+- Xem [Hướng dẫn cho Linux/macOS](docs/PORTABILITY.md#-hướng-dẫn-cho-linuxmacos) nếu bạn dùng Linux/macOS
 
 ---
 
@@ -128,8 +131,8 @@ myptool
 #### Bước 1: Clone repository
 
 ```bash
-git clone https://github.com/VHN-DEV/myPythonTool.git
-cd myPythonTool
+git clone https://github.com/VHN-DEV/DevTools.git
+cd DevTools
 ```
 
 #### Bước 2: Cài đặt thư viện
@@ -150,7 +153,7 @@ python __main__.py
 
 ```
 ╔══════════════════════════════════════════════════════════╗
-║                  MY PYTHON TOOLS                         ║
+║                     DEV TOOLS                            ║
 ║              Bộ công cụ Python tiện ích                  ║
 ║                                                          ║
 ║         Nhập 'h' hoặc 'help' để xem hướng dẫn            ║
@@ -237,89 +240,78 @@ python -c "import PIL, chardet; print('✅ Cài đặt thành công!')"
 | 2 | [clean-temp-files.py](tools/py/clean-temp-files/README.md) | Dọn dẹp file tạm, cache và file rác | Giải phóng dung lượng |
 | 3 | [compress-images.py](tools/py/compress-images/README.md) | Nén và chỉnh sửa ảnh (resize, đổi format) | Web developer, nhiếp ảnh |
 | 4 | [copy-changed-files.py](tools/py/copy-changed-files/README.md) | Sao chép file thay đổi theo Git commit | Upload lên server |
-| 5 | [duplicate-finder.py](tools/py/duplicate-finder/README.md) | Tìm và xóa file trùng lặp | Dọn dẹp ổ cứng |
-| 6 | [extract-archive.py](tools/py/extract-archive/README.md) | Giải nén file (ZIP, RAR, 7Z, TAR) | Giải nén hàng loạt |
-| 7 | [file-organizer.py](tools/py/file-organizer/README.md) | Sắp xếp file theo loại/ngày/extension | Tổ chức Downloads |
-| 8 | [find-and-replace.py](tools/py/find-and-replace/README.md) | Tìm và thay thế text trong nhiều file | Refactor code |
-| 9 | [generate-tree.py](tools/py/generate-tree/README.md) | Tạo sơ đồ cây thư mục dự án | Documentation |
-| 10 | [image-watermark.py](tools/py/image-watermark/) | Thêm watermark vào ảnh (text/logo hàng loạt) | Bảo vệ bản quyền ảnh |
-| 11 | [pdf-tools.py](tools/py/pdf-tools/) | Xử lý PDF (merge, split, compress, convert) | Quản lý tài liệu PDF |
-| 12 | [rename-files.py](tools/py/rename-files/README.md) | Đổi tên file hàng loạt (prefix/suffix/số thứ tự) | Đổi tên ảnh, video |
-| 13 | [ssh-manager.py](tools/py/ssh-manager/README.md) | Quản lý và kết nối SSH Server nhanh chóng | DevOps, quản trị server |
-| 14 | [text-encoding-converter.py](tools/py/text-encoding-converter/README.md) | Chuyển đổi encoding file text (UTF-8, ANSI...) | Fix lỗi tiếng Việt |
-| 15 | [video-converter.py](tools/py/video-converter/) | Xử lý video (convert, compress, trim, extract audio) | Editor video, YouTube |
-| 16 | [setup-project-linux.py](tools/sh/setup-project-linux/) | Quản lý và cài đặt dự án (Linux/Ubuntu) | DevOps, server setup |
+| 5 | [database-manager.py](tools/py/database-manager/README.md) | Quản lý database MySQL/MariaDB | Quản lý database |
+| 6 | [duplicate-finder.py](tools/py/duplicate-finder/README.md) | Tìm và xóa file trùng lặp | Dọn dẹp ổ cứng |
+| 7 | [extract-archive.py](tools/py/extract-archive/README.md) | Giải nén file (ZIP, RAR, 7Z, TAR) | Giải nén hàng loạt |
+| 8 | [file-organizer.py](tools/py/file-organizer/README.md) | Sắp xếp file theo loại/ngày/extension | Tổ chức Downloads |
+| 9 | [find-and-replace.py](tools/py/find-and-replace/README.md) | Tìm và thay thế text trong nhiều file | Refactor code |
+| 10 | [font-generator.py](tools/py/font-generator/README.md) | Chuyển đổi font, tạo font subset | Web developer, designer |
+| 11 | [generate-tree.py](tools/py/generate-tree/README.md) | Tạo sơ đồ cây thư mục dự án | Documentation |
+| 12 | [gitlab-commits-export.py](tools/py/gitlab-commits-export/README.md) | Xuất commits Git ra Excel | Báo cáo, audit |
+| 13 | [image-watermark.py](tools/py/image-watermark/README.md) | Thêm watermark vào ảnh (text/logo hàng loạt) | Bảo vệ bản quyền ảnh |
+| 14 | [json-formatter.py](tools/py/json-formatter/README.md) | Định dạng, validate, minify JSON | Developer |
+| 15 | [media-converter.py](tools/py/media-converter/README.md) | Chuyển đổi audio/video | Xử lý media |
+| 16 | [pdf-tools.py](tools/py/pdf-tools/README.md) | Xử lý PDF (merge, split, compress, convert) | Quản lý tài liệu PDF |
+| 17 | [qr-code.py](tools/py/qr-code/README.md) | Tạo và giải mã QR code | Marketing, utilities |
+| 18 | [rename-files.py](tools/py/rename-files/README.md) | Đổi tên file hàng loạt (prefix/suffix/số thứ tự) | Đổi tên ảnh, video |
+| 19 | [scan-malware.py](tools/py/scan-malware/README.md) | Quét mã độc trong code | Bảo mật, audit |
+| 20 | [ssh-manager.py](tools/py/ssh-manager/README.md) | Quản lý và kết nối SSH Server nhanh chóng | DevOps, quản trị server |
+| 21 | [setup-project-linux.py](tools/sh/setup-project-linux/doc.py) | Quản lý và cài đặt dự án (Linux/Ubuntu) | DevOps, server setup |
+| 22 | [text-encoding-converter.py](tools/py/text-encoding-converter/README.md) | Chuyển đổi encoding file text (UTF-8, ANSI...) | Fix lỗi tiếng Việt |
+| 23 | [video-converter.py](tools/py/video-converter/README.md) | Xử lý video (convert, compress, trim, extract audio) | Editor video, YouTube |
+| 24 | [website-performance-checker.py](tools/py/website-performance-checker/README.md) | Kiểm tra hiệu suất website | SEO, optimization |
+| 25 | [website-performance-optimizer.py](tools/py/website-performance-optimizer/README.md) | Tối ưu hiệu suất website | SEO, optimization |
+| 26 | [xampp-project-manager.py](tools/py/xampp-project-manager/README.md) | Quản lý dự án XAMPP Windows | Developer Windows |
 
 ---
 
 ## 📖 Hướng dẫn chi tiết
 
-Nội dung chi tiết đã được tách sang README riêng của từng tool:
+Nội dung chi tiết đã được tách sang README riêng của từng tool. Tất cả các tool đều có tài liệu đầy đủ:
 
-- **Backup Folder:** xem `tools/py/backup-folder/README.md`
-- **Clean Temp Files:** xem `tools/py/clean-temp-files/README.md`
-- **Compress Images:** xem `tools/py/compress-images/README.md`
-- **Copy Changed Files:** xem `tools/py/copy-changed-files/README.md`
-- **Duplicate Finder:** xem `tools/py/duplicate-finder/README.md`
-- **Extract Archive:** xem `tools/py/extract-archive/README.md`
-- **File Organizer:** xem `tools/py/file-organizer/README.md`
-- **Find and Replace:** xem `tools/py/find-and-replace/README.md`
-- **Generate Tree:** xem `tools/py/generate-tree/README.md`
-- **Image Watermark:** xem `tools/py/image-watermark/` (xem `doc.py` để biết thêm)
-- **PDF Tools:** xem `tools/py/pdf-tools/` (xem `doc.py` để biết thêm)
-- **Rename Files:** xem `tools/py/rename-files/README.md`
-- **SSH Manager:** xem `tools/py/ssh-manager/README.md`
-- **Text Encoding Converter:** xem `tools/py/text-encoding-converter/README.md`
-- **Video Converter:** xem `tools/py/video-converter/` (xem `doc.py` để biết thêm)
-- **Setup Project Linux:** xem `tools/sh/setup-project-linux/` (xem `doc.py` để biết thêm)
+### File & Folder Management
+- **Backup Folder:** xem [tools/py/backup-folder/README.md](tools/py/backup-folder/README.md)
+- **Clean Temp Files:** xem [tools/py/clean-temp-files/README.md](tools/py/clean-temp-files/README.md)
+- **Extract Archive:** xem [tools/py/extract-archive/README.md](tools/py/extract-archive/README.md)
+- **File Organizer:** xem [tools/py/file-organizer/README.md](tools/py/file-organizer/README.md)
+- **Duplicate Finder:** xem [tools/py/duplicate-finder/README.md](tools/py/duplicate-finder/README.md)
+- **Rename Files:** xem [tools/py/rename-files/README.md](tools/py/rename-files/README.md)
+- **Generate Tree:** xem [tools/py/generate-tree/README.md](tools/py/generate-tree/README.md)
 
-**Chức năng:**
-- ✅ Nén ảnh với quality tùy chỉnh (1-100)
-- ✅ Resize theo width/height hoặc giữ tỉ lệ
-- ✅ Chuyển đổi định dạng (JPG, PNG, WEBP)
-- ✅ Giới hạn dung lượng tối đa (KB)
-- ✅ Tự động tối ưu hóa
-- ✅ Tạo thư mục output với timestamp
+### Image & Media
+- **Compress Images:** xem [tools/py/compress-images/README.md](tools/py/compress-images/README.md)
+- **Image Watermark:** xem [tools/py/image-watermark/README.md](tools/py/image-watermark/README.md)
+- **Video Converter:** xem [tools/py/video-converter/README.md](tools/py/video-converter/README.md)
+- **Media Converter:** xem [tools/py/media-converter/README.md](tools/py/media-converter/README.md)
+- **QR Code:** xem [tools/py/qr-code/README.md](tools/py/qr-code/README.md)
 
-**Cách sử dụng:**
+### Document & Text
+- **PDF Tools:** xem [tools/py/pdf-tools/README.md](tools/py/pdf-tools/README.md)
+- **Text Encoding Converter:** xem [tools/py/text-encoding-converter/README.md](tools/py/text-encoding-converter/README.md)
+- **Find and Replace:** xem [tools/py/find-and-replace/README.md](tools/py/find-and-replace/README.md)
+- **JSON Formatter:** xem [tools/py/json-formatter/README.md](tools/py/json-formatter/README.md)
+- **Font Generator:** xem [tools/py/font-generator/README.md](tools/py/font-generator/README.md)
 
-```bash
-python tools/compress-images.py
-```
+### Development & DevOps
+- **Copy Changed Files:** xem [tools/py/copy-changed-files/README.md](tools/py/copy-changed-files/README.md)
+- **SSH Manager:** xem [tools/py/ssh-manager/README.md](tools/py/ssh-manager/README.md)
+- **Database Manager:** xem [tools/py/database-manager/README.md](tools/py/database-manager/README.md)
+- **GitLab Commits Export:** xem [tools/py/gitlab-commits-export/README.md](tools/py/gitlab-commits-export/README.md)
+- **Setup Project Linux:** xem [tools/sh/setup-project-linux/doc.py](tools/sh/setup-project-linux/doc.py)
+- **XAMPP Project Manager:** xem [tools/py/xampp-project-manager/README.md](tools/py/xampp-project-manager/README.md)
 
-**Ví dụ thực tế:**
+### Security & Performance
+- **Scan Malware:** xem [tools/py/scan-malware/README.md](tools/py/scan-malware/README.md)
+- **Website Performance Checker:** xem [tools/py/website-performance-checker/README.md](tools/py/website-performance-checker/README.md)
+- **Website Performance Optimizer:** xem [tools/py/website-performance-optimizer/README.md](tools/py/website-performance-optimizer/README.md)
 
-```
-Nhập đường dẫn thư mục chứa ảnh: D:\Photos
-Nhập đường dẫn thư mục đầu ra (Enter để mặc định): [Enter]
-Nhập quality (mặc định 70): 80
-Có bật optimize không? (Y/n): Y
-Muốn đổi sang định dạng nào? (jpg, png, webp): webp
-Nhập dung lượng tối đa mỗi ảnh (KB, Enter để bỏ qua): 500
-Nhập chiều rộng (px, Enter để bỏ qua): 1920
-Nhập chiều cao (px, Enter để bỏ qua): [Enter]
-```
-
-**Kết quả:**
-```
-✅ photo1.jpg | 2500.0KB → 450.2KB (q=80)
-✅ photo2.png | 1800.5KB → 480.8KB (q=80)
-✅ photo3.jpg | 3200.0KB → 495.5KB (q=75)
-
-🎉 Hoàn thành nén ảnh! Ảnh đã được lưu tại: D:\Photos\compressed_20241029_143022
-```
-
-**Định dạng hỗ trợ:** JPG, JPEG, PNG, WEBP
-
-**Use case phổ biến:**
-- Tối ưu ảnh cho website (giảm thời gian load)
-- Resize ảnh để upload lên mạng xã hội
-- Chuyển đổi PNG sang WEBP (giảm 30-50% dung lượng)
-- Giảm dung lượng album ảnh
+> 💡 **Lưu ý**: Mỗi tool đều có README.md riêng với hướng dẫn chi tiết, ví dụ cụ thể, và các tips hữu ích. Click vào tên tool trong bảng trên để xem tài liệu đầy đủ.
 
 ---
 
-### 2. 🔄 Copy Changed Files - Sao chép file thay đổi theo Git
+## 🎯 Ví dụ sử dụng một số tool phổ biến
+
+### 1. 🔄 Copy Changed Files - Sao chép file thay đổi theo Git
 
 **Chức năng:**
 - ✅ Copy file theo commit range
@@ -1489,7 +1481,7 @@ Bạn muốn thêm tool mới hoặc cải thiện tool hiện tại? Rất hoan
 1. **Fork repository**
    ```bash
    # Clone fork của bạn
-   git clone https://github.com/YOUR_USERNAME/myPythonTool.git
+   git clone https://github.com/YOUR_USERNAME/DevTools.git
    ```
 
 2. **Tạo branch mới**
@@ -1594,7 +1586,7 @@ copies or substantial portions of the Software.
 
 - 🌐 GitHub: [@VHN-DEV](https://github.com/VHN-DEV)
 - 📧 Email: vhnam18032002@gmail.com
-- 🔗 Repository: [myPythonTool](https://github.com/VHN-DEV/myPythonTool)
+- 🔗 Repository: [DevTools](https://github.com/VHN-DEV/DevTools)
 
 ---
 
@@ -1602,7 +1594,7 @@ copies or substantial portions of the Software.
 
 ### Báo lỗi (Bug Report)
 
-Nếu gặp lỗi, hãy tạo [Issue](https://github.com/VHN-DEV/myPythonTool/issues) với thông tin:
+Nếu gặp lỗi, hãy tạo [Issue](https://github.com/VHN-DEV/DevTools/issues) với thông tin:
 - 🐛 Mô tả lỗi
 - 💻 Hệ điều hành & Python version
 - 📋 Steps to reproduce
@@ -1610,7 +1602,7 @@ Nếu gặp lỗi, hãy tạo [Issue](https://github.com/VHN-DEV/myPythonTool/is
 
 ### Đề xuất tính năng (Feature Request)
 
-Có ý tưởng tool mới? Tạo [Issue](https://github.com/VHN-DEV/myPythonTool/issues) với label `enhancement`
+Có ý tưởng tool mới? Tạo [Issue](https://github.com/VHN-DEV/DevTools/issues) với label `enhancement`
 
 ### Hỗ trợ
 
@@ -1653,6 +1645,6 @@ Tool này đã giúp:
 
 **Made with ❤️ by V.H.Nam**
 
-[⬆ Back to top](#-mypythontool---bộ-công-cụ-python-tiện-ích)
+[⬆ Back to top](#-devtools---bộ-công-cụ-python-tiện-ích)
 
 </div>

@@ -7,15 +7,15 @@
 #     pip install -e .        # Development mode (khuyến nghị)
 #     pip install .           # Cài đặt bình thường
 #
-# Sau khi cài, chạy bằng lệnh: myptool
+# Sau khi cài, chạy bằng lệnh: devtools
 
 [build-system]
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "myPythonTool"
-version = "1.0.0"
+name = "DevTools"
+version = "1.0.1"
 description = "Bộ công cụ Python đa năng cho các tác vụ hàng ngày"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -33,6 +33,13 @@ dependencies = [
     "pdf2image>=1.16.0",
     "moviepy>=1.0.3",
     "colorama>=0.4.6",  # Cross-platform colored terminal output
+    "qrcode>=7.4.2",  # Tạo QR code
+    "opencv-python>=4.8.0",  # Giải mã QR code
+    "pyzbar>=0.1.9",  # Giải mã QR code và barcode
+    "numpy>=1.24.0",  # Xử lý ảnh (cho opencv)
+    "pyperclip>=1.8.2",  # Hỗ trợ clipboard
+    "rich>=13.0.0",  # Rich TUI library - Tables, panels, progress bars
+    "requests>=2.31.0",  # HTTP library for marketplace API calls
 ]
 
 # Phân loại dự án
@@ -53,15 +60,15 @@ classifiers = [
 
 # URL liên quan đến dự án
 [project.urls]
-Homepage = "https://github.com/VHN-DEV/myPythonTool"
-Documentation = "https://github.com/VHN-DEV/myPythonTool/blob/main/README.md"
-Repository = "https://github.com/VHN-DEV/myPythonTool"
-Changelog = "https://github.com/VHN-DEV/myPythonTool/blob/main/docs/CHANGELOG.md"
+Homepage = "https://github.com/VHN-DEV/DevTools"
+Documentation = "https://github.com/VHN-DEV/DevTools/blob/main/README.md"
+Repository = "https://github.com/VHN-DEV/DevTools"
+Changelog = "https://github.com/VHN-DEV/DevTools/blob/main/docs/CHANGELOG.md"
 
-# Entry points - Tạo command "myptool"
-# Khi gõ "myptool" ở bất kỳ đâu, sẽ chạy hàm main() trong menus/__init__.py
+# Entry points - Tạo command "devtools"
+# Khi gõ "devtools" ở bất kỳ đâu, sẽ chạy hàm main() trong menus/__init__.py
 [project.scripts]
-myptool = "menus:main"
+devtools = "menus:main"
 
 # Optional dependencies cho các tính năng mở rộng
 [project.optional-dependencies]
@@ -84,7 +91,12 @@ all = [
 
 # Cấu hình setuptools
 [tool.setuptools]
-packages = ["menus", "tools", "utils"]
+# Tự động tìm tất cả packages (bao gồm cả namespace packages trong tools/)
+packages = {find = {}}
+
+# Bao gồm cả các subpackages trong tools/
+[tool.setuptools.package-dir]
+"" = "."
 
 [tool.setuptools.package-data]
 "*" = ["*.json", "*.md", "*.txt"]

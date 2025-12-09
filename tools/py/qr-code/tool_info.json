@@ -1,5 +1,5 @@
 {
-  "name": "Tạo và Giải mã QR Code",
+  "name": "Tạo và Giải mã QR Code - Đa dụng",
   "tags": [
     "qr",
     "qr-code",
@@ -13,7 +13,20 @@
     "barcode",
     "image",
     "scanner",
-    "logo"
+    "logo",
+    "wifi",
+    "email",
+    "sms",
+    "vcard",
+    "batch",
+    "clipboard",
+    "webcam",
+    "camera",
+    "export",
+    "json",
+    "csv",
+    "hàng loạt",
+    "batch-generate"
   ]
 }
 

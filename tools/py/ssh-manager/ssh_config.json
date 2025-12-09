@@ -33,8 +33,8 @@
       "user": "samsung",
       "host": "192.168.10.150",
       "port": 1506,
-      "password": null,
-      "ssh_key": "C:\\Users\\Asus\\.ssh\\id_rsa",
+      "password": "Q6Hw7EWqKSDYvKj",
+      "ssh_key": null,
       "description": ""
     },
     {
@@ -42,8 +42,8 @@
       "user": "samsung",
       "host": "192.168.10.169",
       "port": 1506,
-      "password": null,
-      "ssh_key": "C:\\Users\\Asus\\.ssh\\id_rsa",
+      "password": "Q6Hw7EWqKSDYvKj",
+      "ssh_key": null,
       "description": ""
     },
     {

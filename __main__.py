@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-__main__.py - Entry point cho myPythonTool
+__main__.py - Entry point cho DevTools
 
-Mục đích: Cho phép chạy tool bằng lệnh "python ." hoặc "python myPythonTool/"
+Mục đích: Cho phép chạy tool bằng lệnh "python ." hoặc "python DevTools/"
 
 Cách dùng:
     python .                # Từ trong thư mục
-    python myPythonTool     # Từ bên ngoài
+    python DevTools         # Từ bên ngoài
 """
 
 import sys

@@ -118,7 +118,7 @@ def organize_files(source_folder, destination_folder=None, mode='copy', by_exten
             total_files += 1
         
         except Exception as e:
-            print(f"✗ Loi voi {file}: {e}")
+            print(f"✗ Lỗi với {file}: {e}")
     
     # Thống kê
     print(f"\n{'='*60}")
@@ -200,7 +200,7 @@ def organize_by_date(source_folder, destination_folder=None, mode='copy', date_f
             total_files += 1
         
         except Exception as e:
-            print(f"✗ Loi voi {file}: {e}")
+            print(f"✗ Lỗi với {file}: {e}")
     
     # Thống kê
     print(f"\n{'='*60}")
@@ -283,5 +283,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\n\n❌ Da huy!")
     except Exception as e:
-        print(f"\n❌ Loi: {e}")
+        print(f"\n❌ Lỗi: {e}")
 

@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from utils import (
     print_header, get_user_input, confirm_action,
-    log_info, log_error, normalize_path
+    log_info, log_error, normalize_path, install_library
 )
 from utils.colors import Colors
 
@@ -31,8 +31,11 @@ try:
     from openpyxl.styles import Alignment, Font, PatternFill
     from openpyxl.styles.borders import Border, Side
 except ImportError:
-    print(Colors.error("❌ Thiếu thư viện openpyxl!"))
-    print("Cài đặt: pip install openpyxl")
+    install_library(
+        package_name="openpyxl",
+        install_command="pip install openpyxl",
+        library_display_name="openpyxl"
+    )
     sys.exit(1)
 
 

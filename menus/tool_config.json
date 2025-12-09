@@ -6,29 +6,39 @@
     "video-converter.py"
   ],
   "recent": [
+    "ssh-manager.py",
+    "copy-changed-files.py",
+    "generate-tree.py",
+    "git-push-source.py",
+    "compress-images.py",
+    "qr-code.py",
     "scan-malware.py",
     "json-formatter.py",
     "video-converter.py",
-    "setup-project-linux.py",
-    "compress-images.py",
-    "backup-folder.py",
-    "clean-temp-files.py",
-    "copy-changed-files.py",
-    "duplicate-finder.py",
-    "extract-archive.py"
+    "setup-project-linux.py"
   ],
   "settings": {
-    "show_descriptions": true,
+    "show_descriptions": false,
     "max_recent": 10
   },
   "disabled_tools": [
     "bootstrap.py",
-    "font-generator.py",
-    "gitlab-commits-export.py",
     "optimize-image.py",
-    "pdf-tools.py",
-    "rename-files.py",
     "search-replace.py",
-    "xampp-project-manager.py"
-  ]
+    "setup-project-linux.py",
+    "optimize-shrinkpdf.py",
+    "docker-setup-laravel.py",
+    "docker-setup.py",
+    "wordpress_auto_install.py"
+  ],
+  "statistics": {
+    "tool_usage": {
+      "ssh-manager.py": 4,
+      "copy-changed-files.py": 6
+    },
+    "last_used": {
+      "ssh-manager.py": 1765268228.6703696,
+      "copy-changed-files.py": 1765265905.9708328
+    }
+  }
 }

@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "default_xampp_path": "C:\\xampp",
+  "connections": [
+    {
+      "name": "XAMPP Local",
+      "host": "localhost",
+      "port": 3306,
+      "user": "root",
+      "password": "",
+      "default_db": "",
+      "xampp_path": "C:\\xampp"
+    },
+    {
+      "name": "Production Server",
+      "host": "192.168.1.100",
+      "port": 3306,
+      "user": "admin",
+      "password": "your_password",
+      "default_db": "production_db",
+      "xampp_path": "C:\\xampp"
+    }
+  ],
+  "backup_folder": "database_backups",
+  "default_connection": 0
+}
+

@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "default_htdocs_path": "C:\\xampp\\htdocs",
+  "check_css": true,
+  "check_js": true,
+  "check_images": true,
+  "check_html": true,
+  "check_php": true,
+  "max_file_size_mb": 1.0,
+  "max_image_size_kb": 500,
+  "check_minified": true,
+  "check_duplicates": true
+}

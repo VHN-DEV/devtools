@@ -18,7 +18,41 @@ from typing import Optional
 _logger: Optional[logging.Logger] = None
 
 
-def setup_logger(name: str = 'myPythonTool', 
+def _get_project_root():
+    """
+    Tìm project root dựa trên vị trí file hiện tại
+    
+    Returns:
+        Path: Đường dẫn đến project root
+    """
+    from pathlib import Path
+    
+    # Lấy đường dẫn của file logger.py
+    # __file__ trong module này sẽ là đường dẫn đến utils/logger.py
+    # Project root sẽ là parent của thư mục utils
+    try:
+        current_file = Path(__file__).resolve()
+        # current_file sẽ là: .../devtools/utils/logger.py
+        # Project root sẽ là: .../devtools/
+        project_root = current_file.parent.parent
+        
+        # Kiểm tra xem có phải project root không (có file __main__.py hoặc pyproject.toml)
+        if (project_root / '__main__.py').exists() or (project_root / 'pyproject.toml').exists():
+            return project_root
+    except Exception:
+        pass
+    
+    # Fallback: tìm từ working directory
+    current = Path.cwd()
+    for parent in [current] + list(current.parents):
+        if (parent / '__main__.py').exists() or (parent / 'pyproject.toml').exists():
+            return parent
+    
+    # Nếu không tìm thấy, dùng thư mục hiện tại
+    return current
+
+
+def setup_logger(name: str = 'DevTools', 
                  log_dir: str = 'logs',
                  log_to_file: bool = True,
                  log_to_console: bool = True,
@@ -188,3 +222,178 @@ def log_operation(operation: str, details: str = '') -> None:
     else:
         logger.info(f"🔧 {operation}")
 
+
+def log_error_to_file(error: Exception, tool_name: str = "", context: str = "", log_dir: str = 'logs') -> str:
+    """
+    Ghi lỗi ra file với format log-ngày-giờ
+    
+    Args:
+        error: Exception object hoặc error message
+        tool_name: Tên tool gây lỗi
+        context: Thông tin bổ sung về context
+        log_dir: Thư mục chứa log files
+    
+    Returns:
+        str: Đường dẫn đến file log đã tạo
+    
+    Giải thích:
+    - Tạo file log với format: log-YYYY-MM-DD-HH-MM-SS.txt
+    - Ghi lại thông tin chi tiết về lỗi, bao gồm traceback
+    - Tự động tạo thư mục logs nếu chưa có
+    """
+    import traceback
+    from pathlib import Path
+    
+    # Nếu log_dir là đường dẫn tương đối, tìm project root và tạo đường dẫn tuyệt đối
+    log_path = Path(log_dir)
+    
+    # Nếu không phải đường dẫn tuyệt đối, tìm project root
+    if not log_path.is_absolute():
+        project_root = _get_project_root()
+        log_path = project_root / log_dir
+    
+    # Tạo thư mục logs nếu chưa có
+    log_path.mkdir(parents=True, exist_ok=True)
+    
+    # Tạo tên file với format: log-ngày-giờ
+    timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    log_file = log_path / f"log-{timestamp}.log"
+    
+    # Chuẩn bị nội dung log
+    lines = []
+    lines.append("=" * 80)
+    lines.append(f"ERROR LOG - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    lines.append("=" * 80)
+    lines.append("")
+    
+    if tool_name:
+        lines.append(f"Tool: {tool_name}")
+        lines.append("")
+    
+    if context:
+        lines.append(f"Context: {context}")
+        lines.append("")
+    
+    lines.append(f"Error Type: {type(error).__name__}")
+    lines.append(f"Error Message: {str(error)}")
+    lines.append("")
+    lines.append("Traceback:")
+    lines.append("-" * 80)
+    
+    # Lấy traceback
+    if isinstance(error, Exception):
+        tb_lines = traceback.format_exception(type(error), error, error.__traceback__)
+        lines.extend(tb_lines)
+    else:
+        lines.append(str(error))
+    
+    lines.append("")
+    lines.append("=" * 80)
+    lines.append("")
+    
+    # Ghi vào file
+    try:
+        with open(log_file, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(lines))
+        return str(log_file)
+    except Exception as e:
+        # Nếu không ghi được file, in ra console
+        print(f"⚠️  Không thể ghi log file: {e}")
+        return ""
+
+
+def clear_logs(log_dir: str = 'logs', pattern: str = "log-*.log") -> int:
+    """
+    Xóa các file log
+    
+    Args:
+        log_dir: Thư mục chứa log files
+        pattern: Pattern để tìm file log (mặc định: log-*.txt)
+    
+    Returns:
+        int: Số lượng file đã xóa
+    
+    Giải thích:
+    - Xóa tất cả file log khớp với pattern
+    - Hỗ trợ cả pattern đơn giản (log-*.txt)
+    """
+    from pathlib import Path
+    import glob
+    
+    # Nếu log_dir là đường dẫn tương đối, tìm project root và tạo đường dẫn tuyệt đối
+    log_path = Path(log_dir)
+    
+    # Nếu không phải đường dẫn tuyệt đối, tìm project root
+    if not log_path.is_absolute():
+        project_root = _get_project_root()
+        log_path = project_root / log_dir
+    
+    if not log_path.exists():
+        return 0
+    
+    # Đếm số file trước khi xóa
+    deleted_count = 0
+    
+    try:
+        # Tìm tất cả file log khớp với pattern (ưu tiên .log, nhưng cũng tìm .txt để tương thích)
+        log_files = list(log_path.glob(pattern))
+        # Cũng tìm file .txt cũ để tương thích
+        if pattern == "log-*.log":
+            log_files.extend(log_path.glob("log-*.txt"))
+        
+        # Loại bỏ duplicate
+        log_files = list(set(log_files))
+        
+        for log_file in log_files:
+            try:
+                log_file.unlink()
+                deleted_count += 1
+            except Exception as e:
+                print(f"⚠️  Không thể xóa file {log_file}: {e}")
+        
+        return deleted_count
+    except Exception as e:
+        print(f"⚠️  Lỗi khi xóa log files: {e}")
+        return 0
+
+
+def get_log_files(log_dir: str = 'logs', pattern: str = "log-*.log") -> list:
+    """
+    Lấy danh sách các file log
+    
+    Args:
+        log_dir: Thư mục chứa log files
+        pattern: Pattern để tìm file log (mặc định: log-*.txt)
+    
+    Returns:
+        list: Danh sách đường dẫn đến các file log (sorted by modification time, newest first)
+    """
+    from pathlib import Path
+    import os
+    
+    # Nếu log_dir là đường dẫn tương đối, tìm project root và tạo đường dẫn tuyệt đối
+    log_path = Path(log_dir)
+    
+    # Nếu không phải đường dẫn tuyệt đối, tìm project root
+    if not log_path.is_absolute():
+        project_root = _get_project_root()
+        log_path = project_root / log_dir
+    
+    if not log_path.exists():
+        return []
+    
+    try:
+        # Tìm tất cả file log khớp với pattern (ưu tiên .log, nhưng cũng tìm .txt để tương thích)
+        log_files = list(log_path.glob(pattern))
+        # Cũng tìm file .txt cũ để tương thích
+        if pattern == "log-*.log":
+            log_files.extend(log_path.glob("log-*.txt"))
+        
+        # Loại bỏ duplicate và sắp xếp theo thời gian sửa đổi (mới nhất trước)
+        log_files = list(set(log_files))  # Remove duplicates
+        log_files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+        
+        return [str(f) for f in log_files]
+    except Exception as e:
+        print(f"⚠️  Lỗi khi lấy danh sách log files: {e}")
+        return []

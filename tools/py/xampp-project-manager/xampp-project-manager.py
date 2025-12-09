@@ -11,6 +11,8 @@ import json
 import sys
 import shutil
 import re
+import stat
+import time
 from pathlib import Path
 from typing import List, Dict, Optional
 
@@ -47,7 +49,7 @@ def load_config():
             with open(config_file, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            print(f"[!] Loi doc config: {e}")
+            print(f"[!] Lỗi đọc config: {e}")
             return get_default_config()
     else:
         config = get_default_config()
@@ -64,7 +66,7 @@ def save_config(config):
             json.dump(config, f, indent=2, ensure_ascii=False)
         return True
     except Exception as e:
-        print(f"[X] Loi luu config: {e}")
+        print(f"[X] Lỗi lưu config: {e}")
         return False
 
 
@@ -102,7 +104,7 @@ def list_projects(htdocs_path: str) -> List[str]:
                 if item.lower() not in ['cgi-bin', 'webalizer', 'usage']:
                     projects.append(item)
     except Exception as e:
-        print(f"[!] Loi doc thu muc htdocs: {e}")
+        print(f"[!] Lỗi đọc thư mục htdocs: {e}")
     
     return sorted(projects)
 
@@ -130,7 +132,7 @@ def open_project_in_editor(project_path: str, editor: str = 'code'):
         print(f"[i] Vui long cai dat {editor} hoac them vao PATH")
         return False
     except Exception as e:
-        print(f"[X] Loi mo du an: {e}")
+        print(f"[X] Lỗi mở dự án: {e}")
         return False
 
 
@@ -157,7 +159,7 @@ def clone_project(source: str, project_name: str, htdocs_path: str):
             print(f"[OK] Da clone du an thanh cong!")
             return True
         else:
-            print(f"[X] Loi khi clone:")
+            print(f"[X] Lỗi khi clone:")
             print(result.stderr)
             return False
     except FileNotFoundError:
@@ -165,8 +167,75 @@ def clone_project(source: str, project_name: str, htdocs_path: str):
         print("[i] Vui long cai dat Git hoac them vao PATH")
         return False
     except Exception as e:
-        print(f"[X] Loi: {e}")
+        print(f"[X] Lỗi: {e}")
         return False
+
+
+def remove_readonly(func, path, exc_info):
+    """
+    Helper function để xóa thuộc tính read-only trên Windows
+    Sử dụng với shutil.rmtree onerror parameter
+    """
+    try:
+        # Thử xóa thuộc tính read-only
+        os.chmod(path, stat.S_IWRITE)
+        # Thử xóa lại
+        func(path)
+    except Exception:
+        # Nếu vẫn lỗi, bỏ qua file/thư mục đó
+        pass
+
+
+def robust_rmtree(path: str, max_retries: int = 3, retry_delay: float = 0.5) -> bool:
+    """
+    Xóa thư mục một cách mạnh mẽ, xử lý các vấn đề quyền trên Windows
+    
+    Args:
+        path: Đường dẫn thư mục cần xóa
+        max_retries: Số lần thử lại tối đa
+        retry_delay: Thời gian chờ giữa các lần thử (giây)
+    
+    Returns:
+        True nếu xóa thành công, False nếu thất bại
+    """
+    for attempt in range(max_retries):
+        try:
+            # Thử xóa với handler để xử lý read-only files
+            shutil.rmtree(path, onerror=remove_readonly)
+            return True
+        except PermissionError as e:
+            if attempt < max_retries - 1:
+                # Thử xóa thuộc tính read-only của toàn bộ thư mục trước
+                try:
+                    for root, dirs, files in os.walk(path):
+                        for d in dirs:
+                            dir_path = os.path.join(root, d)
+                            try:
+                                os.chmod(dir_path, stat.S_IWRITE)
+                            except Exception:
+                                pass
+                        for f in files:
+                            file_path = os.path.join(root, f)
+                            try:
+                                os.chmod(file_path, stat.S_IWRITE)
+                            except Exception:
+                                pass
+                except Exception:
+                    pass
+                
+                time.sleep(retry_delay)
+                continue
+            else:
+                # Lần thử cuối cùng thất bại
+                raise e
+        except Exception as e:
+            if attempt < max_retries - 1:
+                time.sleep(retry_delay)
+                continue
+            else:
+                raise e
+    
+    return False
 
 
 def delete_project(project_name: str, htdocs_path: str):
@@ -183,14 +252,20 @@ def delete_project(project_name: str, htdocs_path: str):
         confirm = input("Xac nhan xoa? (YES de xac nhan): ").strip()
         
         if confirm == "YES":
-            shutil.rmtree(project_path)
-            print(f"[OK] Da xoa du an: {project_name}")
-            return True
+            # Sử dụng hàm xóa mạnh mẽ hơn
+            if robust_rmtree(project_path):
+                print(f"[OK] Da xoa du an: {project_name}")
+                return True
+            else:
+                print(f"[X] Khong the xoa du an: {project_name}")
+                return False
         else:
             print("Da huy")
             return False
     except Exception as e:
-        print(f"[X] Loi xoa du an: {e}")
+        print(f"[X] Lỗi xóa dự án: {e}")
+        print(f"[i] Co the file/folder dang duoc su dung boi chuong trinh khac")
+        print(f"[i] Hoac khong co quyen xoa (can quyen Administrator)")
         return False
 
 
@@ -212,7 +287,7 @@ def rename_project(old_name: str, new_name: str, htdocs_path: str):
         print(f"[OK] Da doi ten du an: {old_name} -> {new_name}")
         return True
     except Exception as e:
-        print(f"[X] Loi doi ten: {e}")
+        print(f"[X] Lỗi đổi tên: {e}")
         return False
 
 
@@ -230,7 +305,7 @@ def read_hosts_file(hosts_file: str) -> List[str]:
         print("[i] Can chay voi quyen Administrator")
         return []
     except Exception as e:
-        print(f"[X] Loi doc file hosts: {e}")
+        print(f"[X] Lỗi đọc file hosts: {e}")
         return []
 
 
@@ -245,7 +320,7 @@ def write_hosts_file(hosts_file: str, lines: List[str]):
         print("[i] Can chay voi quyen Administrator")
         return False
     except Exception as e:
-        print(f"[X] Loi ghi file hosts: {e}")
+        print(f"[X] Lỗi ghi file hosts: {e}")
         return False
 
 
@@ -395,8 +470,85 @@ def list_hosts(hosts_file: str = None):
         print(f"{idx}. {ip:15} -> {domain}")
 
 
+def get_php_versions_by_folder_rename(xampp_path: str) -> List[str]:
+    """Lấy danh sách phiên bản PHP có sẵn bằng cách tìm thư mục php-* và apache-*"""
+    versions = []
+    
+    if not os.path.exists(xampp_path):
+        return versions
+    
+    try:
+        # Tìm các thư mục php-* và apache-*
+        php_patterns = []
+        apache_patterns = []
+        
+        for item in os.listdir(xampp_path):
+            item_path = os.path.join(xampp_path, item)
+            if os.path.isdir(item_path):
+                # Tìm thư mục php-*
+                if item.startswith('php-'):
+                    version = item.replace('php-', '')
+                    php_patterns.append(version)
+                    # Kiểm tra có php.exe không
+                    php_exe = os.path.join(item_path, 'php.exe')
+                    if os.path.exists(php_exe):
+                        if version not in versions:
+                            versions.append(version)
+                
+                # Tìm thư mục apache-*
+                elif item.startswith('apache-'):
+                    version = item.replace('apache-', '')
+                    apache_patterns.append(version)
+                    # Kiểm tra có httpd.exe không
+                    httpd_exe = os.path.join(item_path, 'bin', 'httpd.exe')
+                    if os.path.exists(httpd_exe):
+                        if version not in versions:
+                            versions.append(version)
+        
+        # Kiểm tra thư mục php và apache hiện tại (không có suffix)
+        current_php = os.path.join(xampp_path, 'php')
+        current_apache = os.path.join(xampp_path, 'apache')
+        
+        if os.path.exists(current_php):
+            php_exe = os.path.join(current_php, 'php.exe')
+            if os.path.exists(php_exe):
+                # Thử lấy version từ php.exe
+                try:
+                    result = subprocess.run(
+                        [php_exe, '-v'],
+                        capture_output=True,
+                        text=True,
+                        timeout=5
+                    )
+                    if result.returncode == 0:
+                        # Parse version từ output (ví dụ: PHP 8.0.0)
+                        version_match = re.search(r'PHP\s+(\d+\.\d+)', result.stdout)
+                        if version_match:
+                            version = version_match.group(1)
+                            if version not in versions:
+                                versions.append(version)
+                        else:
+                            # Nếu không parse được, dùng "current" hoặc tên thư mục backup
+                            # Kiểm tra xem có thư mục backup không
+                            versions.append('current')
+                except Exception:
+                    versions.append('current')
+        
+    except Exception as e:
+        print(f"[!] Lỗi khi quét phiên bản: {e}")
+    
+    return sorted(versions, reverse=True)
+
+
 def get_php_versions(xampp_path: str) -> List[str]:
-    """Lấy danh sách phiên bản PHP có sẵn"""
+    """Lấy danh sách phiên bản PHP có sẵn - hỗ trợ cả 2 cách: thư mục con và đổi tên thư mục"""
+    # Thử cách 1: Tìm thư mục php-* và apache-* (đổi tên thư mục)
+    versions_by_rename = get_php_versions_by_folder_rename(xampp_path)
+    
+    if versions_by_rename:
+        return versions_by_rename
+    
+    # Thử cách 2: Tìm trong thư mục php con (cách cũ)
     php_dir = os.path.join(xampp_path, 'php')
     
     if not os.path.exists(php_dir):
@@ -424,10 +576,50 @@ def show_add_php_version_guide(xampp_path: str):
     print("=" * 60)
     
     php_dir = os.path.join(xampp_path, 'php')
-    print(f"\n📁 Thu muc PHP: {php_dir}")
+    apache_dir = os.path.join(xampp_path, 'apache')
+    print(f"\n📁 Thu muc XAMPP: {xampp_path}")
+    print(f"📁 Thu muc PHP: {php_dir}")
+    print(f"📁 Thu muc Apache: {apache_dir}")
     
-    print("\n" + "-" * 60)
-    print("CÁCH 1: Tải PHP từ Windows.php.net (Khuyên dùng)")
+    print("\n" + "=" * 60)
+    print("PHƯƠNG PHÁP ĐỔI TÊN THƯ MỤC (KHUYÊN DÙNG)")
+    print("=" * 60)
+    print("""
+Phương pháp này cho phép chuyển đổi PHP version bằng cách đổi tên thư mục:
+- Đổi tên 'php' -> 'php-[version]' và 'apache' -> 'apache-[version]'
+- Đổi tên 'php-[version mới]' -> 'php' và 'apache-[version mới]' -> 'apache'
+
+CÁCH THIẾT LẬP:
+
+1. Chuẩn bị các phiên bản PHP/Apache:
+   - Đổi tên thư mục 'php' hiện tại thành 'php-8.0' (ví dụ)
+   - Đổi tên thư mục 'apache' hiện tại thành 'apache-8.0' (ví dụ)
+   
+2. Cài đặt phiên bản PHP/Apache mới:
+   - Tải XAMPP với phiên bản PHP/Apache mới từ: https://www.apachefriends.org/
+   - Hoặc tải PHP từ: https://windows.php.net/download/
+   
+3. Đặt tên thư mục theo format:
+   - php-8.0, php-8.1, php-8.2, ...
+   - apache-8.0, apache-8.1, apache-8.2, ...
+   
+4. Sau khi thiết lập:
+   - Chạy tool và chọn 'php' để xem danh sách version
+   - Chọn version để chuyển đổi tự động
+   - Restart Apache để áp dụng (lệnh 'ra')
+
+VÍ DỤ CẤU TRÚC THƯ MỤC:
+   C:\\xampp\\
+   ├── php          (version hiện tại đang dùng)
+   ├── apache       (version hiện tại đang dùng)
+   ├── php-8.0      (version PHP 8.0 backup)
+   ├── apache-8.0   (version Apache tương ứng)
+   ├── php-8.1      (version PHP 8.1 backup)
+   └── apache-8.1   (version Apache tương ứng)
+""")
+    
+    print("-" * 60)
+    print("PHƯƠNG PHÁP CŨ (Thư mục con trong php/)")
     print("-" * 60)
     print("""
 1. Truy cập: https://windows.php.net/download/
@@ -453,15 +645,6 @@ def show_add_php_version_guide(xampp_path: str):
 """.format(php_dir=php_dir))
     
     print("-" * 60)
-    print("CÁCH 2: Sử dụng XAMPP Add-on (nếu có)")
-    print("-" * 60)
-    print("""
-1. Một số phiên bản XAMPP có add-on PHP riêng
-2. Tải từ: https://www.apachefriends.org/download.html
-3. Cài đặt add-on theo hướng dẫn
-""")
-    
-    print("-" * 60)
     print("LƯU Ý QUAN TRỌNG:")
     print("-" * 60)
     print("""
@@ -477,9 +660,9 @@ def show_add_php_version_guide(xampp_path: str):
    - Sao chép từ version cũ hoặc từ php.ini-development
    - Chỉnh sửa extension_dir và các extension cần thiết
    
-⚠️  Sau khi thêm:
-   - Chạy tool và chọn 'php' để xem version mới
-   - Chuyển đổi sang version mới bằng số thứ tự hoặc tên
+⚠️  Khi chuyển đổi version:
+   - Đóng Apache và MySQL trước khi chuyển đổi (nếu dùng phương pháp đổi tên thư mục)
+   - Tool sẽ tự động backup version hiện tại
    - Restart Apache để áp dụng (lệnh 'ra')
 """)
     
@@ -490,9 +673,21 @@ def show_add_php_version_guide(xampp_path: str):
     if versions:
         print(f"\n✅ Tim thay {len(versions)} PHP version(s):")
         for idx, version in enumerate(versions, start=1):
-            version_path = os.path.join(php_dir, version)
-            php_exe = os.path.join(version_path, 'php.exe')
-            if os.path.exists(php_exe):
+            # Kiểm tra xem version này có trong thư mục php-* hay trong php/*
+            php_version_path = os.path.join(xampp_path, f'php-{version}')
+            php_subdir_path = os.path.join(php_dir, version)
+            
+            if os.path.exists(php_version_path):
+                php_exe = os.path.join(php_version_path, 'php.exe')
+                version_type = "📁 (đổi tên thư mục)"
+            elif os.path.exists(php_subdir_path):
+                php_exe = os.path.join(php_subdir_path, 'php.exe')
+                version_type = "📂 (thư mục con)"
+            else:
+                php_exe = None
+                version_type = ""
+            
+            if php_exe and os.path.exists(php_exe):
                 try:
                     # Lấy version từ php.exe
                     result = subprocess.run(
@@ -503,17 +698,17 @@ def show_add_php_version_guide(xampp_path: str):
                     )
                     if result.returncode == 0:
                         first_line = result.stdout.split('\n')[0] if result.stdout else ''
-                        print(f"   {idx}. {version}")
+                        print(f"   {idx}. {version} {version_type}")
                         if first_line:
                             print(f"      {first_line.strip()}")
                     else:
-                        print(f"   {idx}. {version} (khong the kiem tra)")
+                        print(f"   {idx}. {version} {version_type} (khong the kiem tra)")
                 except Exception:
-                    print(f"   {idx}. {version}")
+                    print(f"   {idx}. {version} {version_type}")
             else:
-                print(f"   {idx}. {version} (thieu php.exe)")
+                print(f"   {idx}. {version} {version_type} (thieu php.exe)")
     else:
-        print(f"\n❌ Khong tim thay PHP version nao trong: {php_dir}")
+        print(f"\n❌ Khong tim thay PHP version nao trong: {xampp_path}")
     
     print("\n" + "=" * 60)
     input("\nNhan Enter de quay lai menu...")
@@ -585,6 +780,30 @@ def find_php_dll(php_version_dir: str) -> Optional[str]:
 
 def get_current_php_version(xampp_path: str) -> Optional[str]:
     """Lấy phiên bản PHP hiện tại đang được sử dụng"""
+    # Kiểm tra xem có đang dùng cách đổi tên thư mục không
+    current_php = os.path.join(xampp_path, 'php')
+    current_apache = os.path.join(xampp_path, 'apache')
+    
+    if os.path.exists(current_php):
+        # Thử lấy version từ php.exe hiện tại
+        php_exe = os.path.join(current_php, 'php.exe')
+        if os.path.exists(php_exe):
+            try:
+                result = subprocess.run(
+                    [php_exe, '-v'],
+                    capture_output=True,
+                    text=True,
+                    timeout=5
+                )
+                if result.returncode == 0:
+                    # Parse version từ output (ví dụ: PHP 8.0.0)
+                    version_match = re.search(r'PHP\s+(\d+\.\d+)', result.stdout)
+                    if version_match:
+                        return version_match.group(1)
+            except Exception:
+                pass
+    
+    # Fallback: Đọc từ httpd.conf
     httpd_conf = os.path.join(xampp_path, 'apache', 'conf', 'httpd.conf')
     
     if not os.path.exists(httpd_conf):
@@ -611,14 +830,130 @@ def get_current_php_version(xampp_path: str) -> Optional[str]:
     return None
 
 
+def switch_php_version_by_folder_rename(version: str, xampp_path: str) -> bool:
+    """Chuyển đổi phiên bản PHP bằng cách đổi tên thư mục apache và php"""
+    current_php = os.path.join(xampp_path, 'php')
+    current_apache = os.path.join(xampp_path, 'apache')
+    target_php = os.path.join(xampp_path, f'php-{version}')
+    target_apache = os.path.join(xampp_path, f'apache-{version}')
+    
+    # Kiểm tra thư mục đích có tồn tại không
+    php_found = False
+    apache_found = False
+    
+    if os.path.exists(target_php):
+        php_exe = os.path.join(target_php, 'php.exe')
+        if os.path.exists(php_exe):
+            php_found = True
+    
+    if os.path.exists(target_apache):
+        httpd_exe = os.path.join(target_apache, 'bin', 'httpd.exe')
+        if os.path.exists(httpd_exe):
+            apache_found = True
+    
+    if not php_found and not apache_found:
+        print(f"[X] Khong tim thay thu muc php-{version} hoac apache-{version}")
+        return False
+    
+    if not php_found:
+        print(f"[!] Canh bao: Khong tim thay thu muc php-{version}")
+    if not apache_found:
+        print(f"[!] Canh bao: Khong tim thay thu muc apache-{version}")
+    
+    try:
+        # Lấy version hiện tại từ thư mục php/apache hiện tại
+        current_version = None
+        if os.path.exists(current_php):
+            php_exe = os.path.join(current_php, 'php.exe')
+            if os.path.exists(php_exe):
+                try:
+                    result = subprocess.run(
+                        [php_exe, '-v'],
+                        capture_output=True,
+                        text=True,
+                        timeout=5
+                    )
+                    if result.returncode == 0:
+                        version_match = re.search(r'PHP\s+(\d+\.\d+)', result.stdout)
+                        if version_match:
+                            current_version = version_match.group(1)
+                except Exception:
+                    pass
+        
+        # Nếu không parse được version hiện tại, dùng tên mặc định
+        if not current_version:
+            current_version = 'backup'
+        
+        # Bước 1: Đổi tên thư mục hiện tại thành backup
+        backup_php = os.path.join(xampp_path, f'php-{current_version}')
+        backup_apache = os.path.join(xampp_path, f'apache-{current_version}')
+        
+        # Nếu đã tồn tại thư mục backup với tên này, thêm timestamp
+        if os.path.exists(backup_php) or os.path.exists(backup_apache):
+            timestamp = time.strftime('%Y%m%d_%H%M%S')
+            backup_php = os.path.join(xampp_path, f'php-{current_version}_{timestamp}')
+            backup_apache = os.path.join(xampp_path, f'apache-{current_version}_{timestamp}')
+        
+        print(f"\n[>] Dang chuyen doi PHP version...")
+        print(f"    Tu: {current_version}")
+        print(f"    Den: {version}")
+        
+        # Đổi tên thư mục php hiện tại
+        if os.path.exists(current_php):
+            print(f"[>] Doi ten thu muc php -> php-{current_version}")
+            os.rename(current_php, backup_php)
+        
+        # Đổi tên thư mục apache hiện tại
+        if os.path.exists(current_apache):
+            print(f"[>] Doi ten thu muc apache -> apache-{current_version}")
+            os.rename(current_apache, backup_apache)
+        
+        # Bước 2: Đổi tên thư mục version mới thành tên chuẩn
+        if php_found:
+            print(f"[>] Doi ten thu muc php-{version} -> php")
+            os.rename(target_php, current_php)
+        
+        if apache_found:
+            print(f"[>] Doi ten thu muc apache-{version} -> apache")
+            os.rename(target_apache, current_apache)
+        
+        print(f"\n[OK] Da chuyen doi PHP version thanh cong: {version}")
+        print(f"\n[i] Can restart Apache de ap dung thay doi!")
+        print(f"    Su dung lenh 'ra' de restart Apache")
+        
+        return True
+        
+    except PermissionError:
+        print("[X] Khong co quyen doi ten thu muc!")
+        print("[i] Can chay tool voi quyen Administrator")
+        print("[i] Hoac dong tat ca chuong trinh dang su dung XAMPP (Apache, MySQL)")
+        return False
+    except Exception as e:
+        print(f"[X] Lỗi khi đổi tên thư mục: {e}")
+        print(f"[i] Co the thu muc dang duoc su dung boi chuong trinh khac")
+        print(f"[i] Vui long dong Apache va MySQL truoc khi chuyen doi")
+        return False
+
+
 def switch_php_version(version: str, xampp_path: str):
-    """Chuyển đổi phiên bản PHP - tự động chỉnh sửa httpd.conf"""
+    """Chuyển đổi phiên bản PHP - thử cách đổi tên thư mục trước, nếu không được thì dùng cách cũ"""
+    # Kiểm tra xem có thư mục php-{version} và apache-{version} không
+    target_php = os.path.join(xampp_path, f'php-{version}')
+    target_apache = os.path.join(xampp_path, f'apache-{version}')
+    
+    # Nếu có cả 2 thư mục này, dùng cách đổi tên thư mục
+    if os.path.exists(target_php) and os.path.exists(target_apache):
+        return switch_php_version_by_folder_rename(version, xampp_path)
+    
+    # Nếu không có, thử cách cũ: chỉnh sửa httpd.conf
     php_dir = os.path.join(xampp_path, 'php')
     php_version_dir = os.path.join(php_dir, version)
     target_php_path = os.path.join(php_version_dir, 'php.exe')
     
     if not os.path.exists(target_php_path):
         print(f"[X] Khong tim thay PHP version: {version}")
+        print(f"[i] Tim tai: {target_php_path}")
+        print(f"[i] Hoac: {target_php}")
         return False
     
     # Tìm file DLL
@@ -715,7 +1050,7 @@ def switch_php_version(version: str, xampp_path: str):
         print("[i] Can chay tool voi quyen Administrator")
         return False
     except Exception as e:
-        print(f"[X] Loi khi chinh sua httpd.conf: {e}")
+        print(f"[X] Lỗi khi chỉnh sửa httpd.conf: {e}")
         # Khôi phục từ backup nếu có lỗi
         if os.path.exists(backup_path):
             try:
@@ -743,7 +1078,7 @@ def restart_xampp(xampp_path: str):
         subprocess.Popen([xampp_control])
         return True
     except Exception as e:
-        print(f"[X] Loi mo XAMPP Control: {e}")
+        print(f"[X] Lỗi mở XAMPP Control: {e}")
         return False
 
 
@@ -769,7 +1104,7 @@ def restart_apache(xampp_path: str):
         print("[OK] Da restart Apache!")
         return True
     except Exception as e:
-        print(f"[X] Loi restart Apache: {e}")
+        print(f"[X] Lỗi restart Apache: {e}")
         return False
 
 
@@ -988,18 +1323,30 @@ def main():
             print("\n" + "=" * 60)
             print("  QUAN LY PHP VERSION")
             print("=" * 60)
+            print(f"\n[i] Duong dan XAMPP: {xampp_path}")
+            
             versions = get_php_versions(xampp_path)
             
             if versions:
                 # Hiển thị version hiện tại nếu có
                 current_version = get_current_php_version(xampp_path)
                 if current_version:
-                    print(f"\n[i] PHP version hien tai: {current_version}")
+                    print(f"[i] PHP version hien tai: {current_version}")
                 
                 print("\nDanh sach PHP version co san:")
                 for idx, version in enumerate(versions, start=1):
+                    # Kiểm tra xem version này dùng phương pháp nào
+                    php_version_path = os.path.join(xampp_path, f'php-{version}')
+                    php_subdir_path = os.path.join(xampp_path, 'php', version)
+                    
+                    method = ""
+                    if os.path.exists(php_version_path):
+                        method = " [đổi tên thư mục]"
+                    elif os.path.exists(php_subdir_path):
+                        method = " [thư mục con]"
+                    
                     marker = " <-- dang su dung" if version == current_version else ""
-                    print(f"{idx}. {version}{marker}")
+                    print(f"{idx}. {version}{method}{marker}")
                 
                 print("\n" + "-" * 60)
                 print("Lenh:")
@@ -1018,33 +1365,49 @@ def main():
                     print("\n" + "=" * 60)
                     print("  KIEM TRA PHP VERSIONS")
                     print("=" * 60)
-                    php_dir = os.path.join(xampp_path, 'php')
                     
                     for version in versions:
-                        version_path = os.path.join(php_dir, version)
-                        checks = verify_php_version(version_path)
+                        # Kiểm tra xem version này dùng phương pháp nào
+                        php_version_path = os.path.join(xampp_path, f'php-{version}')
+                        php_subdir_path = os.path.join(xampp_path, 'php', version)
                         
-                        print(f"\n📦 {version}:")
-                        status = "✅" if checks['valid'] else "❌"
-                        print(f"   {status} php.exe: {'Co' if checks['php_exe'] else 'Thieu'}")
-                        print(f"   {status} PHP DLL: {'Co' if checks['php_dll'] else 'Thieu'}")
-                        print(f"   {'✅' if checks['php_ini'] else '⚠️ '} php.ini: {'Co' if checks['php_ini'] else 'Thieu'}")
+                        if os.path.exists(php_version_path):
+                            version_path = php_version_path
+                            method = "[đổi tên thư mục]"
+                        elif os.path.exists(php_subdir_path):
+                            version_path = php_subdir_path
+                            method = "[thư mục con]"
+                        else:
+                            version_path = None
+                            method = "[không tìm thấy]"
                         
-                        if checks['valid']:
-                            try:
-                                php_exe = os.path.join(version_path, 'php.exe')
-                                result = subprocess.run(
-                                    [php_exe, '-v'],
-                                    capture_output=True,
-                                    text=True,
-                                    timeout=5
-                                )
-                                if result.returncode == 0:
-                                    first_line = result.stdout.split('\n')[0] if result.stdout else ''
-                                    if first_line:
-                                        print(f"   📝 {first_line.strip()}")
-                            except Exception:
-                                pass
+                        if version_path:
+                            checks = verify_php_version(version_path)
+                            
+                            print(f"\n📦 {version} {method}:")
+                            status = "✅" if checks['valid'] else "❌"
+                            print(f"   {status} php.exe: {'Co' if checks['php_exe'] else 'Thieu'}")
+                            print(f"   {status} PHP DLL: {'Co' if checks['php_dll'] else 'Thieu'}")
+                            print(f"   {'✅' if checks['php_ini'] else '⚠️ '} php.ini: {'Co' if checks['php_ini'] else 'Thieu'}")
+                            
+                            if checks['valid']:
+                                try:
+                                    php_exe = os.path.join(version_path, 'php.exe')
+                                    result = subprocess.run(
+                                        [php_exe, '-v'],
+                                        capture_output=True,
+                                        text=True,
+                                        timeout=5
+                                    )
+                                    if result.returncode == 0:
+                                        first_line = result.stdout.split('\n')[0] if result.stdout else ''
+                                        if first_line:
+                                            print(f"   📝 {first_line.strip()}")
+                                except Exception:
+                                    pass
+                        else:
+                            print(f"\n📦 {version} {method}:")
+                            print(f"   ❌ Khong tim thay thu muc")
                     
                     input("\nNhan Enter de quay lai...")
                     continue
@@ -1113,7 +1476,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\n\n[X] Da huy!")
     except Exception as e:
-        print(f"\n[X] Loi: {e}")
+        print(f"\n[X] Lỗi: {e}")
         import traceback
         traceback.print_exc()
 

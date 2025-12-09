@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2024-12-19T00:00:00Z",
+  "description": "DevTools Marketplace Registry - Local sample",
+  "tools": [
+    {
+      "id": "example-tool",
+      "name": "Example Tool (Demo)",
+      "description": "⚠️ Đây chỉ là tool mẫu để demo. Download URL hiện tại trỏ đến repo chính, không phải tool cụ thể. Để sử dụng thực tế, bạn cần: 1) Export tool từ menu (manage → export), 2) Upload lên server/GitHub, 3) Cập nhật download_url trong registry này.",
+      "version": "1.0.0",
+      "author": "DevTools Community",
+      "category": "utilities",
+      "tags": ["example", "demo", "sample"],
+      "download_url": "https://github.com/VHN-DEV/DevTools/archive/refs/heads/main.zip",
+      "type": "py",
+      "homepage": "https://github.com/VHN-DEV/DevTools",
+      "note": "⚠️ Tool mẫu - Cần export tool thực tế và cập nhật download_url"
+    }
+  ]
+}
+

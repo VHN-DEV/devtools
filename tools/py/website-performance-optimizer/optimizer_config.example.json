@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "default_htdocs_path": "C:\\xampp\\htdocs",
+  "optimize_css": true,
+  "optimize_js": true,
+  "optimize_html": true,
+  "create_htaccess": true,
+  "backup_files": true,
+  "backup_folder": "backup_original",
+  "minify_css": true,
+  "minify_js": true,
+  "remove_html_comments": true,
+  "remove_whitespace": true
+}
+

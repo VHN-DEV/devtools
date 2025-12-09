@@ -13,15 +13,24 @@ import time
 import argparse
 import contextlib
 import shutil
+import csv
+import json
+import re
 from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, TYPE_CHECKING, Dict
+from datetime import datetime
+
+# Import Image cho type hint (nếu có)
+if TYPE_CHECKING:
+    from PIL import Image
 
 # Thêm thư mục cha vào sys.path để import utils
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from utils import (
     print_header, get_user_input, confirm_action,
-    ensure_directory_exists, log_info, log_error, normalize_path
+    ensure_directory_exists, log_info, log_error, normalize_path,
+    install_library
 )
 from utils.colors import Colors
 
@@ -34,6 +43,8 @@ try:
     QRCODE_GEN_AVAILABLE = True
 except ImportError:
     QRCODE_GEN_AVAILABLE = False
+    qrcode = None  # Set to None nếu không có
+    Image = None  # Set to None nếu không có
 
 # Kiểm tra thư viện giải mã QR code
 try:
@@ -50,6 +61,17 @@ try:
     OCR_AVAILABLE = True
 except ImportError:
     OCR_AVAILABLE = False
+
+# Clipboard (tùy chọn)
+try:
+    import pyperclip
+    CLIPBOARD_AVAILABLE = True
+except ImportError:
+    CLIPBOARD_AVAILABLE = False
+    pyperclip = None  # Set to None nếu không có
+
+# CSV/JSON processing
+CSV_AVAILABLE = True  # Built-in module
 
 
 # ==================== HÀM TẠO QR CODE ====================
@@ -70,8 +92,11 @@ def create_qr_code(
     if not QRCODE_GEN_AVAILABLE:
         return False, "Thiếu thư viện qrcode. Cài đặt: pip install qrcode[pil]"
     
+    # Import qrcode module vào local scope để tránh UnboundLocalError
+    import qrcode as qr_module
+    
     try:
-        qr = qrcode.QRCode(
+        qr = qr_module.QRCode(
             version=1,
             error_correction=get_error_correction_level(error_correction),
             box_size=box_size if box_size is not None else size,
@@ -90,7 +115,64 @@ def create_qr_code(
             img = add_logo_to_qr(img, add_logo, logo_size_ratio)
         
         ensure_directory_exists(os.path.dirname(output_path) if os.path.dirname(output_path) else ".")
-        img.save(output_path)
+        
+        # Xác định định dạng từ extension
+        output_ext = os.path.splitext(output_path)[1].lower()
+        
+        # Hỗ trợ nhiều định dạng ảnh
+        if output_ext in ['.png', '.PNG']:
+            img.save(output_path, 'PNG', optimize=True)
+        elif output_ext in ['.jpg', '.jpeg', '.JPG', '.JPEG']:
+            # Chuyển sang RGB nếu cần (JPG không hỗ trợ transparency)
+            if img.mode in ('RGBA', 'LA', 'P'):
+                rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode == 'P':
+                    img = img.convert('RGBA')
+                rgb_img.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+                img = rgb_img
+            img.save(output_path, 'JPEG', quality=95, optimize=True)
+        elif output_ext in ['.svg', '.SVG']:
+            # SVG cần xử lý đặc biệt - tạo QR dạng vector
+            try:
+                # Import SVG factory từ module đã import
+                import qrcode.image.svg as svg_module
+                
+                if os.path.exists(output_path):
+                    os.remove(output_path)
+                
+                # Sử dụng qr_module để tránh xung đột
+                factory = svg_module.SvgPathImage
+                qr_svg_obj = qr_module.QRCode(
+                    version=1,
+                    error_correction=get_error_correction_level(error_correction),
+                    box_size=box_size if box_size is not None else size,
+                    border=border,
+                    image_factory=factory
+                )
+                qr_svg_obj.add_data(data)
+                qr_svg_obj.make(fit=True)
+                img_svg = qr_svg_obj.make_image(fill_color=fill_color, back_color=back_color)
+                img_svg.save(open(output_path, 'wb'))
+            except Exception as svg_error:
+                # Fallback: lưu PNG thay vì SVG nếu lỗi
+                output_path_png = output_path.replace('.svg', '.png').replace('.SVG', '.png')
+                img.save(output_path_png, 'PNG', optimize=True)
+                message = f"Không thể lưu SVG, đã lưu PNG: {output_path_png}"
+                file_size = os.path.getsize(output_path_png)
+                return True, f"{message} ({file_size / 1024:.1f} KB)"
+        elif output_ext in ['.bmp', '.BMP']:
+            if img.mode == 'RGBA':
+                img = img.convert('RGB')
+            img.save(output_path, 'BMP')
+        elif output_ext in ['.tiff', '.tif', '.TIFF', '.TIF']:
+            img.save(output_path, 'TIFF', compression='lzw')
+        else:
+            # Mặc định lưu PNG nếu không nhận diện được extension
+            if not output_ext:
+                output_path = output_path + '.png'
+            else:
+                output_path = os.path.splitext(output_path)[0] + '.png'
+            img.save(output_path, 'PNG', optimize=True)
         
         file_size = os.path.getsize(output_path)
         message = f"Đã tạo QR code: {output_path} ({file_size / 1024:.1f} KB)"
@@ -102,16 +184,22 @@ def create_qr_code(
 
 def get_error_correction_level(level: str) -> int:
     """Chuyển đổi mức sửa lỗi từ string sang constant"""
+    if not QRCODE_GEN_AVAILABLE:
+        return 1  # Default ERROR_CORRECT_M
+    
+    # Import vào local scope để tránh UnboundLocalError
+    import qrcode as qr_module
+    
     level_map = {
-        'L': qrcode.constants.ERROR_CORRECT_L,  # ~7%
-        'M': qrcode.constants.ERROR_CORRECT_M,  # ~15%
-        'Q': qrcode.constants.ERROR_CORRECT_Q,  # ~25%
-        'H': qrcode.constants.ERROR_CORRECT_H,  # ~30%
+        'L': qr_module.constants.ERROR_CORRECT_L,  # ~7%
+        'M': qr_module.constants.ERROR_CORRECT_M,  # ~15%
+        'Q': qr_module.constants.ERROR_CORRECT_Q,  # ~25%
+        'H': qr_module.constants.ERROR_CORRECT_H,  # ~30%
     }
-    return level_map.get(level.upper(), qrcode.constants.ERROR_CORRECT_M)
+    return level_map.get(level.upper(), qr_module.constants.ERROR_CORRECT_M)
 
 
-def add_logo_to_qr(qr_img: Image.Image, logo_path: str, size_ratio: float = 0.3) -> Image.Image:
+def add_logo_to_qr(qr_img: "Image.Image", logo_path: str, size_ratio: float = 0.3) -> "Image.Image":
     """Thêm logo vào giữa QR code"""
     try:
         logo = Image.open(logo_path)
@@ -157,6 +245,73 @@ def parse_color(color_str: str) -> str:
     }
     
     return color_names.get(color_str.lower(), color_str)
+
+
+# ==================== QR CODE TYPES GENERATION ====================
+
+def create_wifi_qr(ssid: str, password: str, security: str = "WPA", hidden: bool = False) -> str:
+    """Tạo dữ liệu QR code cho WiFi"""
+    security_map = {
+        "WPA": "WPA",
+        "WPA2": "WPA2",
+        "WEP": "WEP",
+        "nopass": "nopass"
+    }
+    sec = security_map.get(security.upper(), "WPA")
+    hidden_str = "true" if hidden else "false"
+    return f"WIFI:T:{sec};S:{ssid};P:{password};H:{hidden_str};;"
+
+
+def create_email_qr(email: str, subject: str = "", body: str = "") -> str:
+    """Tạo dữ liệu QR code cho Email"""
+    params = [f"mailto:{email}"]
+    if subject:
+        params.append(f"subject={subject}")
+    if body:
+        params.append(f"body={body}")
+    return "&".join(params)
+
+
+def create_sms_qr(phone: str, message: str = "") -> str:
+    """Tạo dữ liệu QR code cho SMS"""
+    if message:
+        return f"sms:{phone}?body={message}"
+    return f"sms:{phone}"
+
+
+def create_phone_qr(phone: str) -> str:
+    """Tạo dữ liệu QR code cho số điện thoại"""
+    return f"tel:{phone}"
+
+
+def create_vcard_qr(name: str, phone: str = "", email: str = "", org: str = "", 
+                    url: str = "", address: str = "") -> str:
+    """Tạo dữ liệu QR code cho vCard"""
+    lines = ["BEGIN:VCARD", "VERSION:3.0", f"FN:{name}"]
+    if phone:
+        lines.append(f"TEL:{phone}")
+    if email:
+        lines.append(f"EMAIL:{email}")
+    if org:
+        lines.append(f"ORG:{org}")
+    if url:
+        lines.append(f"URL:{url}")
+    if address:
+        lines.append(f"ADR:;;{address};;;")
+    lines.append("END:VCARD")
+    return "\n".join(lines)
+
+
+def create_location_qr(latitude: float, longitude: float, altitude: float = 0) -> str:
+    """Tạo dữ liệu QR code cho vị trí địa lý"""
+    return f"geo:{latitude},{longitude},{altitude}"
+
+
+def create_url_qr(url: str) -> str:
+    """Tạo dữ liệu QR code cho URL"""
+    if not url.startswith(('http://', 'https://')):
+        return f"https://{url}"
+    return url
 
 
 # ==================== HÀM GIẢI MÃ QR CODE ====================
@@ -379,6 +534,311 @@ Tổng kết:
         print(summary)
 
 
+def process_directory_with_export(directory: Path, output_format: str = "txt", 
+                                  move_success: bool = True):
+    """Xử lý thư mục và export kết quả ra JSON/CSV"""
+    start_time = time.time()
+    results = []
+    total_ok = 0
+    total_nok = 0
+    
+    extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff']
+    ok_dir = directory / 'ok'
+    if move_success:
+        ok_dir.mkdir(exist_ok=True)
+    
+    for ext in extensions:
+        for file_path in directory.rglob(f'*{ext}'):
+            if 'ok' in str(file_path) or '.temp' in str(file_path):
+                continue
+            
+            print(f"\r{Colors.muted(f'Đang xử lý: {file_path.name:<50}')}", end='', flush=True)
+            
+            barcodes, method, status = process_image(file_path)
+            
+            if barcodes:
+                decoded_data = [b.data.decode('utf-8', errors='ignore') for b in barcodes]
+                result = {
+                    'filename': file_path.name,
+                    'path': str(file_path),
+                    'status': 'OK',
+                    'data': decoded_data[0] if len(decoded_data) == 1 else decoded_data,
+                    'method': method,
+                    'timestamp': datetime.now().isoformat()
+                }
+                results.append(result)
+                
+                if move_success:
+                    try:
+                        shutil.move(str(file_path), str(ok_dir / file_path.name))
+                    except Exception:
+                        pass
+                
+                total_ok += 1
+                print(f"\r{Colors.success('✓')} {file_path.name}")
+            else:
+                result = {
+                    'filename': file_path.name,
+                    'path': str(file_path),
+                    'status': 'FAILED',
+                    'data': None,
+                    'method': None,
+                    'error': status,
+                    'timestamp': datetime.now().isoformat()
+                }
+                results.append(result)
+                total_nok += 1
+    
+    # Export results
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    if output_format.lower() == 'json':
+        output_file = directory / f'qr_results_{timestamp}.json'
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump({
+                'summary': {
+                    'total': total_ok + total_nok,
+                    'success': total_ok,
+                    'failed': total_nok,
+                    'success_rate': f"{(total_ok / (total_ok + total_nok) * 100):.2f}%" if (total_ok + total_nok) > 0 else "0%",
+                    'elapsed_time': f"{round(time.time() - start_time, 2)} seconds"
+                },
+                'results': results
+            }, f, ensure_ascii=False, indent=2)
+        print(Colors.success(f"\n✅ Đã export JSON: {output_file}"))
+    
+    elif output_format.lower() == 'csv':
+        output_file = directory / f'qr_results_{timestamp}.csv'
+        with open(output_file, 'w', newline='', encoding='utf-8') as f:
+            if results:
+                writer = csv.DictWriter(f, fieldnames=results[0].keys())
+                writer.writeheader()
+                writer.writerows(results)
+        print(Colors.success(f"\n✅ Đã export CSV: {output_file}"))
+    
+    # Always write text summary
+    summary_file = directory / f'results_{timestamp}.txt'
+    with open(summary_file, 'w', encoding='utf-8') as f:
+        f.write(f"Kết quả quét QR code\n{'='*70}\n\n")
+        for result in results:
+            if result['status'] == 'OK':
+                f.write(f"{result['filename']} → OK | {result['data']} | Method: {result['method']}\n")
+            else:
+                f.write(f"{result['filename']} → FAILED | {result.get('error', 'Unknown error')}\n")
+        
+        total = total_ok + total_nok
+        percent_ok = round((total_ok / total * 100), 2) if total > 0 else 0
+        elapsed = round(time.time() - start_time, 2)
+        f.write(f"\n{'='*70}\n")
+        f.write(f"Tổng số ảnh: {total}\n")
+        f.write(f"Thành công: {total_ok} ({percent_ok}%)\n")
+        f.write(f"Thất bại: {total_nok} ({100 - percent_ok:.2f}%)\n")
+        f.write(f"Thời gian: {elapsed} giây\n")
+    
+    print(f"\n✅ Đã lưu kết quả: {summary_file}")
+
+
+def decode_from_webcam():
+    """Đọc QR code từ webcam"""
+    if not QRCODE_DECODE_AVAILABLE:
+        print(Colors.error("❌ Cần cài đặt: pip install opencv-python pyzbar pillow numpy"))
+        return
+    
+    print_header("ĐỌC QR CODE TỪ WEBCAM", width=70)
+    print(Colors.primary("  📹 QUÉT QR CODE TỪ CAMERA"))
+    print()
+    print(Colors.warning("⚠️  Nhấn 'q' để thoát"))
+    print()
+    
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print(Colors.error("❌ Không thể mở camera!"))
+        return
+    
+    print(Colors.success("✅ Camera đã sẵn sàng. Đưa QR code vào khung hình..."))
+    
+    try:
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            
+            # Decode QR code
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            barcodes = decode_safe(Image.fromarray(gray))
+            
+            if barcodes:
+                for barcode in barcodes:
+                    data = barcode.data.decode('utf-8')
+                    print(f"\n{Colors.success('✅ Tìm thấy:')} {Colors.primary(data)}")
+                    
+                    if confirm_action("Lưu kết quả vào file?"):
+                        output_file = f"webcam_qr_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+                        with open(output_file, 'w', encoding='utf-8') as f:
+                            f.write(data)
+                        print(Colors.success(f"✅ Đã lưu: {output_file}"))
+                    
+                    if not confirm_action("Tiếp tục quét?"):
+                        cap.release()
+                        cv2.destroyAllWindows()
+                        return
+                    # Tiếp tục quét tự động
+            
+            # Hiển thị frame với text hướng dẫn
+            cv2.putText(frame, "Press 'q' to quit", (10, 30), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            cv2.imshow('QR Code Scanner - Press Q to quit', frame)
+            
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+    
+    except KeyboardInterrupt:
+        print(Colors.warning("\n⚠️  Đã dừng bởi người dùng"))
+    finally:
+        cap.release()
+        cv2.destroyAllWindows()
+
+
+def batch_generate_from_csv(csv_path: str, output_dir: str, 
+                           size: int = 10, border: int = 4, 
+                           error_correction: str = "M"):
+    """Tạo QR code hàng loạt từ file CSV"""
+    if not QRCODE_GEN_AVAILABLE:
+        print(Colors.error("❌ Cần cài đặt: pip install qrcode[pil]"))
+        return
+    
+    csv_path_normalized = normalize_path(csv_path)
+    output_dir_normalized = normalize_path(output_dir)
+    
+    if not os.path.exists(csv_path_normalized):
+        print(Colors.error(f"❌ File CSV không tồn tại: {csv_path}"))
+        return
+    
+    ensure_directory_exists(output_dir_normalized)
+    
+    print(f"\n📖 Đọc file CSV: {csv_path}")
+    print(f"💾 Thư mục output: {output_dir}")
+    
+    success_count = 0
+    error_count = 0
+    
+    try:
+        with open(csv_path_normalized, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            
+            # Kiểm tra các cột cần thiết
+            if 'data' not in reader.fieldnames and 'content' not in reader.fieldnames:
+                print(Colors.error("❌ CSV phải có cột 'data' hoặc 'content'"))
+                return
+            
+            data_column = 'data' if 'data' in reader.fieldnames else 'content'
+            filename_column = 'filename' if 'filename' in reader.fieldnames else None
+            
+            for idx, row in enumerate(reader, 1):
+                data = row[data_column].strip()
+                if not data:
+                    continue
+                
+                # Tạo tên file
+                if filename_column and row.get(filename_column):
+                    filename = row[filename_column].strip()
+                else:
+                    # Tạo tên từ data (giới hạn 50 ký tự)
+                    safe_name = re.sub(r'[^\w\-_.]', '_', data[:50])
+                    filename = f"qr_{idx:04d}_{safe_name}.png"
+                
+                output_path = os.path.join(output_dir_normalized, filename)
+                
+                # Tùy chỉnh từ CSV nếu có
+                qr_size = int(row.get('size', size))
+                qr_border = int(row.get('border', border))
+                qr_error = row.get('error_correction', error_correction).upper()
+                fill_color = parse_color(row.get('fill_color', 'black'))
+                back_color = parse_color(row.get('back_color', 'white'))
+                
+                print(f"\r{Colors.muted(f'Đang tạo: {filename:<50}')}", end='', flush=True)
+                
+                success, message = create_qr_code(
+                    data=data,
+                    output_path=output_path,
+                    size=qr_size,
+                    border=qr_border,
+                    error_correction=qr_error,
+                    fill_color=fill_color,
+                    back_color=back_color
+                )
+                
+                if success:
+                    success_count += 1
+                    print(f"\r{Colors.success('✓')} {filename}")
+                else:
+                    error_count += 1
+                    print(f"\r{Colors.error('✗')} {filename} - {message}")
+        
+        print(f"\n\n{'='*70}")
+        print(f"✅ Thành công: {success_count}")
+        print(f"❌ Lỗi: {error_count}")
+        print(f"{'='*70}")
+        
+    except Exception as e:
+        print(Colors.error(f"\n❌ Lỗi khi đọc CSV: {e}"))
+
+
+def batch_generate_from_text(text_path: str, output_dir: str, 
+                             size: int = 10, border: int = 4):
+    """Tạo QR code hàng loạt từ file text (mỗi dòng = 1 QR code)"""
+    if not QRCODE_GEN_AVAILABLE:
+        print(Colors.error("❌ Cần cài đặt: pip install qrcode[pil]"))
+        return
+    
+    text_path_normalized = normalize_path(text_path)
+    output_dir_normalized = normalize_path(output_dir)
+    
+    if not os.path.exists(text_path_normalized):
+        print(Colors.error(f"❌ File text không tồn tại: {text_path}"))
+        return
+    
+    ensure_directory_exists(output_dir_normalized)
+    
+    success_count = 0
+    error_count = 0
+    
+    try:
+        with open(text_path_normalized, 'r', encoding='utf-8') as f:
+            for idx, line in enumerate(f, 1):
+                data = line.strip()
+                if not data or data.startswith('#'):  # Bỏ qua dòng trống và comment
+                    continue
+                
+                safe_name = re.sub(r'[^\w\-_.]', '_', data[:50])
+                filename = f"qr_{idx:04d}_{safe_name}.png"
+                output_path = os.path.join(output_dir_normalized, filename)
+                
+                print(f"\r{Colors.muted(f'Đang tạo: {filename:<50}')}", end='', flush=True)
+                
+                success, message = create_qr_code(
+                    data=data,
+                    output_path=output_path,
+                    size=size,
+                    border=border
+                )
+                
+                if success:
+                    success_count += 1
+                    print(f"\r{Colors.success('✓')} {filename}")
+                else:
+                    error_count += 1
+                    print(f"\r{Colors.error('✗')} {filename}")
+        
+        print(f"\n\n{'='*70}")
+        print(f"✅ Thành công: {success_count}")
+        print(f"❌ Lỗi: {error_count}")
+        print(f"{'='*70}")
+        
+    except Exception as e:
+        print(Colors.error(f"\n❌ Lỗi khi đọc file: {e}"))
+
+
 # ==================== INTERACTIVE MODES ====================
 
 def mode_generate():
@@ -388,8 +848,11 @@ def mode_generate():
     print()
     
     if not QRCODE_GEN_AVAILABLE:
-        print(Colors.error("❌ Thiếu thư viện qrcode!"))
-        print("Cài đặt: pip install qrcode[pil]")
+        install_library(
+            package_name="qrcode[pil]",
+            install_command="pip install qrcode[pil]",
+            library_display_name="qrcode"
+        )
         return
     
     while True:
@@ -398,12 +861,22 @@ def mode_generate():
             break
         print(Colors.error("❌ Vui lòng nhập nội dung!"))
     
+    print("\n📤 Định dạng file (PNG, JPG, SVG, BMP, TIFF):")
+    print("  - PNG: Chất lượng cao, hỗ trợ transparency (mặc định)")
+    print("  - JPG: File nhỏ hơn, không transparency")
+    print("  - SVG: Vector, có thể scale không giới hạn")
+    print("  - BMP, TIFF: Định dạng ảnh khác")
+    
     default_output = "qr_code.png"
     output_path_raw = get_user_input(
         "Nhập đường dẫn file lưu (Enter để mặc định: qr_code.png): ",
         default=default_output
     )
     output_path = normalize_path(output_path_raw)
+    
+    # Đảm bảo có extension
+    if not os.path.splitext(output_path)[1]:
+        output_path = output_path + '.png'
     
     print("\n⚙️  Tùy chỉnh QR Code:")
     
@@ -493,12 +966,22 @@ def mode_generate():
         log_info(f"Tạo QR code thành công: {output_path}")
         
         if os.name == 'nt':
-            if confirm_action("Mở file ngay bây giờ?", default=True):
-                os.startfile(output_path)
+            print(f"\n💡 File đã được tạo: {output_path}")
+            if confirm_action("Mở file ngay bây giờ?"):
+                if os.path.exists(output_path):
+                    os.startfile(output_path)
+                else:
+                    print(Colors.warning(f"⚠️  File không tồn tại: {output_path}"))
         elif sys.platform == 'darwin':
-            os.system(f'open "{output_path}"')
+            if os.path.exists(output_path):
+                os.system(f'open "{output_path}"')
+            else:
+                print(Colors.warning(f"⚠️  File không tồn tại: {output_path}"))
         elif sys.platform.startswith('linux'):
-            os.system(f'xdg-open "{output_path}"')
+            if os.path.exists(output_path):
+                os.system(f'xdg-open "{output_path}"')
+            else:
+                print(Colors.warning(f"⚠️  File không tồn tại: {output_path}"))
     else:
         print(Colors.error(f"❌ {message}"))
         log_error(f"Lỗi tạo QR code: {message}")
@@ -511,8 +994,11 @@ def mode_decode():
     print()
     
     if not QRCODE_DECODE_AVAILABLE:
-        print(Colors.error("❌ Thiếu thư viện cần thiết!"))
-        print("Cài đặt: pip install opencv-python pyzbar pillow numpy")
+        install_library(
+            package_name="opencv-python pyzbar pillow numpy",
+            install_command="pip install opencv-python pyzbar pillow numpy",
+            library_display_name="opencv-python, pyzbar, pillow, numpy"
+        )
         return
     
     while True:
@@ -532,7 +1018,8 @@ def mode_decode():
         return
     
     print("\n⚙️  Tùy chọn:")
-    move_success = confirm_action("Di chuyển ảnh thành công vào thư mục 'ok'?", default=True)
+    print("  (Nhập Y để di chuyển, N để giữ nguyên)")
+    move_success = confirm_action("Di chuyển ảnh thành công vào thư mục 'ok'?")
     
     print(f"\n📁 Thư mục: {directory}")
     if not confirm_action("Bắt đầu quét?"):
@@ -548,31 +1035,316 @@ def mode_decode():
     print(Colors.success("✅ Hoàn tất! Xem kết quả trong result.txt và results.txt"))
 
 
+def mode_decode_with_export():
+    """Chế độ giải mã QR code với export JSON/CSV"""
+    print_header("GIẢI MÃ QR CODE VỚI EXPORT", width=70)
+    print(Colors.primary("  📷 GIẢI MÃ VÀ XUẤT KẾT QUẢ RA JSON/CSV"))
+    print()
+    
+    if not QRCODE_DECODE_AVAILABLE:
+        install_library(
+            package_name="opencv-python pyzbar pillow numpy",
+            install_command="pip install opencv-python pyzbar pillow numpy",
+            library_display_name="opencv-python, pyzbar, pillow, numpy"
+        )
+        return
+    
+    while True:
+        directory = get_user_input("Nhập đường dẫn thư mục chứa ảnh: ")
+        if directory:
+            break
+        print(Colors.error("❌ Vui lòng nhập đường dẫn thư mục!"))
+    directory = normalize_path(directory)
+    directory_path = Path(directory)
+    
+    if not directory_path.exists():
+        print(Colors.error(f"❌ Thư mục không tồn tại: {directory}"))
+        return
+    
+    if not directory_path.is_dir():
+        print(Colors.error(f"❌ Đường dẫn không phải thư mục: {directory}"))
+        return
+    
+    print("\n⚙️  Tùy chọn:")
+    print("  (Nhập Y để di chuyển, N để giữ nguyên)")
+    move_success = confirm_action("Di chuyển ảnh thành công vào thư mục 'ok'?")
+    
+    print("\n📤 Định dạng export:")
+    print("  1. JSON")
+    print("  2. CSV")
+    print("  3. Cả hai (JSON + CSV)")
+    
+    while True:
+        format_choice = get_user_input("Chọn định dạng (1/2/3): ", default="3")
+        if format_choice in ['1', '2', '3']:
+            break
+        print(Colors.error("❌ Vui lòng nhập 1, 2 hoặc 3!"))
+    
+    if format_choice == '1':
+        output_format = 'json'
+    elif format_choice == '2':
+        output_format = 'csv'
+    else:
+        output_format = 'both'
+    
+    print(f"\n📁 Thư mục: {directory}")
+    if not confirm_action("Bắt đầu quét?"):
+        print("❌ Đã hủy!")
+        return
+    
+    print(f"\n🔍 Đang quét...")
+    print(Colors.muted("=" * 70))
+    
+    if output_format == 'both':
+        process_directory_with_export(directory_path, 'json', move_success)
+        process_directory_with_export(directory_path, 'csv', move_success=False)  # Không move lần 2
+    else:
+        process_directory_with_export(directory_path, output_format, move_success)
+    
+    print()
+    print(Colors.success("✅ Hoàn tất!"))
+
+
+def mode_generate_special():
+    """Chế độ tạo QR code đặc biệt (WiFi, Email, SMS, etc.)"""
+    print_header("TẠO QR CODE ĐẶC BIỆT", width=70)
+    print(Colors.primary("  🔲 TẠO QR CODE CHO WIFI, EMAIL, SMS, VCARD, etc."))
+    print()
+    
+    if not QRCODE_GEN_AVAILABLE:
+        install_library(
+            package_name="qrcode[pil]",
+            install_command="pip install qrcode[pil]",
+            library_display_name="qrcode"
+        )
+        return
+    
+    print("Chọn loại QR code:")
+    print("  1. 🌐 WiFi")
+    print("  2. 📧 Email")
+    print("  3. 📱 SMS")
+    print("  4. ☎️  Phone")
+    print("  5. 👤 vCard (Danh thiếp)")
+    print("  6. 📍 Location (GPS)")
+    print("  7. 🔗 URL")
+    
+    while True:
+        qr_type = get_user_input("Chọn loại (1-7): ", default="1")
+        if qr_type in ['1', '2', '3', '4', '5', '6', '7']:
+            break
+        print(Colors.error("❌ Vui lòng nhập 1-7!"))
+    
+    data = ""
+    
+    if qr_type == '1':  # WiFi
+        ssid = get_user_input("Tên mạng WiFi (SSID): ")
+        password = get_user_input("Mật khẩu: ")
+        security = get_user_input("Bảo mật (WPA/WPA2/WEP/nopass, mặc định WPA): ", default="WPA")
+        print("  (Nhập Y nếu mạng ẩn, N nếu mạng công khai)")
+        hidden = confirm_action("Mạng ẩn?")
+        data = create_wifi_qr(ssid, password, security, hidden)
+        
+    elif qr_type == '2':  # Email
+        email = get_user_input("Địa chỉ email: ")
+        subject = get_user_input("Tiêu đề (Enter để bỏ qua): ", default="")
+        body = get_user_input("Nội dung (Enter để bỏ qua): ", default="")
+        data = create_email_qr(email, subject, body)
+        
+    elif qr_type == '3':  # SMS
+        phone = get_user_input("Số điện thoại: ")
+        message = get_user_input("Tin nhắn (Enter để bỏ qua): ", default="")
+        data = create_sms_qr(phone, message)
+        
+    elif qr_type == '4':  # Phone
+        phone = get_user_input("Số điện thoại: ")
+        data = create_phone_qr(phone)
+        
+    elif qr_type == '5':  # vCard
+        name = get_user_input("Tên: ")
+        phone = get_user_input("Số điện thoại (Enter để bỏ qua): ", default="")
+        email = get_user_input("Email (Enter để bỏ qua): ", default="")
+        org = get_user_input("Tổ chức (Enter để bỏ qua): ", default="")
+        url = get_user_input("Website (Enter để bỏ qua): ", default="")
+        address = get_user_input("Địa chỉ (Enter để bỏ qua): ", default="")
+        data = create_vcard_qr(name, phone, email, org, url, address)
+        
+    elif qr_type == '6':  # Location
+        try:
+            lat = float(get_user_input("Vĩ độ (Latitude): "))
+            lon = float(get_user_input("Kinh độ (Longitude): "))
+            alt = get_user_input("Độ cao (Enter = 0): ", default="0")
+            altitude = float(alt) if alt else 0.0
+            data = create_location_qr(lat, lon, altitude)
+        except ValueError:
+            print(Colors.error("❌ Tọa độ không hợp lệ!"))
+            return
+        
+    elif qr_type == '7':  # URL
+        url = get_user_input("URL: ")
+        data = create_url_qr(url)
+    
+    # Tùy chỉnh và tạo
+    output_path_raw = get_user_input(
+        "Đường dẫn file lưu (mặc định: qr_special.png): ",
+        default="qr_special.png"
+    )
+    output_path = normalize_path(output_path_raw)
+    
+    # Đảm bảo có extension
+    if not os.path.splitext(output_path)[1]:
+        output_path = output_path + '.png'
+    
+    size_input = get_user_input("Kích thước box (mặc định 10): ", default="10")
+    try:
+        box_size = int(size_input)
+    except ValueError:
+        box_size = 10
+    
+    print(f"\n🔨 Đang tạo QR code...")
+    success, message = create_qr_code(
+        data=data,
+        output_path=output_path,
+        size=box_size
+    )
+    
+    if success:
+        print(Colors.success(f"✅ {message}"))
+        if os.name == 'nt':
+            if confirm_action("Mở file?"):
+                if os.path.exists(output_path):
+                    os.startfile(output_path)
+                else:
+                    print(Colors.warning(f"⚠️  File không tồn tại: {output_path}"))
+    else:
+        print(Colors.error(f"❌ {message}"))
+
+
+def mode_batch_generate():
+    """Chế độ tạo QR code hàng loạt"""
+    print_header("TẠO QR CODE HÀNG LOẠT", width=70)
+    print(Colors.primary("  🔲 TẠO NHIỀU QR CODE TỪ CSV HOẶC TEXT"))
+    print()
+    
+    if not QRCODE_GEN_AVAILABLE:
+        install_library(
+            package_name="qrcode[pil]",
+            install_command="pip install qrcode[pil]",
+            library_display_name="qrcode"
+        )
+        return
+    
+    print("Chọn nguồn dữ liệu:")
+    print("  1. File CSV")
+    print("  2. File Text (mỗi dòng = 1 QR code)")
+    
+    while True:
+        source_type = get_user_input("Chọn (1/2): ", default="1")
+        if source_type in ['1', '2']:
+            break
+        print(Colors.error("❌ Vui lòng nhập 1 hoặc 2!"))
+    
+    if source_type == '1':
+        csv_path = get_user_input("Đường dẫn file CSV: ")
+        output_dir = get_user_input("Thư mục lưu QR code: ", default="./qr_batch_output")
+        batch_generate_from_csv(csv_path, output_dir)
+    else:
+        text_path = get_user_input("Đường dẫn file text: ")
+        output_dir = get_user_input("Thư mục lưu QR code: ", default="./qr_batch_output")
+        batch_generate_from_text(text_path, output_dir)
+
+
+def mode_generate_from_clipboard():
+    """Tạo QR code từ clipboard"""
+    if not CLIPBOARD_AVAILABLE:
+        print(Colors.warning("⚠️  Cần cài đặt: pip install pyperclip"))
+        print("  (Nhập Y để cài đặt, N để hủy)")
+        if confirm_action("Cài đặt ngay?"):
+            install_library(
+                package_name="pyperclip",
+                install_command="pip install pyperclip",
+                library_display_name="pyperclip"
+            )
+        else:
+            return
+    
+    print_header("TẠO QR CODE TỪ CLIPBOARD", width=70)
+    print(Colors.primary("  📋 TẠO QR CODE TỪ NỘI DUNG CLIPBOARD"))
+    print()
+    
+    if not CLIPBOARD_AVAILABLE or pyperclip is None:
+        print(Colors.error("❌ Lỗi: pyperclip không khả dụng!"))
+        return
+    
+    try:
+        data = pyperclip.paste()
+        if not data:
+            print(Colors.warning("⚠️  Clipboard trống!"))
+            return
+        
+        print(f"📋 Nội dung clipboard: {data[:100]}{'...' if len(data) > 100 else ''}")
+        output_path = normalize_path(get_user_input(
+            "Đường dẫn file lưu (mặc định: qr_clipboard.png): ",
+            default="qr_clipboard.png"
+        ))
+        
+        print(f"\n🔨 Đang tạo QR code...")
+        success, message = create_qr_code(data=data, output_path=output_path)
+        
+        if success:
+            print(Colors.success(f"✅ {message}"))
+            if os.name == 'nt':
+                if confirm_action("Mở file?"):
+                    if os.path.exists(output_path):
+                        os.startfile(output_path)
+                    else:
+                        print(Colors.warning(f"⚠️  File không tồn tại: {output_path}"))
+        else:
+            print(Colors.error(f"❌ {message}"))
+            
+    except Exception as e:
+        print(Colors.error(f"❌ Lỗi: {e}"))
+
+
 # ==================== MAIN ====================
 
 def main_interactive():
     """Chế độ interactive - menu chọn chức năng"""
     print_header("TOOL QR CODE", width=70)
-    print(Colors.primary("  🔲 CÔNG CỤ TẠO VÀ GIẢI MÃ QR CODE"))
+    print(Colors.primary("  🔲 CÔNG CỤ TẠO VÀ GIẢI MÃ QR CODE - ĐA DỤNG"))
     print()
     
     print("Chọn chức năng:")
-    print("  1. 📱 Tạo QR Code")
-    print("  2. 📷 Giải mã QR Code từ ảnh")
+    print("  1. 📱 Tạo QR Code (cơ bản)")
+    print("  2. 🔲 Tạo QR Code đặc biệt (WiFi, Email, SMS, vCard, etc.)")
+    print("  3. 🔄 Tạo QR Code hàng loạt (từ CSV/Text)")
+    print("  4. 📋 Tạo QR Code từ Clipboard")
+    print("  5. 📷 Giải mã QR Code từ ảnh")
+    print("  6. 📤 Giải mã QR Code với Export (JSON/CSV)")
+    print("  7. 📹 Đọc QR Code từ Webcam")
     print()
     
     while True:
-        choice = get_user_input("Nhập lựa chọn (1 hoặc 2): ", default="1")
-        if choice in ['1', '2']:
+        choice = get_user_input("Nhập lựa chọn (1-7): ", default="1")
+        if choice in ['1', '2', '3', '4', '5', '6', '7']:
             break
-        print(Colors.error("❌ Vui lòng nhập 1 hoặc 2!"))
+        print(Colors.error("❌ Vui lòng nhập 1-7!"))
     
     print()
     
     if choice == '1':
         mode_generate()
-    else:
+    elif choice == '2':
+        mode_generate_special()
+    elif choice == '3':
+        mode_batch_generate()
+    elif choice == '4':
+        mode_generate_from_clipboard()
+    elif choice == '5':
         mode_decode()
+    elif choice == '6':
+        mode_decode_with_export()
+    elif choice == '7':
+        decode_from_webcam()
 
 
 def main_cli(args):
@@ -614,18 +1386,71 @@ def main_cli(args):
             print(Colors.error(f"❌ Thư mục không tồn tại: {args.directory}"))
             return 1
         
-        process_directory(directory_path, move_success=args.move_success)
+        if hasattr(args, 'export') and args.export:
+            process_directory_with_export(directory_path, args.export, move_success=args.move_success)
+        else:
+            process_directory(directory_path, move_success=args.move_success)
         return 0
     
+    elif args.mode == 'batch':
+        if not args.input:
+            print(Colors.error("❌ Cần cung cấp file CSV hoặc Text (--input)!"))
+            return 1
+        
+        if not args.output:
+            args.output = "./qr_batch_output"
+        
+        input_path = normalize_path(args.input)
+        if not os.path.exists(input_path):
+            print(Colors.error(f"❌ File không tồn tại: {args.input}"))
+            return 1
+        
+        if input_path.endswith('.csv'):
+            batch_generate_from_csv(input_path, args.output, 
+                                   size=getattr(args, 'size', 10),
+                                   border=getattr(args, 'border', 4))
+        else:
+            batch_generate_from_text(input_path, args.output,
+                                    size=getattr(args, 'size', 10),
+                                    border=getattr(args, 'border', 4))
+        return 0
+    
+    elif args.mode == 'webcam':
+        decode_from_webcam()
+        return 0
+    
+    elif args.mode == 'clipboard':
+        if not CLIPBOARD_AVAILABLE or pyperclip is None:
+            print(Colors.error("❌ Cần cài đặt: pip install pyperclip"))
+            return 1
+        try:
+            data = pyperclip.paste()
+            if not data:
+                print(Colors.warning("⚠️  Clipboard trống!"))
+                return 1
+            
+            output_path = normalize_path(getattr(args, 'output', 'qr_clipboard.png'))
+            success, message = create_qr_code(data=data, output_path=output_path)
+            
+            if success:
+                print(Colors.success(f"✅ {message}"))
+                return 0
+            else:
+                print(Colors.error(f"❌ {message}"))
+                return 1
+        except Exception as e:
+            print(Colors.error(f"❌ Lỗi: {e}"))
+            return 1
+    
     else:
-        print(Colors.error("❌ Chế độ không hợp lệ. Dùng 'generate' hoặc 'decode'"))
+        print(Colors.error("❌ Chế độ không hợp lệ. Dùng 'generate', 'decode', 'batch', 'webcam', hoặc 'clipboard'"))
         return 1
 
 
 def main():
     """Hàm main"""
     parser = argparse.ArgumentParser(
-        description='Tool tạo và giải mã QR Code',
+        description='Tool tạo và giải mã QR Code - Đa dụng',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Ví dụ:
@@ -635,8 +1460,20 @@ Ví dụ:
   # Tạo QR code
   python qr-code.py generate -d "https://example.com" -o qr.png
   
+  # Tạo QR code hàng loạt từ CSV
+  python qr-code.py batch -i data.csv -o ./output
+  
   # Giải mã QR code từ thư mục
   python qr-code.py decode --directory ./images
+  
+  # Giải mã với export JSON
+  python qr-code.py decode --directory ./images --export json
+  
+  # Đọc từ webcam
+  python qr-code.py webcam
+  
+  # Tạo từ clipboard
+  python qr-code.py clipboard
         """
     )
     
@@ -661,7 +1498,23 @@ Ví dụ:
     dec_parser.add_argument('--directory', '-d', required=True, help='Thư mục chứa ảnh')
     dec_parser.add_argument('--no-move', dest='move_success', action='store_false',
                           help='Không di chuyển ảnh thành công vào thư mục ok')
+    dec_parser.add_argument('--export', choices=['json', 'csv', 'both'], 
+                          help='Xuất kết quả ra JSON/CSV')
     dec_parser.set_defaults(move_success=True)
+    
+    # Parser cho batch
+    batch_parser = subparsers.add_parser('batch', help='Tạo QR code hàng loạt từ CSV/Text')
+    batch_parser.add_argument('-i', '--input', required=True, help='File CSV hoặc Text')
+    batch_parser.add_argument('-o', '--output', default='./qr_batch_output', help='Thư mục output')
+    batch_parser.add_argument('-s', '--size', type=int, default=10, help='Kích thước box')
+    batch_parser.add_argument('-b', '--border', type=int, default=4, help='Độ dày border')
+    
+    # Parser cho webcam
+    webcam_parser = subparsers.add_parser('webcam', help='Đọc QR code từ webcam')
+    
+    # Parser cho clipboard
+    clipboard_parser = subparsers.add_parser('clipboard', help='Tạo QR code từ clipboard')
+    clipboard_parser.add_argument('-o', '--output', default='qr_clipboard.png', help='File output')
     
     args = parser.parse_args()
     

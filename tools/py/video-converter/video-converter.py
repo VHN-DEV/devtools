@@ -580,7 +580,7 @@ def get_video_info(video_path):
         return info
         
     except Exception as e:
-        print(f"❌ Loi khi doc video: {e}")
+        print(f"❌ Lỗi khi đọc video: {e}")
         return None
 
 
@@ -668,7 +668,7 @@ def convert_video_format(input_path, output_path, output_format='mp4',
         return True
         
     except Exception as e:
-        print(f"\n❌ Loi khi chuyen doi: {e}")
+        print(f"\n❌ Lỗi khi chuyển đổi: {e}")
         return False
 
 
@@ -752,7 +752,7 @@ def compress_video(input_path, output_path, target_size_mb=None,
         return True
         
     except Exception as e:
-        print(f"\n❌ Loi khi nen video: {e}")
+        print(f"\n❌ Lỗi khi nén video: {e}")
         return False
 
 
@@ -815,7 +815,7 @@ def trim_video(input_path, output_path, start_time, end_time):
         return True
         
     except Exception as e:
-        print(f"\n❌ Loi khi cat video: {e}")
+        print(f"\n❌ Lỗi khi cắt video: {e}")
         return False
 
 
@@ -867,7 +867,7 @@ def extract_audio(input_path, output_path, audio_format='mp3', bitrate='192k'):
         return True
         
     except Exception as e:
-        print(f"\n❌ Loi khi trich xuat audio: {e}")
+        print(f"\n❌ Lỗi khi trích xuất audio: {e}")
         return False
 
 
@@ -937,7 +937,7 @@ def change_resolution(input_path, output_path, width=None, height=None, keep_asp
         return True
         
     except Exception as e:
-        print(f"\n❌ Loi khi thay doi resolution: {e}")
+        print(f"\n❌ Lỗi khi thay đổi resolution: {e}")
         return False
 
 
@@ -1003,7 +1003,7 @@ def batch_convert(input_folder, output_folder, output_format='mp4', preset='medi
             success_count += 1
             
         except Exception as e:
-            print(f"❌ Loi: {e}")
+            print(f"❌ Lỗi: {e}")
             error_count += 1
     
     return success_count, error_count
@@ -1258,7 +1258,7 @@ def main():
         print(f"\n{'='*60}")
         print(f"✅ Hoan thanh!")
         print(f"   - Thanh cong: {success} video")
-        print(f"   - Loi: {errors} video")
+        print(f"   - Lỗi: {errors} video")
         print(f"   - Thu muc output: {output_folder}")
         print(f"{'='*60}")
     

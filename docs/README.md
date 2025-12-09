@@ -8,12 +8,12 @@ Thư mục này chứa các tài liệu hướng dẫn của project.
 Lịch sử thay đổi của project theo từng phiên bản.
 
 ### `INSTALL.md`
-Hướng dẫn cài đặt myPythonTool như một command toàn cục.
+Hướng dẫn cài đặt DevTools như một command toàn cục.
 
 **Cài đặt nhanh:**
 ```bash
 pip install -e .
-myptool
+devtools
 ```
 
 ## Tài liệu khác
