@@ -1479,15 +1479,6 @@ class ToolManager:
     
     def _show_help_examples(self):
         """Hiển thị các ví dụ sử dụng phổ biến"""
-        content_width = 71
-        
-        print("  " + Colors.primary("╔" + "═" * content_width + "╗"))
-        title = "📚 VÍ DỤ SỬ DỤNG"
-        title_padding = (content_width - len(title) - 2) // 2
-        title_line = "  " + Colors.primary("║") + " " * title_padding + Colors.bold(Colors.info(title)) + " " * (content_width - len(title) - title_padding) + Colors.primary("║")
-        print(title_line)
-        print("  " + Colors.primary("╠" + "═" * content_width + "╣"))
-        
         examples = [
             ("Chạy tool", "1", "Chạy tool số 1"),
             ("Xem hướng dẫn tool", "1h", "Xem hướng dẫn của tool số 1"),
@@ -1497,20 +1488,86 @@ class ToolManager:
             ("Vô hiệu hóa", "off 2 3", "Vô hiệu hóa tool số 2 và 3"),
         ]
         
+        # Tính chiều dài của từng dòng (không màu) để tìm dòng dài nhất
+        max_line_length = 0
+        formatted_lines = []
+        
         for desc, cmd, explanation in examples:
-            desc_colored = Colors.bold(Colors.warning(desc + ":"))
-            cmd_colored = Colors.info(f"'{cmd}'")
-            expl_colored = Colors.muted(explanation)
+            # Format text không màu trước để tính padding chính xác
+            desc_text = desc + ":"
+            cmd_text = f"'{cmd}'"
+            expl_text = explanation
             
-            line = f"  {desc_colored:20s} {cmd_colored:15s} {expl_colored}"
-            line_plain = strip_ansi(line)
-            padding = content_width - len(line_plain) - 3
+            # Format với padding chính xác (không màu)
+            desc_formatted = f"{desc_text:20s}"
+            cmd_formatted = f"{cmd_text:15s}"
+            
+            # Tính chiều dài hiển thị thực tế của nội dung (không có "  " ở đầu)
+            # Format: "  " + "║" + " " + line_content + padding + "║"
+            # Vậy line_content = desc_formatted + " " + cmd_formatted + " " + expl_text
+            line_content = f"{desc_formatted} {cmd_formatted} {expl_text}"
+            line_length = len(line_content)
+            
+            if line_length > max_line_length:
+                max_line_length = line_length
+            
+            formatted_lines.append({
+                'desc_text': desc_text,
+                'cmd_text': cmd_text,
+                'expl_text': expl_text,
+                'desc_formatted': desc_formatted,
+                'cmd_formatted': cmd_formatted,
+                'line_content': line_content,
+            })
+        
+        # Dùng chiều dài dòng dài nhất làm content_width
+        content_width = max_line_length
+        
+        # Thêm 1 ký tự để các dòng border đều với nội dung
+        border_width = content_width + 1
+        
+        print("  " + Colors.primary("╔" + "═" * border_width + "╗"))
+        title = "VÍ DỤ SỬ DỤNG"
+        # Format: "  " + "║" + " " + title_with_padding + "║"
+        # title_with_padding phải có chiều dài = border_width - 1 (trừ 1 space trước ║)
+        # Tính padding để center title
+        total_padding = border_width - 1 - len(title)
+        padding_before = total_padding // 2
+        padding_after = total_padding - padding_before
+        title_line = "  " + Colors.primary("║") + " " + " " * padding_before + Colors.bold(Colors.info(title)) + " " * padding_after + Colors.primary("║")
+        print(title_line)
+        print("  " + Colors.primary("╠" + "═" * border_width + "╣"))
+        
+        # Render các dòng với padding chính xác
+        for line_data in formatted_lines:
+            desc_text = line_data['desc_text']
+            cmd_text = line_data['cmd_text']
+            expl_text = line_data['expl_text']
+            desc_formatted = line_data['desc_formatted']
+            cmd_formatted = line_data['cmd_formatted']
+            line_content = line_data['line_content']
+            
+            # Tính padding để đảm bảo tất cả dòng có cùng chiều dài
+            # border_width - 1 vì có 1 space trước ║
+            padding = (border_width - 1) - len(line_content)
             if padding < 0:
                 padding = 0
             
+            # Thêm màu vào từng phần đã được format
+            desc_colored = Colors.bold(Colors.warning(desc_text))
+            cmd_colored = Colors.info(cmd_text)
+            expl_colored = Colors.muted(expl_text)
+            
+            # Tính padding cho desc và cmd để giữ nguyên chiều dài hiển thị
+            desc_padding = len(desc_formatted) - len(desc_text)
+            cmd_padding = len(cmd_formatted) - len(cmd_text)
+            
+            # Tạo line với màu và padding chính xác (không có "  " ở đầu)
+            line = f"{desc_colored}{' ' * desc_padding} {cmd_colored}{' ' * cmd_padding} {expl_colored}"
+            
             print("  " + Colors.primary("║") + " " + line + " " * padding + Colors.primary("║"))
         
-        print("  " + Colors.primary("╚" + "═" * content_width + "╝"))
+        print("  " + Colors.primary("╚" + "═" * border_width + "╝"))
         print()
     
     def show_tool_help(self, tool: str) -> bool:

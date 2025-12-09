@@ -209,25 +209,96 @@ def print_keyboard_shortcuts():
         ("clear", "Xóa màn hình"),
     ]
     
-    print()
-    print(Colors.primary("  ┌─ " + Colors.bold(Colors.info("⌨️  KEYBOARD SHORTCUTS")) + " " * 40 + Colors.primary("┐")))
-    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    # Tính chiều dài của từng dòng (không màu) để tìm dòng dài nhất
+    max_line_length = 0
+    formatted_lines = []
+    title = " ⌨️  KEYBOARD SHORTCUTS"
     
+    # Tính chiều dài của từng dòng nội dung (không tính border)
     for shortcut, description in shortcuts:
-        shortcut_colored = Colors.bold(Colors.info(shortcut))
-        desc_colored = Colors.muted(description)
-        line = f"  {shortcut_colored:20s}  {desc_colored}"
+        # Format text không màu trước để tính padding chính xác
+        shortcut_formatted = f"{shortcut:20s}"
+        # Format: "  " + shortcut_formatted + "  " + description
+        line_content = f"  {shortcut_formatted}  {description}"
+        line_length = len(line_content)
         
-        # Tính padding
-        line_plain = strip_ansi(line)
-        padding = 67 - len(line_plain) - 2
+        if line_length > max_line_length:
+            max_line_length = line_length
+        
+        formatted_lines.append({
+            'shortcut': shortcut,
+            'description': description,
+            'shortcut_formatted': shortcut_formatted,
+            'line_content': line_content,
+        })
+    
+    # Dùng chiều dài dòng dài nhất làm content_width
+    content_width = max_line_length
+    # Thêm 1 ký tự để các dòng border đều với nội dung
+    border_width = content_width + 1
+    
+    # Tính chiều dài dòng title (phần giữa border)
+    # Format: "  ┌─ " + title + padding + " ┐"
+    # Phần giữa border = "┌─ " + title + padding
+    title_prefix = "┌─ "
+    title_middle_length = len(title_prefix) + len(title)
+    
+    # Tính padding cho title để đảm bảo chiều dài bằng border_width (thêm 1 để khớp với các dòng nội dung)
+    title_padding = border_width - title_middle_length
+    if title_padding < 0:
+        title_padding = 0
+    
+    # Tính chiều dài thực tế của dòng đầu (không màu) để dùng làm chuẩn cho dòng cuối
+    top_line_middle_length = len(title_prefix) + len(title) + title_padding
+    
+    # Tính số ký tự "─" cho dòng cuối
+    # Format: "  └─" + "─" + "─" * n + " ┘"
+    # Dòng đầu: "  ┌─" + "──" + title + padding + "┐" 
+    #   Phần giữa (không tính "  " và "┐"): "┌─" + "──" + title + padding = 3 + 2 + len(title) + title_padding = top_line_middle_length + 2
+    # Dòng cuối: "  └─" + "─" + "─" * n + " ┘"
+    #   Phần giữa (không tính "  " và " ┘"): "└─" + "─" + "─" * n = 3 + 1 + n = 4 + n
+    # Để khớp: 4 + n = top_line_middle_length + 2
+    # => n = top_line_middle_length + 2 - 4 = top_line_middle_length - 2
+    bottom_prefix = "└─"
+    bottom_dash_count = top_line_middle_length - 2
+    if bottom_dash_count < 0:
+        bottom_dash_count = 0
+    
+    print()
+    # Render dòng đầu với màu
+    # Format: "  ┌─" + "──" + title + padding + "┐" để khớp với dòng cuối "  └─" + "─" * n + " ┘"
+    # Cần thêm 1 dấu ─ nữa để khớp với border_width
+    title_colored = Colors.bold(Colors.info(title))
+    print(Colors.primary("  ┌─") + title_colored + Colors.primary(" " * title_padding + "─" * 2 + "┐"))
+    print(Colors.primary("  │") + " " * border_width + Colors.primary("│"))
+    
+    # Render các dòng với padding chính xác
+    for line_data in formatted_lines:
+        shortcut = line_data['shortcut']
+        description = line_data['description']
+        shortcut_formatted = line_data['shortcut_formatted']
+        line_content = line_data['line_content']
+        
+        # Tính padding để đảm bảo tất cả dòng có cùng chiều dài
+        # Dùng border_width để khớp với dòng đầu
+        padding = border_width - len(line_content)
         if padding < 0:
             padding = 0
         
+        # Thêm màu vào từng phần đã được format
+        shortcut_colored = Colors.bold(Colors.info(shortcut))
+        desc_colored = Colors.muted(description)
+        
+        # Tính padding cho shortcut để giữ nguyên chiều dài hiển thị
+        shortcut_padding = len(shortcut_formatted) - len(shortcut)
+        
+        # Tạo line với màu và padding chính xác
+        line = f"  {shortcut_colored}{' ' * shortcut_padding}  {desc_colored}"
+        
         print(Colors.primary("  │") + line + " " * padding + Colors.primary("│"))
     
-    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
-    print(Colors.primary("  └─ " + "─" * 65 + " ┘"))
+    print(Colors.primary("  │") + " " * border_width + Colors.primary("│"))
+    print(Colors.primary("  └─" + "─" * bottom_dash_count + "─┘"))
     print()
 
 
