@@ -1319,6 +1319,71 @@ def _show_quick_actions_menu(manager, tools):
             input(Colors.muted("Nhấn Enter để tiếp tục..."))
 
 
+def _show_statistics(manager):
+    """Hiển thị thống kê sử dụng tools"""
+    print()
+    print_separator("─", 70, Colors.INFO)
+    print(Colors.bold("📊 THỐNG KÊ SỬ DỤNG"))
+    print_separator("─", 70, Colors.INFO)
+    print()
+    
+    stats = manager.config.get('statistics', {})
+    tool_usage = stats.get('tool_usage', {})
+    last_used = stats.get('last_used', {})
+    
+    if not tool_usage:
+        print(Colors.info("ℹ️  Chưa có thống kê sử dụng"))
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
+        return
+    
+    # Sắp xếp tools theo số lần sử dụng
+    sorted_usage = sorted(tool_usage.items(), key=lambda x: x[1], reverse=True)
+    
+    print(Colors.bold("📈 Top Tools được sử dụng nhiều nhất:"))
+    print()
+    
+    for idx, (tool, count) in enumerate(sorted_usage[:10], start=1):  # Top 10
+        tool_name = manager.get_tool_display_name(tool)
+        last_used_time = last_used.get(tool, 0)
+        
+        # Format thời gian
+        if last_used_time > 0:
+            from datetime import datetime
+            last_used_dt = datetime.fromtimestamp(last_used_time)
+            time_str = last_used_dt.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            time_str = "Chưa sử dụng"
+        
+        # Hiển thị với màu sắc
+        if idx <= 3:
+            rank_color = Colors.success
+        elif idx <= 5:
+            rank_color = Colors.warning
+        else:
+            rank_color = Colors.info
+        
+        print(f"   {rank_color(f'{idx}.')} {Colors.bold(tool_name)}")
+        print(f"      {Colors.muted('Số lần sử dụng:')} {Colors.info(str(count))} | {Colors.muted('Lần cuối:')} {Colors.secondary(time_str)}")
+        print()
+    
+    if len(sorted_usage) > 10:
+        print(Colors.muted(f"   ... và {len(sorted_usage) - 10} tool khác"))
+        print()
+    
+    # Tổng kết
+    total_usage = sum(tool_usage.values())
+    print_separator("─", 70, Colors.INFO)
+    print()
+    print(Colors.bold("📊 Tổng kết:"))
+    print(f"   {Colors.info('Tổng số lần sử dụng:')} {Colors.bold(str(total_usage))}")
+    print(f"   {Colors.info('Số tools đã sử dụng:')} {Colors.bold(str(len(tool_usage)))}")
+    print()
+    print_separator("─", 70, Colors.INFO)
+    print()
+    input(Colors.muted("Nhấn Enter để quay lại..."))
+
+
 def _show_settings_menu(manager):
     """Hiển thị menu settings với các tùy chọn"""
     while True:
@@ -1557,6 +1622,21 @@ def main():
     # Hiển thị menu lần đầu
     manager.display_menu(tools)
     
+    # Command history để hỗ trợ auto-complete
+    command_history = []
+    history_file = Path(__file__).parent / "command_history.json"
+    
+    # Load command history nếu có
+    if history_file.exists():
+        try:
+            import json
+            with open(history_file, 'r', encoding='utf-8') as f:
+                command_history = json.load(f)
+                # Giới hạn 100 lệnh gần nhất
+                command_history = command_history[-100:]
+        except Exception:
+            command_history = []
+    
     # Vòng lặp chính
     while True:
         try:
@@ -1580,6 +1660,13 @@ def main():
             # In prompt text không có padding (để input() hiển thị text ngay sau)
             prompt_input = "  " + Colors.primary("└─ ") + Colors.secondary("▶") + " " + Colors.bold(prompt_text)
             user_input = input(prompt_input).strip()
+            
+            # Lưu vào history (trừ các lệnh rỗng)
+            if user_input and user_input not in command_history[-10:]:  # Tránh duplicate gần đây
+                command_history.append(user_input)
+                # Giới hạn 100 lệnh
+                if len(command_history) > 100:
+                    command_history = command_history[-100:]
             
             # Tính độ dài input đã nhập và in padding + ký tự đóng box
             input_display_width = get_display_width(user_input) if user_input else 0
@@ -1681,7 +1768,8 @@ def main():
                     print(Colors.warning("⚠️  Vui lòng nhập từ khóa tìm kiếm"))
                     continue
                 
-                results = manager.search_tools(query)
+                # Sử dụng fuzzy matching
+                results = manager.search_tools(query, use_fuzzy=True)
                 
                 if results:
                     count_msg = Colors.success(f"{len(results)}")
@@ -1926,6 +2014,11 @@ def main():
             elif command == 'set':
                 _show_settings_menu(manager)
             
+            # Statistics
+            elif command in ['stats', 'statistics', 'stat']:
+                _show_statistics(manager)
+                manager.display_menu(tools)
+            
             # Tool Management (Export/Import/Delete)
             elif command in ['manage', 'mgmt', 'tool-mgmt']:
                 _show_tool_management_menu(manager, tools)
@@ -1991,7 +2084,7 @@ def main():
                 print(Colors.error("  │") + " " * 65 + Colors.error("│"))
                 
                 # Gợi ý commands
-                valid_commands = ['h', 'help', 'q', 'quit', 'l', 'list', 's', 'search', 'f', 'r', 'set', 'log', 'clear', 'clear-log']
+                valid_commands = ['h', 'help', 'q', 'quit', 'l', 'list', 's', 'search', 'f', 'r', 'set', 'log', 'clear', 'clear-log', 'stats', 'qa', 'quick']
                 suggestions = suggest_command(command, valid_commands)
                 
                 if suggestions:
@@ -2022,6 +2115,16 @@ def main():
         except (EOFError, KeyboardInterrupt):
             # Xử lý EOF error (input stream bị đóng) hoặc Ctrl+C
             try:
+                # Lưu command history trước khi thoát
+                if command_history:
+                    try:
+                        import json
+                        history_file.parent.mkdir(parents=True, exist_ok=True)
+                        with open(history_file, 'w', encoding='utf-8') as f:
+                            json.dump(command_history, f, indent=2, ensure_ascii=False)
+                    except Exception:
+                        pass  # Bỏ qua nếu không lưu được
+                
                 print()
                 print(Colors.info("👋 Tạm biệt!"))
             except (KeyboardInterrupt, EOFError, Exception):

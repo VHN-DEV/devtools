@@ -44,6 +44,11 @@ class ToolManager:
         self.tool_tags = {}
         self.tool_types = {}  # Cache loại tool: 'py' hoặc 'sh'
         
+        # Cache tool list để tránh scan lại nhiều lần
+        self._cached_tool_list = None
+        self._cache_timestamp = None
+        self._cache_ttl = 60  # Cache trong 60 giây
+        
         # Danh sách tools theo đúng thứ tự hiển thị (được cập nhật mỗi khi hiển thị menu)
         self.displayed_tools_order = []
         
@@ -74,6 +79,10 @@ class ToolManager:
             'settings': {
                 'show_descriptions': True,
                 'max_recent': 10
+            },
+            'statistics': {
+                'tool_usage': {},  # Số lần sử dụng mỗi tool
+                'last_used': {}    # Timestamp lần cuối sử dụng
             }
         }
         
@@ -92,6 +101,17 @@ class ToolManager:
                         for key, value in default_config['settings'].items():
                             if key not in loaded_config['settings']:
                                 loaded_config['settings'][key] = value
+                    
+                    # Đảm bảo statistics có trong config
+                    if 'statistics' not in loaded_config:
+                        loaded_config['statistics'] = default_config['statistics']
+                    else:
+                        # Đảm bảo các field statistics có đầy đủ
+                        if 'tool_usage' not in loaded_config['statistics']:
+                            loaded_config['statistics']['tool_usage'] = {}
+                        if 'last_used' not in loaded_config['statistics']:
+                            loaded_config['statistics']['last_used'] = {}
+                    
                     return loaded_config
             except Exception:
                 pass
@@ -104,6 +124,9 @@ class ToolManager:
         try:
             with open(self.config_file, 'w', encoding='utf-8') as f:
                 json.dump(self.config, f, indent=2, ensure_ascii=False)
+            # Invalidate cache khi config thay đổi
+            self._cached_tool_list = None
+            self._cache_timestamp = None
         except Exception as e:
             print(f"⚠️  Lỗi lưu config: {e}")
     
@@ -451,27 +474,35 @@ class ToolManager:
         # Ghép lại: priority + regular
         return priority + regular
     
-    def get_tool_list(self) -> List[str]:
+    def get_tool_list(self, force_refresh: bool = False) -> List[str]:
         """
-        Lấy danh sách file .py trong thư mục tool
+        Lấy danh sách file .py trong thư mục tool (với caching)
+        
+        Args:
+            force_refresh: Bỏ qua cache và scan lại (mặc định: False)
         
         Returns:
             list: Danh sách tên file tool (priority tools trước, sau đó alphabet, đã filter disabled)
         
         Giải thích:
-        - Bước 1: Tìm tools trong tools/py/ (các tool Python)
-        - Bước 2: Tìm tools trong tools/sh/ (các tool shell/đặc biệt)
-        - Bước 3: Tách ra priority tools và tools thường
-        - Bước 4: Sắp xếp priority tools theo thứ tự định sẵn
-        - Bước 5: Sắp xếp tools thường theo alphabet
-        - Bước 6: Ghép lại: priority + alphabet
-        - Bước 7: Filter ra các tool bị disabled
+        - Sử dụng cache để tránh scan lại nhiều lần
+        - Cache tự động expire sau TTL (60 giây)
+        - Có thể force refresh nếu cần
         
         Lý do tìm trong thư mục con:
         - Hỗ trợ cấu trúc mới: mỗi tool có thư mục riêng
         - Ví dụ: tools/py/backup-folder/backup-folder.py
         - Ví dụ: tools/sh/setup-project-linux/setup-project-linux.py
         """
+        import time
+        
+        # Kiểm tra cache
+        if not force_refresh and self._cached_tool_list is not None and self._cache_timestamp is not None:
+            elapsed = time.time() - self._cache_timestamp
+            if elapsed < self._cache_ttl:
+                # Cache còn hiệu lực, trả về cache
+                return self._cached_tool_list
+        
         # Scan tools từ thư mục
         all_tools = self._scan_tools_from_directory()
         
@@ -489,6 +520,10 @@ class ToolManager:
         # Filter ra các tool bị disabled
         disabled_tools = set(self.config.get('disabled_tools', []))
         active_tools = [t for t in sorted_tools if t not in disabled_tools]
+        
+        # Lưu vào cache
+        self._cached_tool_list = active_tools
+        self._cache_timestamp = time.time()
         
         return active_tools
     
@@ -513,42 +548,85 @@ class ToolManager:
         # Sắp xếp và ưu tiên (bao gồm cả disabled)
         return self._sort_and_prioritize_tools(unique_tools)
     
-    def search_tools(self, query: str) -> List[str]:
+    def search_tools(self, query: str, use_fuzzy: bool = True) -> List[str]:
         """
-        Tìm kiếm tool theo keyword
+        Tìm kiếm tool theo keyword với fuzzy matching
         
         Args:
             query: Từ khóa tìm kiếm
+            use_fuzzy: Sử dụng fuzzy matching (mặc định: True)
         
         Returns:
-            list: Danh sách tool phù hợp
+            list: Danh sách tool phù hợp (sắp xếp theo độ liên quan)
         
         Giải thích:
-        - Tìm trong tên file
-        - Tìm trong description
-        - Tìm trong tags
+        - Tìm trong tên file (exact match có điểm cao nhất)
+        - Tìm trong description (exact match)
+        - Tìm trong tags (exact match)
+        - Sử dụng fuzzy matching để tìm gần đúng
+        - Sắp xếp kết quả theo độ liên quan
         """
-        query = query.lower()
-        results = []
+        from difflib import SequenceMatcher
+        
+        query_lower = query.lower()
+        results_with_score = []
         
         for tool in self.get_tool_list():
-            # Tìm trong tên file
-            if query in tool.lower():
-                results.append(tool)
-                continue
+            score = 0.0
+            matched = False
+            
+            # Tìm trong tên file (exact match = điểm cao nhất)
+            tool_lower = tool.lower()
+            if query_lower in tool_lower:
+                if tool_lower == query_lower:
+                    score = 1.0  # Exact match
+                elif tool_lower.startswith(query_lower):
+                    score = 0.9  # Starts with
+                else:
+                    score = 0.7  # Contains
+                matched = True
             
             # Tìm trong description
             description = self.get_tool_display_name(tool)
-            if query in description.lower():
-                results.append(tool)
-                continue
+            description_lower = description.lower()
+            if query_lower in description_lower:
+                if description_lower.startswith(query_lower):
+                    score = max(score, 0.8)
+                else:
+                    score = max(score, 0.6)
+                matched = True
             
             # Tìm trong tags
             tags = self.get_tool_tags(tool)
-            if any(query in tag.lower() for tag in tags):
-                results.append(tool)
+            for tag in tags:
+                tag_lower = tag.lower()
+                if query_lower in tag_lower:
+                    score = max(score, 0.5)
+                    matched = True
+                    break
+            
+            # Fuzzy matching nếu chưa tìm thấy exact match
+            if use_fuzzy and not matched:
+                # So sánh với tên file
+                file_ratio = SequenceMatcher(None, query_lower, tool_lower).ratio()
+                if file_ratio > 0.5:  # Ngưỡng 50%
+                    score = file_ratio * 0.4  # Fuzzy match có điểm thấp hơn
+                    matched = True
+                
+                # So sánh với description
+                desc_ratio = SequenceMatcher(None, query_lower, description_lower).ratio()
+                if desc_ratio > 0.5:
+                    score = max(score, desc_ratio * 0.3)
+                    matched = True
+            
+            if matched:
+                results_with_score.append((tool, score))
         
-        return results
+        # Sắp xếp theo điểm số (cao -> thấp)
+        results_with_score.sort(key=lambda x: x[1], reverse=True)
+        
+        # Trả về danh sách tools (không có điểm số)
+        return [tool for tool, score in results_with_score]
     
     def add_to_favorites(self, tool: str):
         """Thêm tool vào favorites"""
@@ -600,7 +678,7 @@ class ToolManager:
     
     def add_to_recent(self, tool: str):
         """
-        Thêm tool vào recent
+        Thêm tool vào recent và cập nhật statistics
         
         Args:
             tool: Tên file tool
@@ -610,6 +688,7 @@ class ToolManager:
         - Thêm vào đầu list
         - Giới hạn số lượng recent
         - Tự động dọn dẹp tools đã bị xóa (chỉ giữ tools còn tồn tại)
+        - Cập nhật usage statistics
         """
         if tool in self.config['recent']:
             self.config['recent'].remove(tool)
@@ -624,6 +703,23 @@ class ToolManager:
         # Giới hạn số recent
         max_recent = self.config['settings'].get('max_recent', 10)
         self.config['recent'] = self.config['recent'][:max_recent]
+        
+        # Cập nhật usage statistics
+        if 'statistics' not in self.config:
+            self.config['statistics'] = {}
+        if 'tool_usage' not in self.config['statistics']:
+            self.config['statistics']['tool_usage'] = {}
+        
+        # Tăng usage count
+        if tool not in self.config['statistics']['tool_usage']:
+            self.config['statistics']['tool_usage'][tool] = 0
+        self.config['statistics']['tool_usage'][tool] += 1
+        
+        # Cập nhật last used timestamp
+        import time
+        if 'last_used' not in self.config['statistics']:
+            self.config['statistics']['last_used'] = {}
+        self.config['statistics']['last_used'][tool] = time.time()
         
         self._save_config()
     
@@ -1019,12 +1115,18 @@ class ToolManager:
         favorites_count = len([t for t in tools if t in self.config['favorites']])
         recent_count = len([t for t in self.config['recent'] if t in tools])
         
+        # Tính tổng số lần sử dụng từ statistics
+        total_usage = sum(self.config.get('statistics', {}).get('tool_usage', {}).values())
+        
         # Build stats text
         stats_text_parts = []
         if disabled_count > 0:
             stats_text_parts.extend([f"📊 Active: {total}", f"🔒 Disabled: {disabled_count}", f"⭐ Favorites: {favorites_count}", f"📚 Recent: {recent_count}"])
         else:
             stats_text_parts.extend([f"📊 Active: {total}", f"⭐ Favorites: {favorites_count}", f"📚 Recent: {recent_count}"])
+        
+        if total_usage > 0:
+            stats_text_parts.append(f"📈 Usage: {total_usage}")
         
         stats_text = " | ".join(stats_text_parts)
         stats_display_width = get_display_width(stats_text)
@@ -1037,6 +1139,8 @@ class ToolManager:
             stats_parts.append(Colors.error(f"🔒 Disabled: {Colors.bold(str(disabled_count))}"))
         stats_parts.append(Colors.warning(f"⭐ Favorites: {Colors.bold(str(favorites_count))}"))
         stats_parts.append(Colors.secondary(f"📚 Recent: {Colors.bold(str(recent_count))}"))
+        if total_usage > 0:
+            stats_parts.append(Colors.primary(f"📈 Usage: {Colors.bold(str(total_usage))}"))
         
         stats_colored = " | ".join(stats_parts)
         # Tính padding: 1 space + stats + padding = content_width
@@ -1359,6 +1463,12 @@ class ToolManager:
         
         other3 = f"{Colors.info('log')}          - Xem và quản lý file log"
         print_box_line(other3, "log          - Xem và quản lý file log")
+        
+        other4 = f"{Colors.info('stats')}         - Xem thống kê sử dụng tools"
+        print_box_line(other4, "stats         - Xem thống kê sử dụng tools")
+        
+        other5 = f"{Colors.info('qa, quick')}     - Quick actions menu"
+        print_box_line(other5, "qa, quick     - Quick actions menu")
         
         print("  " + Colors.primary("╚" + "═" * content_width + "╝"))
         print()
