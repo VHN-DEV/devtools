@@ -153,7 +153,7 @@ python __main__.py
 
 ```
 ╔══════════════════════════════════════════════════════════╗
-║                  DEV TOOLS                              ║
+║                     DEV TOOLS                            ║
 ║              Bộ công cụ Python tiện ích                  ║
 ║                                                          ║
 ║         Nhập 'h' hoặc 'help' để xem hướng dẫn            ║

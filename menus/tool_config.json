@@ -6,6 +6,7 @@
     "video-converter.py"
   ],
   "recent": [
+    "ssh-manager.py",
     "copy-changed-files.py",
     "generate-tree.py",
     "git-push-source.py",
@@ -14,8 +15,7 @@
     "scan-malware.py",
     "json-formatter.py",
     "video-converter.py",
-    "setup-project-linux.py",
-    "backup-folder.py"
+    "setup-project-linux.py"
   ],
   "settings": {
     "show_descriptions": false,
@@ -30,5 +30,15 @@
     "docker-setup-laravel.py",
     "docker-setup.py",
     "wordpress_auto_install.py"
-  ]
+  ],
+  "statistics": {
+    "tool_usage": {
+      "ssh-manager.py": 4,
+      "copy-changed-files.py": 6
+    },
+    "last_used": {
+      "ssh-manager.py": 1765268228.6703696,
+      "copy-changed-files.py": 1765265905.9708328
+    }
+  }
 }

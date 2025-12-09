@@ -1166,11 +1166,9 @@ class ToolManager:
             Colors.info(f"📊 Active: {Colors.bold(str(total))}"),
         ]
         if disabled_count > 0:
-            stats_parts.append(Colors.error(f"🔒 Disabled: {Colors.bold(str(disabled_count))}"))
-        stats_parts.append(Colors.warning(f"⭐ Favorites: {Colors.bold(str(favorites_count))}"))
-        stats_parts.append(Colors.secondary(f"📚 Recent: {Colors.bold(str(recent_count))}"))
-        if total_usage > 0:
-            stats_parts.append(Colors.primary(f"📈 Usage: {Colors.bold(str(total_usage))}"))
+            stats_parts.append(Colors.error(f" 🔒 Disabled: {Colors.bold(str(disabled_count))} "))
+        stats_parts.append(Colors.warning(f" ⭐ Favorites: {Colors.bold(str(favorites_count))} "))
+        stats_parts.append(Colors.secondary(f" 📚 Recent: {Colors.bold(str(recent_count))} "))
         
         stats_colored = " | ".join(stats_parts)
         # Tính padding: 1 space + stats + padding = content_width
