@@ -2437,14 +2437,14 @@ def main():
             else:
                 # Cải thiện error message với suggestions và help
                 print()
-                print(Colors.error("  ┌─ " + "─" * 63 + " ┐"))
-                print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+                print(Colors.error("  ┌─" + "─" * 63 + "┐"))
+                print(Colors.error("  │") + " " * 64 + Colors.error("│"))
                 
                 error_msg = f"❌ Lệnh không hợp lệ: '{command}'"
                 error_padding = (65 - len(error_msg)) // 2
-                print(Colors.error("  │") + " " * error_padding + Colors.bold(error_msg) + " " * (65 - len(error_msg) - error_padding) + Colors.error("│"))
+                print(Colors.error("  │") + " " * error_padding + Colors.bold(error_msg) + " " * (63 - len(error_msg) - error_padding) + Colors.error("│"))
                 
-                print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+                print(Colors.error("  │") + " " * 64 + Colors.error("│"))
                 
                 # Gợi ý commands
                 valid_commands = ['h', 'help', 'q', 'quit', 'l', 'list', 's', 'search', 'f', 'r', 'set', 'log', 'clear', 'clear-log', 'stats', 'qa', 'quick', 'marketplace', 'mp', 'store', 'theme']
@@ -2455,24 +2455,24 @@ def main():
                         suggest_msg = f"💡 Có phải bạn muốn: {Colors.bold(suggestions[0])}?"
                         suggest_plain = strip_ansi(suggest_msg)
                         suggest_padding = (65 - len(suggest_plain)) // 2
-                        print(Colors.error("  │") + " " * suggest_padding + Colors.info(suggest_msg) + " " * (65 - len(suggest_plain) - suggest_padding) + Colors.error("│"))
+                        print(Colors.error("  │") + " " * suggest_padding + Colors.info(suggest_msg) + " " * (63 - len(suggest_plain) - suggest_padding) + Colors.error("│"))
                     else:
                         suggest_title = f"💡 Gợi ý ({len(suggestions)}):"
                         suggest_title_padding = (65 - len(suggest_title)) // 2
-                        print(Colors.error("  │") + " " * suggest_title_padding + Colors.info(suggest_title) + " " * (65 - len(suggest_title) - suggest_title_padding) + Colors.error("│"))
+                        print(Colors.error("  │") + " " * suggest_title_padding + Colors.info(suggest_title) + " " * (63 - len(suggest_title) - suggest_title_padding) + Colors.error("│"))
                         
                         suggestions_text = ", ".join([Colors.bold(s) for s in suggestions])
                         suggestions_plain = strip_ansi(suggestions_text)
                         suggestions_padding = (65 - len(suggestions_plain)) // 2
-                        print(Colors.error("  │") + " " * suggestions_padding + suggestions_text + " " * (65 - len(suggestions_plain) - suggestions_padding) + Colors.error("│"))
+                        print(Colors.error("  │") + " " * suggestions_padding + suggestions_text + " " * (63 - len(suggestions_plain) - suggestions_padding) + Colors.error("│"))
                 else:
                     help_msg = "💡 Nhập 'h' hoặc 'help' để xem hướng dẫn"
                     help_plain = strip_ansi(help_msg)
                     help_padding = (65 - len(help_plain)) // 2
-                    print(Colors.error("  │") + " " * help_padding + Colors.info(help_msg) + " " * (65 - len(help_plain) - help_padding) + Colors.error("│"))
+                    print(Colors.error("  │") + " " * help_padding + Colors.info(help_msg) + " " * (63 - len(help_plain) - help_padding) + Colors.error("│"))
                 
-                print(Colors.error("  │") + " " * 65 + Colors.error("│"))
-                print(Colors.error("  └─ " + "─" * 63 + " ┘"))
+                print(Colors.error("  │") + " " * 64 + Colors.error("│"))
+                print(Colors.error("  └─" + "─" * 63 + "┘"))
                 print()
         
         except (EOFError, KeyboardInterrupt):
