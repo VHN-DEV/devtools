@@ -34,7 +34,7 @@ if sys.platform == 'win32':
 from .tool_manager import ToolManager
 from utils.colors import Colors
 from utils.format import print_separator
-from utils.helpers import print_welcome_tip, print_command_suggestions, suggest_command
+from utils.helpers import print_welcome_tip, print_command_suggestions, suggest_command, strip_ansi
 from utils.logger import clear_logs, get_log_files
 
 
@@ -1199,6 +1199,126 @@ def _show_tool_management_menu(manager, tools):
             print()
 
 
+def _show_quick_actions_menu(manager, tools):
+    """
+    Hiển thị menu quick actions cho các thao tác thường dùng
+    
+    Mục đích: Giúp người dùng truy cập nhanh các chức năng phổ biến
+    """
+    while True:
+        print()
+        print_separator("─", 70, Colors.INFO)
+        print(Colors.bold("⚡ QUICK ACTIONS"))
+        print_separator("─", 70, Colors.INFO)
+        print()
+        
+        # Lấy recent và favorites
+        recent = manager.config.get('recent', [])
+        favorites = manager.config.get('favorites', [])
+        valid_recent = [r for r in recent if r in tools][:5]  # Tối đa 5 recent
+        valid_favorites = [f for f in favorites if f in tools][:5]  # Tối đa 5 favorites
+        
+        print(Colors.bold("📋 Các thao tác nhanh:"))
+        print()
+        
+        action_idx = 1
+        actions = []
+        
+        # Recent tools
+        if valid_recent:
+            print(Colors.info(f"📚 Recent Tools:"))
+            for idx, tool in enumerate(valid_recent, start=1):
+                tool_name = manager.get_tool_display_name(tool)
+                print(f"   {Colors.warning(f'{action_idx}')}. {Colors.bold(tool_name)} {Colors.muted(f'(r{idx})')}")
+                actions.append(('recent', idx - 1))
+                action_idx += 1
+            print()
+        
+        # Favorites
+        if valid_favorites:
+            print(Colors.info(f"⭐ Favorites:"))
+            for idx, tool in enumerate(valid_favorites, start=1):
+                tool_name = manager.get_tool_display_name(tool)
+                print(f"   {Colors.warning(f'{action_idx}')}. {Colors.bold(tool_name)} {Colors.muted(f'(favorite {idx})')}")
+                actions.append(('favorite', idx - 1))
+                action_idx += 1
+            print()
+        
+        # Common actions
+        print(Colors.info(f"🔧 Common Actions:"))
+        common_actions = [
+            ("Tìm kiếm tool", "search"),
+            ("Xem favorites", "favorites"),
+            ("Xem recent", "recent"),
+            ("Xem help", "help"),
+            ("Settings", "settings"),
+        ]
+        
+        for desc, cmd in common_actions:
+            print(f"   {Colors.warning(f'{action_idx}')}. {Colors.bold(desc)} {Colors.muted(f'({cmd})')}")
+            actions.append(('common', cmd))
+            action_idx += 1
+        
+        print()
+        print_separator("─", 70, Colors.INFO)
+        print()
+        print(f"   {Colors.muted('0')}. Quay lại menu chính")
+        print()
+        
+        choice = input(f"{Colors.primary('Chọn action')} (0-{action_idx - 1}): ").strip()
+        
+        if not choice or choice == '0':
+            break
+        
+        try:
+            idx = int(choice)
+            if 1 <= idx <= len(actions):
+                action_type, action_data = actions[idx - 1]
+                
+                if action_type == 'recent':
+                    tool = valid_recent[action_data]
+                    _run_tool_loop(manager, tool, tools)
+                    break
+                elif action_type == 'favorite':
+                    tool = valid_favorites[action_data]
+                    _run_tool_loop(manager, tool, tools)
+                    break
+                elif action_type == 'common':
+                    cmd = action_data
+                    if cmd == 'search':
+                        query = input(f"{Colors.primary('Nhập từ khóa tìm kiếm')}: ").strip()
+                        if query:
+                            results = manager.search_tools(query)
+                            if results:
+                                manager.display_menu(results, title=f"KẾT QUẢ: {query}", group_by_category=False, search_query=query)
+                            else:
+                                print(Colors.error(f"❌ Không tìm thấy tool nào phù hợp với '{query}'"))
+                    elif cmd == 'favorites':
+                        if valid_favorites:
+                            manager.display_menu(valid_favorites, title="FAVORITES")
+                        else:
+                            print(Colors.warning("⭐ Chưa có favorites nào"))
+                    elif cmd == 'recent':
+                        if valid_recent:
+                            manager.display_menu(valid_recent, title="RECENT TOOLS")
+                        else:
+                            print(Colors.warning("📚 Chưa có recent tools"))
+                    elif cmd == 'help':
+                        manager.show_help()
+                        from utils.helpers import print_keyboard_shortcuts
+                        print_keyboard_shortcuts()
+                    elif cmd == 'settings':
+                        _show_settings_menu(manager)
+            else:
+                print(Colors.error(f"❌ Số không hợp lệ (phải từ 1 đến {len(actions)})"))
+                print()
+                input(Colors.muted("Nhấn Enter để tiếp tục..."))
+        except ValueError:
+            print(Colors.error("❌ Vui lòng nhập số!"))
+            print()
+            input(Colors.muted("Nhấn Enter để tiếp tục..."))
+
+
 def _show_settings_menu(manager):
     """Hiển thị menu settings với các tùy chọn"""
     while True:
@@ -1384,18 +1504,23 @@ def main():
         return
     
     # Hiển thị banner đẹp hơn với design hiện đại
-    from utils.helpers import print_banner
+    from utils.helpers import print_banner, print_welcome_message
     print_banner()
     
-    # Welcome tip
-    print_welcome_tip()
-    print()
+    # Welcome message với onboarding tips (chỉ hiển thị lần đầu hoặc khi có flag)
+    # Kiểm tra xem có phải lần đầu chạy không (dựa vào recent tools)
+    is_first_run = len(manager.config.get('recent', [])) == 0
+    if is_first_run:
+        print_welcome_message()
+    else:
+        # Chỉ hiển thị tip ngẫu nhiên cho người dùng cũ
+        print_welcome_tip()
+        print()
     
     # Tính content_width để đồng nhất với display_menu
     def get_display_width(text: str) -> int:
         """Tính độ dài hiển thị thực tế của text (bao gồm cả emoji)"""
         import unicodedata
-        from utils.helpers import strip_ansi
         plain_text = strip_ansi(text)
         width = 0
         for char in plain_text:
@@ -1484,6 +1609,9 @@ def main():
             # Help
             elif command in ['h', 'help', '?']:
                 manager.show_help()
+                # Hiển thị keyboard shortcuts sau help
+                from utils.helpers import print_keyboard_shortcuts
+                print_keyboard_shortcuts()
             
             # Version
             elif command == 'v':
@@ -1806,6 +1934,10 @@ def main():
                 if tools:
                     manager.display_menu(tools)
             
+            # Quick Actions Menu
+            elif command in ['qa', 'quick', 'quick-actions']:
+                _show_quick_actions_menu(manager, tools)
+            
             # Logs
             elif command == 'log' or command == 'logs':
                 _show_logs_menu(manager)
@@ -1847,15 +1979,45 @@ def main():
                     print(Colors.error("❌ Số không hợp lệ"))
             
             else:
-                print(Colors.error(f"❌ Lệnh không hợp lệ: {command}"))
+                # Cải thiện error message với suggestions và help
+                print()
+                print(Colors.error("  ┌─ " + "─" * 63 + " ┐"))
+                print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+                
+                error_msg = f"❌ Lệnh không hợp lệ: '{command}'"
+                error_padding = (65 - len(error_msg)) // 2
+                print(Colors.error("  │") + " " * error_padding + Colors.bold(error_msg) + " " * (65 - len(error_msg) - error_padding) + Colors.error("│"))
+                
+                print(Colors.error("  │") + " " * 65 + Colors.error("│"))
                 
                 # Gợi ý commands
                 valid_commands = ['h', 'help', 'q', 'quit', 'l', 'list', 's', 'search', 'f', 'r', 'set', 'log', 'clear', 'clear-log']
                 suggestions = suggest_command(command, valid_commands)
+                
                 if suggestions:
-                    print_command_suggestions(command, suggestions)
+                    if len(suggestions) == 1:
+                        suggest_msg = f"💡 Có phải bạn muốn: {Colors.bold(suggestions[0])}?"
+                        suggest_plain = strip_ansi(suggest_msg)
+                        suggest_padding = (65 - len(suggest_plain)) // 2
+                        print(Colors.error("  │") + " " * suggest_padding + Colors.info(suggest_msg) + " " * (65 - len(suggest_plain) - suggest_padding) + Colors.error("│"))
+                    else:
+                        suggest_title = f"💡 Gợi ý ({len(suggestions)}):"
+                        suggest_title_padding = (65 - len(suggest_title)) // 2
+                        print(Colors.error("  │") + " " * suggest_title_padding + Colors.info(suggest_title) + " " * (65 - len(suggest_title) - suggest_title_padding) + Colors.error("│"))
+                        
+                        suggestions_text = ", ".join([Colors.bold(s) for s in suggestions])
+                        suggestions_plain = strip_ansi(suggestions_text)
+                        suggestions_padding = (65 - len(suggestions_plain)) // 2
+                        print(Colors.error("  │") + " " * suggestions_padding + suggestions_text + " " * (65 - len(suggestions_plain) - suggestions_padding) + Colors.error("│"))
                 else:
-                    print(Colors.info("💡 Nhập 'h' hoặc 'help' để xem hướng dẫn"))
+                    help_msg = "💡 Nhập 'h' hoặc 'help' để xem hướng dẫn"
+                    help_plain = strip_ansi(help_msg)
+                    help_padding = (65 - len(help_plain)) // 2
+                    print(Colors.error("  │") + " " * help_padding + Colors.info(help_msg) + " " * (65 - len(help_plain) - help_padding) + Colors.error("│"))
+                
+                print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+                print(Colors.error("  └─ " + "─" * 63 + " ┘"))
+                print()
         
         except (EOFError, KeyboardInterrupt):
             # Xử lý EOF error (input stream bị đóng) hoặc Ctrl+C

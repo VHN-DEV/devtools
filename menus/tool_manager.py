@@ -672,7 +672,19 @@ class ToolManager:
         tool_display_name = self.get_tool_display_name(tool)
         print()
         print_separator("═", 70, Colors.PRIMARY)
+        
+        # Hiển thị loading indicator với spinner
+        from utils.progress import Spinner
+        spinner = Spinner(f"Đang khởi động: {tool_display_name}")
+        spinner.start()
+        
+        # Dừng spinner sau một chút để hiển thị loading
+        import time
+        time.sleep(0.3)  # Hiển thị spinner trong 0.3 giây
+        spinner.stop()
+        
         print(Colors.primary(f"  ▶ Đang chạy: {Colors.bold(tool_display_name)}"))
+        print(Colors.muted(f"  📁 Đường dẫn: {tool_path}"))
         print_separator("═", 70, Colors.PRIMARY)
         print()
         
@@ -695,12 +707,17 @@ class ToolManager:
                     print(Colors.warning(f"📝 Lỗi đã được ghi vào file: {log_file}"))
             
             print()
-            print_separator("═", 70, Colors.SUCCESS)
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
+            
             if result.returncode == 0:
-                print(Colors.success(f"  ✅ Tool đã chạy xong!"))
+                print(Colors.success(f"  ✅ Tool đã chạy xong thành công!"))
+                print(Colors.muted(f"  📊 Exit code: {Colors.info('0')} (Success)"))
             else:
-                print(Colors.error(f"  ❌ Tool đã kết thúc với lỗi (code: {result.returncode})"))
-            print_separator("═", 70, Colors.SUCCESS)
+                print(Colors.error(f"  ❌ Tool đã kết thúc với lỗi"))
+                print(Colors.error(f"  📊 Exit code: {Colors.bold(str(result.returncode))}"))
+                print(Colors.muted(f"  💡 Kiểm tra output phía trên để xem chi tiết lỗi"))
+            
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
             print()
             
             # Lưu vào recent
@@ -754,9 +771,23 @@ class ToolManager:
             print(f"   Đường dẫn: {app_sh}")
             return 1
         
-        print(f"\n{'='*60}")
-        print(f">>> Đang chạy: {self.get_tool_display_name('setup-project-linux.py')}")
-        print(f"{'='*60}\n")
+        tool_display_name = self.get_tool_display_name('setup-project-linux.py')
+        print()
+        print_separator("═", 70, Colors.PRIMARY)
+        
+        # Hiển thị loading indicator
+        from utils.progress import Spinner
+        spinner = Spinner(f"Đang khởi động: {tool_display_name}")
+        spinner.start()
+        
+        import time
+        time.sleep(0.3)
+        spinner.stop()
+        
+        print(Colors.primary(f"  ▶ Đang chạy: {Colors.bold(tool_display_name)}"))
+        print(Colors.muted(f"  📁 Script: {app_sh}"))
+        print_separator("═", 70, Colors.PRIMARY)
+        print()
         
         try:
             # Tìm bash
@@ -824,9 +855,17 @@ class ToolManager:
             result = subprocess.run(cmd, check=False)
             
             print()
-            print_separator("═", 70, Colors.SUCCESS)
-            print(Colors.success(f"  ✅ Tool đã chạy xong!"))
-            print_separator("═", 70, Colors.SUCCESS)
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
+            
+            if result.returncode == 0:
+                print(Colors.success(f"  ✅ Tool đã chạy xong thành công!"))
+                print(Colors.muted(f"  📊 Exit code: {Colors.info('0')} (Success)"))
+            else:
+                print(Colors.error(f"  ❌ Tool đã kết thúc với lỗi"))
+                print(Colors.error(f"  📊 Exit code: {Colors.bold(str(result.returncode))}"))
+                print(Colors.muted(f"  💡 Kiểm tra output phía trên để xem chi tiết lỗi"))
+            
+            print_separator("═", 70, Colors.SUCCESS if result.returncode == 0 else Colors.ERROR)
             print()
             
             # Lưu vào recent
@@ -1103,8 +1142,13 @@ class ToolManager:
         # Lưu danh sách tools theo đúng thứ tự hiển thị để dùng khi chọn số
         self.displayed_tools_order = displayed_tools_order
     
-    def show_help(self):
-        """Hiển thị help với UI/UX đẹp hơn"""
+    def show_help(self, show_examples: bool = True):
+        """
+        Hiển thị help với UI/UX đẹp hơn
+        
+        Args:
+            show_examples: Có hiển thị ví dụ sử dụng không
+        """
         # Độ rộng content area = độ dài của dòng dài nhất (note4 = 71 ký tự)
         content_width = 71
         
@@ -1315,6 +1359,46 @@ class ToolManager:
         
         other3 = f"{Colors.info('log')}          - Xem và quản lý file log"
         print_box_line(other3, "log          - Xem và quản lý file log")
+        
+        print("  " + Colors.primary("╚" + "═" * content_width + "╝"))
+        print()
+        
+        # Hiển thị ví dụ sử dụng nếu được yêu cầu
+        if show_examples:
+            self._show_help_examples()
+    
+    def _show_help_examples(self):
+        """Hiển thị các ví dụ sử dụng phổ biến"""
+        content_width = 71
+        
+        print("  " + Colors.primary("╔" + "═" * content_width + "╗"))
+        title = "📚 VÍ DỤ SỬ DỤNG"
+        title_padding = (content_width - len(title) - 2) // 2
+        title_line = "  " + Colors.primary("║") + " " * title_padding + Colors.bold(Colors.info(title)) + " " * (content_width - len(title) - title_padding) + Colors.primary("║")
+        print(title_line)
+        print("  " + Colors.primary("╠" + "═" * content_width + "╣"))
+        
+        examples = [
+            ("Chạy tool", "1", "Chạy tool số 1"),
+            ("Xem hướng dẫn tool", "1h", "Xem hướng dẫn của tool số 1"),
+            ("Tìm kiếm", "s backup", "Tìm các tool liên quan đến backup"),
+            ("Thêm favorite", "f+ 3", "Thêm tool số 3 vào favorites"),
+            ("Chạy recent", "r1", "Chạy tool recent đầu tiên"),
+            ("Vô hiệu hóa", "off 2 3", "Vô hiệu hóa tool số 2 và 3"),
+        ]
+        
+        for desc, cmd, explanation in examples:
+            desc_colored = Colors.bold(Colors.warning(desc + ":"))
+            cmd_colored = Colors.info(f"'{cmd}'")
+            expl_colored = Colors.muted(explanation)
+            
+            line = f"  {desc_colored:20s} {cmd_colored:15s} {expl_colored}"
+            line_plain = strip_ansi(line)
+            padding = content_width - len(line_plain) - 3
+            if padding < 0:
+                padding = 0
+            
+            print("  " + Colors.primary("║") + " " + line + " " * padding + Colors.primary("║"))
         
         print("  " + Colors.primary("╚" + "═" * content_width + "╝"))
         print()

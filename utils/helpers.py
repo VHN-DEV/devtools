@@ -140,9 +140,100 @@ def print_welcome_tip():
     print(Colors.muted(f"  {tip}"))
 
 
+def print_welcome_message():
+    """
+    In welcome message thân thiện với onboarding tips
+    
+    Mục đích: Giúp người dùng mới hiểu cách sử dụng nhanh chóng
+    """
+    print()
+    print(Colors.primary("  ┌─ " + "─" * 65 + " ┐"))
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    
+    welcome_text = "👋 Chào mừng đến với DevTools!"
+    welcome_padding = (67 - len(welcome_text) + 1) // 2  # +1 cho emoji
+    print(Colors.primary("  │") + " " * welcome_padding + Colors.bold(Colors.info(welcome_text)) + " " * (67 - len(welcome_text) - welcome_padding + 1) + Colors.primary("│"))
+    
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    
+    quick_start = "🚀 Bắt đầu nhanh:"
+    print(Colors.primary("  │") + "  " + Colors.bold(Colors.warning(quick_start)) + " " * (67 - len(quick_start) - 2) + Colors.primary("│"))
+    
+    tips = [
+        ("• Nhập", Colors.muted, "số", Colors.info, "để chạy tool (vd: 1, 2, 3)"),
+        ("• Nhập", Colors.muted, "h", Colors.info, "để xem hướng dẫn đầy đủ"),
+        ("• Nhập", Colors.muted, "s [từ khóa]", Colors.info, "để tìm kiếm tool"),
+        ("• Nhập", Colors.muted, "f+ [số]", Colors.info, "để thêm vào favorites"),
+    ]
+    
+    for tip_parts in tips:
+        tip_line = ""
+        for part in tip_parts:
+            if isinstance(part, str):
+                tip_line += part
+            else:
+                tip_line += part("") if callable(part) else str(part)
+        
+        # Tính độ dài thực tế (không tính ANSI codes)
+        tip_plain = strip_ansi(tip_line)
+        tip_padding = 67 - len(tip_plain) - 2
+        if tip_padding < 0:
+            tip_padding = 0
+        
+        print(Colors.primary("  │") + "  " + tip_line + " " * tip_padding + Colors.primary("│"))
+    
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    
+    help_text = "💡 Tip: Nhập 'h' để xem tất cả lệnh có sẵn"
+    help_padding = (67 - len(help_text) + 1) // 2
+    print(Colors.primary("  │") + " " * help_padding + Colors.muted(help_text) + " " * (67 - len(help_text) - help_padding + 1) + Colors.primary("│"))
+    
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    print(Colors.primary("  └─ " + "─" * 65 + " ┘"))
+    print()
+
+
+def print_keyboard_shortcuts():
+    """
+    In danh sách keyboard shortcuts phổ biến
+    
+    Mục đích: Giúp người dùng biết các shortcuts tiện lợi
+    """
+    shortcuts = [
+        ("Số (1-9)", "Chạy tool theo số thứ tự"),
+        ("s [keyword]", "Tìm kiếm tool"),
+        ("f", "Xem favorites"),
+        ("r", "Xem recent tools"),
+        ("h", "Xem help"),
+        ("q", "Thoát"),
+        ("clear", "Xóa màn hình"),
+    ]
+    
+    print()
+    print(Colors.primary("  ┌─ " + Colors.bold(Colors.info("⌨️  KEYBOARD SHORTCUTS")) + " " * 40 + Colors.primary("┐")))
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    
+    for shortcut, description in shortcuts:
+        shortcut_colored = Colors.bold(Colors.info(shortcut))
+        desc_colored = Colors.muted(description)
+        line = f"  {shortcut_colored:20s}  {desc_colored}"
+        
+        # Tính padding
+        line_plain = strip_ansi(line)
+        padding = 67 - len(line_plain) - 2
+        if padding < 0:
+            padding = 0
+        
+        print(Colors.primary("  │") + line + " " * padding + Colors.primary("│"))
+    
+    print(Colors.primary("  │") + " " * 67 + Colors.primary("│"))
+    print(Colors.primary("  └─ " + "─" * 65 + " ┘"))
+    print()
+
+
 def print_command_suggestions(user_input: str, suggestions: List[str]):
     """
-    In gợi ý commands khi user nhập sai
+    In gợi ý commands khi user nhập sai với UI đẹp hơn
     
     Args:
         user_input: Input từ user
@@ -152,13 +243,32 @@ def print_command_suggestions(user_input: str, suggestions: List[str]):
         return
     
     print()
-    print(Colors.warning(f"⚠️  Không tìm thấy lệnh: '{user_input}'"))
+    print(Colors.error("  ┌─ " + "─" * 63 + " ┐"))
+    print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+    
+    error_msg = f"⚠️  Không tìm thấy lệnh: '{user_input}'"
+    error_padding = (65 - len(error_msg) + 1) // 2
+    print(Colors.error("  │") + " " * error_padding + Colors.bold(error_msg) + " " * (65 - len(error_msg) - error_padding + 1) + Colors.error("│"))
+    
+    print(Colors.error("  │") + " " * 65 + Colors.error("│"))
     
     if len(suggestions) == 1:
-        print(Colors.info(f"💡 Có phải bạn muốn: {Colors.bold(suggestions[0])}?"))
+        suggest_msg = f"💡 Có phải bạn muốn: {Colors.bold(suggestions[0])}?"
+        suggest_plain = strip_ansi(suggest_msg)
+        suggest_padding = (65 - len(suggest_plain) + 1) // 2
+        print(Colors.error("  │") + " " * suggest_padding + Colors.info(suggest_msg) + " " * (65 - len(suggest_plain) - suggest_padding + 1) + Colors.error("│"))
     else:
-        print(Colors.info(f"💡 Gợi ý ({len(suggestions)}): {', '.join([Colors.bold(s) for s in suggestions])}"))
+        suggest_title = f"💡 Gợi ý ({len(suggestions)}):"
+        suggest_title_padding = (65 - len(suggest_title) + 1) // 2
+        print(Colors.error("  │") + " " * suggest_title_padding + Colors.info(suggest_title) + " " * (65 - len(suggest_title) - suggest_title_padding + 1) + Colors.error("│"))
+        
+        suggestions_text = ", ".join([Colors.bold(s) for s in suggestions])
+        suggestions_plain = strip_ansi(suggestions_text)
+        suggestions_padding = (65 - len(suggestions_plain)) // 2
+        print(Colors.error("  │") + " " * suggestions_padding + suggestions_text + " " * (65 - len(suggestions_plain) - suggestions_padding) + Colors.error("│"))
     
+    print(Colors.error("  │") + " " * 65 + Colors.error("│"))
+    print(Colors.error("  └─ " + "─" * 63 + " ┘"))
     print()
 
 
