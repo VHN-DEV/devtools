@@ -338,7 +338,7 @@ def print_banner():
     
     Mục đích: Tạo ấn tượng ban đầu tốt, thu hút người dùng
     """
-    width = 55
+    width = 70
     
     # Tính toán padding chính xác (không tính ANSI codes)
     title1 = "DEV TOOLS"
