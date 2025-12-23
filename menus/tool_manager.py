@@ -1494,15 +1494,18 @@ class ToolManager:
         
         other4 = f"{Colors.info('stats')}         - Xem thống kê sử dụng tools"
         print_box_line(other4, "stats         - Xem thống kê sử dụng tools")
-        
-        other5 = f"{Colors.info('qa, quick')}     - Quick actions menu"
-        print_box_line(other5, "qa, quick     - Quick actions menu")
-        
-        other6 = f"{Colors.info('mp, marketplace')} - Tool marketplace (tải/cài tools từ cộng đồng)"
-        print_box_line(other6, "mp, marketplace - Tool marketplace (tải/cài tools từ cộng đồng)")
-        
-        other7 = f"{Colors.info('theme')}         - Đổi theme (dark/light/custom)"
-        print_box_line(other7, "theme         - Đổi theme (dark/light/custom)")
+
+        other5 = f"{Colors.info('history, hist')} - Xem lịch sử lệnh đã nhập"
+        print_box_line(other5, "history, hist - Xem lịch sử lệnh đã nhập")
+
+        other6 = f"{Colors.info('qa, quick')}     - Quick actions menu"
+        print_box_line(other6, "qa, quick     - Quick actions menu")
+
+        other7 = f"{Colors.info('mp, marketplace')} - Tool marketplace (tải/cài tools từ cộng đồng)"
+        print_box_line(other7, "mp, marketplace - Tool marketplace (tải/cài tools từ cộng đồng)")
+
+        other8 = f"{Colors.info('theme')}         - Đổi theme (dark/light/custom)"
+        print_box_line(other8, "theme         - Đổi theme (dark/light/custom)")
         
         print("  " + Colors.primary("╚" + "═" * content_width + "╝"))
         print()

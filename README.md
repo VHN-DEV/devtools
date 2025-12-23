@@ -76,6 +76,13 @@
 ### 🔌 Quản lý SSH Server
 - Lưu cấu hình server vào JSON
 - Kết nối nhanh bằng SSH key hoặc password
+
+### ⌨️ Giao diện & Điều hướng Thông minh
+- **Mũi tên lên/xuống**: Duyệt lịch sử lệnh đã nhập
+- **Auto-complete**: Gợi ý lệnh từ lịch sử
+- **Menu có màu sắc**: Dễ phân biệt favorites, recent
+- **Giao diện tiếng Việt**: Hướng dẫn rõ ràng
+- **Lưu trạng thái**: Favorites, recent, settings
 - Quản lý nhiều server cùng lúc
 - Tự động phát hiện SSH key mặc định
 
@@ -1236,6 +1243,20 @@ Hoặc cài riêng:
 ```bash
 pip install Pillow chardet
 ```
+
+---
+
+**Q: Tại sao không thể dùng mũi tên để duyệt lịch sử lệnh?**
+
+A: Đảm bảo đã cài đặt thư viện readline:
+```bash
+# Windows
+pip install pyreadline3
+
+# Linux/macOS
+pip install readline  # (thường có sẵn)
+```
+Nếu vẫn không hoạt động, DevTools vẫn chạy bình thường nhưng không có tính năng mũi tên.
 
 ---
 

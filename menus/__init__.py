@@ -1384,6 +1384,47 @@ def _show_statistics(manager):
     input(Colors.muted("Nhấn Enter để quay lại..."))
 
 
+def _show_command_history(command_history):
+    """Hiển thị lịch sử lệnh đã nhập"""
+    print()
+    print_separator("─", 70, Colors.INFO)
+    print(Colors.bold("📜 LỊCH SỬ LỆNH"))
+    print_separator("─", 70, Colors.INFO)
+    print()
+
+    if not command_history:
+        print(Colors.info("ℹ️  Chưa có lịch sử lệnh nào"))
+        print()
+        input(Colors.muted("Nhấn Enter để quay lại..."))
+        return
+
+    print(Colors.bold("📝 Lệnh đã nhập gần đây nhất:"))
+    print()
+
+    # Hiển thị lịch sử lệnh (mới nhất lên đầu)
+    for idx, cmd in enumerate(reversed(command_history[-20:]), start=1):  # Hiển thị tối đa 20 lệnh gần nhất
+        # Thêm màu sắc cho số thứ tự
+        if idx <= 5:
+            idx_color = Colors.success
+        elif idx <= 10:
+            idx_color = Colors.warning
+        else:
+            idx_color = Colors.info
+
+        print(f"   {idx_color(f'{idx:2d}.')} {Colors.secondary(cmd)}")
+
+    if len(command_history) > 20:
+        print()
+        print(Colors.muted(f"   ... và {len(command_history) - 20} lệnh khác"))
+
+    print()
+    print_separator("─", 70, Colors.INFO)
+    print()
+    print(Colors.muted("💡 Lịch sử lệnh được lưu tự động để hỗ trợ auto-complete"))
+    print()
+    input(Colors.muted("Nhấn Enter để quay lại..."))
+
+
 def _show_theme_menu():
     """Hiển thị menu đổi theme"""
     from utils.theme import ThemeManager
@@ -1990,7 +2031,23 @@ def main():
                 command_history = command_history[-100:]
         except Exception:
             command_history = []
-    
+
+    # Khởi tạo readline để hỗ trợ mũi tên lên/xuống duyệt lịch sử lệnh
+    try:
+        import readline
+        # Thêm command history vào readline
+        for cmd in command_history:
+            readline.add_history(cmd)
+
+        # Tùy chỉnh readline (tùy chọn)
+        # readline.parse_and_bind('tab: complete')  # Tab completion
+        # readline.parse_and_bind('set editing-mode vi')  # Vi mode nếu muốn
+
+    except ImportError:
+        # Nếu không có readline, bỏ qua (vẫn hoạt động bình thường)
+        print(Colors.muted("ℹ️  Lưu ý: Không có thư viện readline, không thể sử dụng mũi tên để duyệt lịch sử lệnh"))
+        print()
+
     # Vòng lặp chính
     while True:
         try:
@@ -2021,7 +2078,14 @@ def main():
                 # Giới hạn 100 lệnh
                 if len(command_history) > 100:
                     command_history = command_history[-100:]
-            
+
+                # Cập nhật readline history nếu có
+                try:
+                    import readline
+                    readline.add_history(user_input)
+                except ImportError:
+                    pass
+
             # Tính độ dài input đã nhập và in padding + ký tự đóng box
             input_display_width = get_display_width(user_input) if user_input else 0
             # Tổng độ dài: prompt_text_display_width + input_display_width + padding = prompt_width - 3
@@ -2377,7 +2441,11 @@ def main():
             elif command in ['stats', 'statistics', 'stat']:
                 _show_statistics(manager)
                 manager.display_menu(tools)
-            
+
+            # Command History
+            elif command in ['history', 'hist']:
+                _show_command_history(command_history)
+
             # Tool Management (Export/Import/Delete)
             elif command in ['manage', 'mgmt', 'tool-mgmt']:
                 _show_tool_management_menu(manager, tools)
