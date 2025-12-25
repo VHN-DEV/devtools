@@ -15,26 +15,21 @@ from pathlib import Path
 from typing import Optional, Tuple, List, Dict
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-# Thêm thư mục cha vào sys.path để import utils
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from utils import (
     print_header, format_size, get_user_input, confirm_action,
-    get_file_list, ensure_directory_exists, ProgressBar, 
+    get_file_list, ensure_directory_exists, ProgressBar,
     log_info, log_error, setup_logger, normalize_path,
-    install_library
+    install_library,
+    # New imports from refactored utils
+    BaseTool, InteractiveToolMixin, CLIToolMixin, ImageProcessingToolMixin,
+    install_missing_library
 )
 
-# Kiểm tra thư viện PIL
-try:
-    from PIL import Image
-except ImportError:
-    install_library(
-        package_name="Pillow",
-        install_command="pip install Pillow",
-        library_display_name="Pillow"
-    )
+# Kiểm tra thư viện PIL với new pattern
+if not install_missing_library('PIL', display_name='Pillow'):
     sys.exit(1)
+
+from PIL import Image
 
 
 def compress_single_image(
