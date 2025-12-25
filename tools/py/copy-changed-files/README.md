@@ -2,11 +2,22 @@
 
 ## Mô tả
 
-Tool sao chép file thay đổi từ Git repository theo commit range. Giữ nguyên cấu trúc thư mục, bỏ qua file đã xóa, tạo danh sách file đã copy, và verify commit ID trước khi thực hiện.
+Tool sao chép file thay đổi từ Git repository với **4 chế độ** khác nhau:
+- **Commit range**: Copy file thay đổi giữa 2 commit cụ thể
+- **Staged changes**: Copy file đã được git add
+- **Current changes**: Copy file đang thay đổi nhưng chưa git add
+- **All changes**: Copy tất cả file có thay đổi (staged + unstaged)
+
+Giữ nguyên cấu trúc thư mục, bỏ qua file đã xóa, tạo danh sách file đã copy.
 
 ## Tính năng
 
-✅ Copy file theo commit range
+✅ **4 chế độ copy:**
+  - Copy file thay đổi theo commit range
+  - Copy file đã staged (git add)
+  - Copy file hiện tại đang thay đổi (unstaged)
+  - Copy tất cả file có thay đổi (staged + unstaged)
+✅ Chế độ mặc định: Nhấn Enter để chọn chế độ "tất cả"
 ✅ Giữ nguyên cấu trúc thư mục
 ✅ Bỏ qua file đã xóa
 ✅ Tạo danh sách file đã copy
@@ -39,7 +50,20 @@ python tools/py/copy-changed-files/copy-changed-files.py
 
 ## Hướng dẫn chi tiết
 
-### 1. Chọn dự án hoặc nhập đường dẫn
+### 1. Chọn chế độ copy
+
+Tool cung cấp 2 chế độ copy:
+
+**Chế độ 1: Copy file thay đổi theo commit range**
+- Phù hợp để deploy code đã commit
+- So sánh file thay đổi giữa 2 commit cụ thể
+
+**Chế độ 2: Copy file hiện tại đang thay đổi**
+- Phù hợp để backup file đang làm việc
+- Lấy file từ git status (modified, added, etc.)
+- Không cần nhập commit ID
+
+### 2. Chọn dự án hoặc nhập đường dẫn
 
 Tool sẽ tự động tìm và liệt kê các dự án trong thư mục htdocs (`C:\xampp\htdocs`). Bạn có thể:
 
@@ -56,16 +80,48 @@ Tool sẽ tự động tìm và liệt kê các dự án trong thư mục htdocs
 - Tool sẽ hiển thị icon `⚠️` cho dự án không phải Git repository
 - Nếu không tìm thấy htdocs hoặc không có dự án, tool sẽ yêu cầu nhập đường dẫn thủ công
 
-### 2. Nhập commit ID
+### 3. Nhập thông tin theo chế độ
 
+**Chế độ 1 (commit range):**
 1. **Commit ID bắt đầu**: Nhập commit hash (vd: `9d172f6` hoặc `9d172f6a1b2c3d4e5f6...`)
 2. **Commit ID kết thúc**: Nhập commit hash hoặc Enter để dùng `HEAD` (commit mới nhất)
+
+**Chế độ 2 (staged changes):**
+- Tool sẽ lấy các file đã được `git add`
+- Chỉ copy file đã staged, bỏ qua file unstaged
+
+**Chế độ 3 (current changes):**
+- Tool sẽ lấy file có thay đổi nhưng chưa `git add`
+- Bỏ qua file đã staged
+
+**Chế độ 4 (all changes - mặc định):**
+- Tool sẽ lấy tất cả file có thay đổi (staged + unstaged)
+- Nhấn Enter để chọn chế độ này
 
 ### 3. Verify commit ID
 
 Tool sẽ kiểm tra commit ID có hợp lệ không trước khi thực hiện.
 
-### 4. Lấy danh sách file thay đổi
+### 5. Lấy danh sách file thay đổi
+
+**Chế độ commit range:**
+- Lấy file thay đổi giữa 2 commit bằng `git diff`
+- Chỉ lấy file đã thay đổi nội dung, bỏ qua file đã xóa
+
+**Chế độ staged changes:**
+- Lấy file từ `git status --porcelain`
+- Chỉ lấy file có trạng thái staged (A, M, R, C)
+- Bỏ qua file deleted và unstaged
+
+**Chế độ current changes:**
+- Lấy file từ `git status --porcelain`
+- Chỉ lấy file có thay đổi unstaged
+- Bỏ qua file đã staged và deleted
+
+**Chế độ all changes:**
+- Lấy file từ `git status --porcelain`
+- Bao gồm tất cả file có thay đổi (staged + unstaged)
+- Bỏ qua file deleted
 
 Tool sẽ:
 1. Lấy danh sách file thay đổi từ Git
@@ -78,6 +134,8 @@ Tool sẽ hỏi bạn về vị trí thư mục output:
 - **Lần đầu chạy**: Tool sẽ hỏi bạn nhập đường dẫn thư mục output
 - **Các lần sau**: Tool sẽ sử dụng đường dẫn đã lưu trong config, nhưng bạn có thể thay đổi
 - **Lưu config**: Bạn có thể chọn lưu đường dẫn làm mặc định cho các lần sau
+
+**Tên thư mục export**: Tự động tạo với format `project-name-YYYY-MM-DD-HH-MM-SS` để tránh ghi đè
 
 **Ví dụ đường dẫn:**
 - `changed-files-export` - Thư mục trong thư mục hiện tại (mặc định)
@@ -149,10 +207,10 @@ Nhập commit ID kết thúc (Enter = HEAD): [Enter]
 ✓ Hoàn tất!
 - Đã copy: 15 file
 - Bỏ qua: 0 file
-- Thư mục xuất: changed-files-export
-- Danh sách file: changed-files-export/danh-sach-file-thay-doi.txt
+- Thư mục xuất: changed-files-export/project-name-2024-12-25-14-30-45
+- Danh sách file: changed-files-export/project-name-2024-12-25-14-30-45/danh-sach-file-thay-doi.txt
 
-🚀 Bạn có thể upload toàn bộ thư mục 'changed-files-export' lên server bằng FileZilla!
+🚀 Bạn có thể upload toàn bộ thư mục 'project-name-2024-12-25-14-30-45' lên server bằng FileZilla!
 ===================================================
 ```
 
@@ -171,29 +229,133 @@ Nhập commit ID kết thúc: def5678
 ✅ Hoàn thành! Đã copy 8 file.
 ```
 
+### Copy file đã staged
+
+```
+============================================================
+  CHỌN CHẾ ĐỘ COPY FILE
+============================================================
+1. [LIST] Copy file thay đổi theo commit range
+2. [STAGED] Copy file đã staged (git add)
+3. [CURRENT] Copy file hiện tại đang thay đổi (unstaged)
+4. [ALL] Copy tất cả file có thay đổi (staged + unstaged)
+============================================================
+[TIP] Enter để chọn chế độ 4 (tất cả)
+
+Chọn chế độ (1-4 hoặc Enter): 2
+
+[STAGED] CHẾ ĐỘ: Copy file đã staged
+[OK] Sẽ copy các file đã được git add
+
+📂 Đang lấy danh sách file đã staged...
+✓ Tìm thấy 3 file đã thay đổi
+
+✅ Hoàn thành! Đã copy 3 file.
+```
+
+### Copy tất cả file có thay đổi (mặc định)
+
+```
+============================================================
+  CHỌN CHẾ ĐỘ COPY FILE
+============================================================
+1. [LIST] Copy file thay đổi theo commit range
+2. [STAGED] Copy file đã staged (git add)
+3. [CURRENT] Copy file hiện tại đang thay đổi (unstaged)
+4. [ALL] Copy tất cả file có thay đổi (staged + unstaged)
+============================================================
+[TIP] Enter để chọn chế độ 4 (tất cả)
+
+Chọn chế độ (1-4 hoặc Enter): [Enter]
+
+[ALL] CHẾ ĐỘ: Copy tất cả file có thay đổi
+[OK] Sẽ copy tất cả file đã thay đổi (staged + unstaged)
+
+📂 Đang lấy danh sách tất cả file có thay đổi...
+✓ Tìm thấy 7 file đã thay đổi
+
+✅ Hoàn thành! Đã copy 7 file.
+```
+
+### Copy file hiện tại đang thay đổi
+
+```
+============================================================
+  CHỌN CHẾ ĐỘ COPY FILE
+============================================================
+1. 📋 Copy file thay đổi theo commit range
+2. 🔄 Copy file hiện tại đang thay đổi (git status)
+============================================================
+
+Chọn chế độ (1 hoặc 2): 2
+
+🔄 CHẾ ĐỘ: Copy file hiện tại đang thay đổi
+✓ Sẽ copy tất cả file đã thay đổi trong working directory
+
+✓ Dự án hợp lệ: C:\xampp\htdocs\my-project
+
+📂 Đang lấy danh sách file hiện tại đang thay đổi...
+✓ Tìm thấy 5 file đã thay đổi
+
+📋 Danh sách file (preview):
+   - src/components/Header.jsx (modified)
+   - src/styles/main.css (modified)
+   - public/index.html (added)
+   - api/products.php (modified)
+   - config/database.php (modified)
+
+🚀 Bắt đầu copy file...
+
+📋 Đang copy file...
+✓ [OK] src/components/Header.jsx
+✓ [OK] src/styles/main.css
+✓ [OK] public/index.html
+✓ [OK] api/products.php
+✓ [OK] config/database.php
+
+===================================================
+✓ Hoàn tất!
+- Đã copy: 5 file
+- Bỏ qua: 0 file
+- Thư mục xuất: changed-files-export/project-name-2024-12-25-14-30-45
+- Danh sách file: changed-files-export/project-name-2024-12-25-14-30-45/danh-sach-file-thay-doi.txt
+
+🚀 Bạn có thể upload toàn bộ thư mục 'project-name-2024-12-25-14-30-45' lên server bằng FileZilla!
+===================================================
+```
+
 ## Cấu trúc output
 
-Sau khi copy, thư mục `changed-files-export` sẽ có cấu trúc:
+Sau khi copy, thư mục sẽ có cấu trúc với timestamp:
 
 ```
 changed-files-export/
-├── src/
-│   ├── components/
-│   │   └── Header.jsx
-│   └── styles/
-│       └── main.css
-├── public/
-│   └── index.html
-├── api/
-│   └── products.php
-├── config/
-│   └── database.php
-└── danh-sach-file-thay-doi.txt
+└── project-name-2024-12-25-14-30-45/
+    ├── src/
+    │   ├── components/
+    │   │   └── Header.jsx
+    │   └── styles/
+    │       └── main.css
+    ├── public/
+    │   └── index.html
+    ├── api/
+    │   └── products.php
+    ├── config/
+    │   └── database.php
+    └── danh-sach-file-thay-doi.txt
 ```
+
+**Format tên thư mục:** `project-name-YYYY-MM-DD-HH-MM-SS`
 
 File `danh-sach-file-thay-doi.txt` chứa danh sách đầy đủ các file đã copy.
 
 ## Tips
+
+### Chế độ sử dụng:
+- **Chế độ 1 (commit range)**: Phù hợp để deploy code đã commit, tạo package update
+- **Chế độ 2 (staged changes)**: Phù hợp để backup file đã chuẩn bị commit
+- **Chế độ 3 (current changes)**: Phù hợp để xem file đang chỉnh sửa, chưa git add
+- **Chế độ 4 (all changes)**: Phù hợp để backup tất cả thay đổi hiện tại
 
 ### Commit ID:
 - **Short hash**: Có thể dùng hash ngắn (7 ký tự đầu)
@@ -203,6 +365,11 @@ File `danh-sach-file-thay-doi.txt` chứa danh sách đầy đủ các file đã
 ### Verify:
 - **Kiểm tra trước**: Tool tự động kiểm tra commit ID trước khi thực hiện
 - **Lỗi**: Nếu commit ID không hợp lệ, tool sẽ báo lỗi và dừng
+
+### File hiện tại:
+- **Git status**: Tool sử dụng `git status --porcelain` để lấy file thay đổi
+- **Loại file**: Bao gồm modified (M), added (A), renamed (R), copied (C)
+- **Bỏ qua**: File deleted (D) sẽ bị bỏ qua vì không thể copy
 
 ### Upload:
 - **FileZilla**: Upload toàn bộ thư mục `changed-files-export` lên server
@@ -253,7 +420,7 @@ Tool tự động tạo file `copy-changed-files_config.json` trong thư mục t
 - **Commit ID**: Commit ID phải hợp lệ và tồn tại
 - **File đã xóa**: File đã xóa sẽ bị bỏ qua
 - **Cấu trúc**: Cấu trúc thư mục được giữ nguyên
-- **Overwrite**: File đã tồn tại sẽ bị ghi đè
+- **Tên thư mục**: Tự động tạo với timestamp để tránh ghi đè
 - **Config**: File config được tạo tự động, bạn có thể chỉnh sửa thủ công
 
 ## Ví dụ thực tế
