@@ -1,0 +1,506 @@
+[
+  {
+    "id": 1,
+    "name": "Hà Nội",
+    "code": "HN",
+    "region": "Đồng bằng sông Hồng",
+    "area": 3358.6,
+    "population": 8246540
+  },
+  {
+    "id": 2,
+    "name": "Hà Giang",
+    "code": "HG",
+    "region": "Đông Bắc Bộ",
+    "area": 7929.5,
+    "population": 858088
+  },
+  {
+    "id": 3,
+    "name": "Cao Bằng",
+    "code": "CB",
+    "region": "Đông Bắc Bộ",
+    "area": 6700.3,
+    "population": 530341
+  },
+  {
+    "id": 4,
+    "name": "Bắc Kạn",
+    "code": "BK",
+    "region": "Đông Bắc Bộ",
+    "area": 4863.8,
+    "population": 314395
+  },
+  {
+    "id": 5,
+    "name": "Tuyên Quang",
+    "code": "TQ",
+    "region": "Đông Bắc Bộ",
+    "area": 5867.9,
+    "population": 786398
+  },
+  {
+    "id": 6,
+    "name": "Lào Cai",
+    "code": "LC",
+    "region": "Tây Bắc Bộ",
+    "area": 6383.9,
+    "population": 733505
+  },
+  {
+    "id": 7,
+    "name": "Điện Biên",
+    "code": "DB",
+    "region": "Tây Bắc Bộ",
+    "area": 9541.3,
+    "population": 598856
+  },
+  {
+    "id": 8,
+    "name": "Lai Châu",
+    "code": "LA",
+    "region": "Tây Bắc Bộ",
+    "area": 9068.8,
+    "population": 460196
+  },
+  {
+    "id": 9,
+    "name": "Sơn La",
+    "code": "SL",
+    "region": "Tây Bắc Bộ",
+    "area": 14123.5,
+    "population": 1253646
+  },
+  {
+    "id": 10,
+    "name": "Yên Bái",
+    "code": "YB",
+    "region": "Tây Bắc Bộ",
+    "area": 6887.5,
+    "population": 823756
+  },
+  {
+    "id": 11,
+    "name": "Hoà Bình",
+    "code": "HB",
+    "region": "Tây Bắc Bộ",
+    "area": 4590.6,
+    "population": 855131
+  },
+  {
+    "id": 12,
+    "name": "Thái Nguyên",
+    "code": "TN",
+    "region": "Đông Bắc Bộ",
+    "area": 3526.6,
+    "population": 1295601
+  },
+  {
+    "id": 13,
+    "name": "Lạng Sơn",
+    "code": "LS",
+    "region": "Đông Bắc Bộ",
+    "area": 8310.1,
+    "population": 782618
+  },
+  {
+    "id": 14,
+    "name": "Quảng Ninh",
+    "code": "QN",
+    "region": "Đông Bắc Bộ",
+    "area": 6178.2,
+    "population": 1335586
+  },
+  {
+    "id": 15,
+    "name": "Bắc Giang",
+    "code": "BG",
+    "region": "Đông Bắc Bộ",
+    "area": 3824.4,
+    "population": 1815251
+  },
+  {
+    "id": 16,
+    "name": "Phú Thọ",
+    "code": "PT",
+    "region": "Đồng bằng sông Hồng",
+    "area": 3534.6,
+    "population": 1466069
+  },
+  {
+    "id": 17,
+    "name": "Vĩnh Phúc",
+    "code": "VP",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1235.2,
+    "population": 1153639
+  },
+  {
+    "id": 18,
+    "name": "Bắc Ninh",
+    "code": "BN",
+    "region": "Đồng bằng sông Hồng",
+    "area": 822.7,
+    "population": 1378287
+  },
+  {
+    "id": 19,
+    "name": "Hải Dương",
+    "code": "HD",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1668.2,
+    "population": 1897078
+  },
+  {
+    "id": 20,
+    "name": "Hải Phòng",
+    "code": "HP",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1523.9,
+    "population": 2034931
+  },
+  {
+    "id": 21,
+    "name": "Hưng Yên",
+    "code": "HY",
+    "region": "Đồng bằng sông Hồng",
+    "area": 926.4,
+    "population": 1257146
+  },
+  {
+    "id": 22,
+    "name": "Thái Bình",
+    "code": "TB",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1570.2,
+    "population": 1860306
+  },
+  {
+    "id": 23,
+    "name": "Hà Nam",
+    "code": "HM",
+    "region": "Đồng bằng sông Hồng",
+    "area": 861.9,
+    "population": 854131
+  },
+  {
+    "id": 24,
+    "name": "Nam Định",
+    "code": "ND",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1668.6,
+    "population": 1780391
+  },
+  {
+    "id": 25,
+    "name": "Ninh Bình",
+    "code": "NB",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1386.8,
+    "population": 984662
+  },
+  {
+    "id": 26,
+    "name": "Thanh Hóa",
+    "code": "TH",
+    "region": "Bắc Trung Bộ",
+    "area": 11114.6,
+    "population": 3641505
+  },
+  {
+    "id": 27,
+    "name": "Nghệ An",
+    "code": "NA",
+    "region": "Bắc Trung Bộ",
+    "area": 16481.4,
+    "population": 3337158
+  },
+  {
+    "id": 28,
+    "name": "Hà Tĩnh",
+    "code": "HT",
+    "region": "Bắc Trung Bộ",
+    "area": 5990.7,
+    "population": 1291059
+  },
+  {
+    "id": 29,
+    "name": "Quảng Bình",
+    "code": "QB",
+    "region": "Bắc Trung Bộ",
+    "area": 8065.3,
+    "population": 895430
+  },
+  {
+    "id": 30,
+    "name": "Quảng Trị",
+    "code": "QT",
+    "region": "Bắc Trung Bộ",
+    "area": 4739.8,
+    "population": 623375
+  },
+  {
+    "id": 31,
+    "name": "Thừa Thiên Huế",
+    "code": "TTH",
+    "region": "Bắc Trung Bộ",
+    "area": 5033.2,
+    "population": 1128624
+  },
+  {
+    "id": 32,
+    "name": "Đà Nẵng",
+    "code": "DN",
+    "region": "Nam Trung Bộ",
+    "area": 1284.9,
+    "population": 1145619
+  },
+  {
+    "id": 33,
+    "name": "Quảng Nam",
+    "code": "QNA",
+    "region": "Nam Trung Bộ",
+    "area": 10438.4,
+    "population": 1495900
+  },
+  {
+    "id": 34,
+    "name": "Quảng Ngãi",
+    "code": "QNG",
+    "region": "Nam Trung Bộ",
+    "area": 5155.8,
+    "population": 1231452
+  },
+  {
+    "id": 35,
+    "name": "Bình Định",
+    "code": "BD",
+    "region": "Nam Trung Bộ",
+    "area": 6050.6,
+    "population": 1487700
+  },
+  {
+    "id": 36,
+    "name": "Phú Yên",
+    "code": "PY",
+    "region": "Nam Trung Bộ",
+    "area": 5060.6,
+    "population": 873196
+  },
+  {
+    "id": 37,
+    "name": "Khánh Hòa",
+    "code": "KH",
+    "region": "Nam Trung Bộ",
+    "area": 5137.8,
+    "population": 1231108
+  },
+  {
+    "id": 38,
+    "name": "Ninh Thuận",
+    "code": "NT",
+    "region": "Nam Trung Bộ",
+    "area": 3355.3,
+    "population": 591658
+  },
+  {
+    "id": 39,
+    "name": "Bình Thuận",
+    "code": "BT",
+    "region": "Nam Trung Bộ",
+    "area": 7812.8,
+    "population": 1231964
+  },
+  {
+    "id": 40,
+    "name": "Kon Tum",
+    "code": "KT",
+    "region": "Tây Nguyên",
+    "area": 9674.2,
+    "population": 543223
+  },
+  {
+    "id": 41,
+    "name": "Gia Lai",
+    "code": "GL",
+    "region": "Tây Nguyên",
+    "area": 15536.9,
+    "population": 1520465
+  },
+  {
+    "id": 42,
+    "name": "Đắk Lắk",
+    "code": "DL",
+    "region": "Tây Nguyên",
+    "area": 13030.5,
+    "population": 1873358
+  },
+  {
+    "id": 43,
+    "name": "Đắk Nông",
+    "code": "DNO",
+    "region": "Tây Nguyên",
+    "area": 6509.3,
+    "population": 623396
+  },
+  {
+    "id": 44,
+    "name": "Lâm Đồng",
+    "code": "LDO",
+    "region": "Tây Nguyên",
+    "area": 9773.5,
+    "population": 1297547
+  },
+  {
+    "id": 45,
+    "name": "Bình Phước",
+    "code": "BP",
+    "region": "Đông Nam Bộ",
+    "area": 6876.8,
+    "population": 1002028
+  },
+  {
+    "id": 46,
+    "name": "Tây Ninh",
+    "code": "TNIN",
+    "region": "Đông Nam Bộ",
+    "area": 4041.3,
+    "population": 1171585
+  },
+  {
+    "id": 47,
+    "name": "Bình Dương",
+    "code": "BDU",
+    "region": "Đông Nam Bộ",
+    "area": 2694.6,
+    "population": 2465900
+  },
+  {
+    "id": 48,
+    "name": "Đồng Nai",
+    "code": "DNA",
+    "region": "Đông Nam Bộ",
+    "area": 5863.6,
+    "population": 3103000
+  },
+  {
+    "id": 49,
+    "name": "Bà Rịa - Vũng Tàu",
+    "code": "BRVT",
+    "region": "Đông Nam Bộ",
+    "area": 1981.0,
+    "population": 1154000
+  },
+  {
+    "id": 50,
+    "name": "TP. Hồ Chí Minh",
+    "code": "HCM",
+    "region": "Đông Nam Bộ",
+    "area": 2061.4,
+    "population": 9038800
+  },
+  {
+    "id": 51,
+    "name": "Long An",
+    "code": "LAO",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 4494.8,
+    "population": 1697000
+  },
+  {
+    "id": 52,
+    "name": "Tiền Giang",
+    "code": "TGI",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 2510.6,
+    "population": 1768000
+  },
+  {
+    "id": 53,
+    "name": "Bến Tre",
+    "code": "BTR",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 2394.8,
+    "population": 1289000
+  },
+  {
+    "id": 54,
+    "name": "Trà Vinh",
+    "code": "TVI",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 2341.2,
+    "population": 1012000
+  },
+  {
+    "id": 55,
+    "name": "Vĩnh Long",
+    "code": "VLO",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 1525.7,
+    "population": 1023000
+  },
+  {
+    "id": 56,
+    "name": "Đồng Tháp",
+    "code": "DTH",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 3383.8,
+    "population": 1598000
+  },
+  {
+    "id": 57,
+    "name": "An Giang",
+    "code": "AGI",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 3536.7,
+    "population": 1903000
+  },
+  {
+    "id": 58,
+    "name": "Kiên Giang",
+    "code": "KGI",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 6347.7,
+    "population": 1731000
+  },
+  {
+    "id": 59,
+    "name": "Cần Thơ",
+    "code": "CTO",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 1439.2,
+    "population": 1236000
+  },
+  {
+    "id": 60,
+    "name": "Hậu Giang",
+    "code": "HGI",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 1621.8,
+    "population": 732000
+  },
+  {
+    "id": 61,
+    "name": "Sóc Trăng",
+    "code": "STR",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 3311.9,
+    "population": 1199000
+  },
+  {
+    "id": 62,
+    "name": "Bạc Liêu",
+    "code": "BLI",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 2669.0,
+    "population": 907000
+  },
+  {
+    "id": 63,
+    "name": "Cà Mau",
+    "code": "CMA",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 5221.2,
+    "population": 1195000
+  }
+]

@@ -1,0 +1,308 @@
+[
+  {
+    "id": 1,
+    "name": "Hà Nội",
+    "code": "HN",
+    "region": "Đồng bằng sông Hồng",
+    "area": 3358.6,
+    "population": 8246540,
+    "type": "Thành phố"
+  },
+  {
+    "id": 2,
+    "name": "Hồ Chí Minh",
+    "code": "HCM",
+    "region": "Đông Nam Bộ",
+    "area": 2061.4,
+    "population": 9038800,
+    "type": "Thành phố"
+  },
+  {
+    "id": 3,
+    "name": "Hải Phòng",
+    "code": "HP",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1523.9,
+    "population": 2034931,
+    "type": "Thành phố"
+  },
+  {
+    "id": 4,
+    "name": "Cần Thơ",
+    "code": "CT",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 1439.2,
+    "population": 1236000,
+    "type": "Thành phố"
+  },
+  {
+    "id": 5,
+    "name": "Đà Nẵng",
+    "code": "DN",
+    "region": "Nam Trung Bộ",
+    "area": 1284.9,
+    "population": 1145619,
+    "type": "Thành phố"
+  },
+  {
+    "id": 6,
+    "name": "Hải Dương",
+    "code": "HD",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1668.2,
+    "population": 1897078,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 7,
+    "name": "Hưng Yên",
+    "code": "HY",
+    "region": "Đồng bằng sông Hồng",
+    "area": 926.4,
+    "population": 1257146,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 8,
+    "name": "Bắc Ninh",
+    "code": "BN",
+    "region": "Đồng bằng sông Hồng",
+    "area": 822.7,
+    "population": 1378287,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 9,
+    "name": "Thái Bình",
+    "code": "TB",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1570.2,
+    "population": 1860306,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 10,
+    "name": "Nam Định",
+    "code": "ND",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1668.6,
+    "population": 1780391,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 11,
+    "name": "Ninh Bình",
+    "code": "NB",
+    "region": "Đồng bằng sông Hồng",
+    "area": 1386.8,
+    "population": 984662,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 12,
+    "name": "Thanh Hóa",
+    "code": "TH",
+    "region": "Bắc Trung Bộ",
+    "area": 11114.6,
+    "population": 3641505,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 13,
+    "name": "Nghệ An",
+    "code": "NA",
+    "region": "Bắc Trung Bộ",
+    "area": 16481.4,
+    "population": 3337158,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 14,
+    "name": "Hà Tĩnh",
+    "code": "HT",
+    "region": "Bắc Trung Bộ",
+    "area": 5990.7,
+    "population": 1291059,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 15,
+    "name": "Quảng Bình",
+    "code": "QB",
+    "region": "Bắc Trung Bộ",
+    "area": 8065.3,
+    "population": 895430,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 16,
+    "name": "Quảng Trị",
+    "code": "QT",
+    "region": "Bắc Trung Bộ",
+    "area": 4739.8,
+    "population": 623375,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 17,
+    "name": "Thừa Thiên Huế",
+    "code": "TTH",
+    "region": "Bắc Trung Bộ",
+    "area": 5033.2,
+    "population": 1128624,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 18,
+    "name": "Quảng Nam",
+    "code": "QN",
+    "region": "Nam Trung Bộ",
+    "area": 10438.4,
+    "population": 1495900,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 19,
+    "name": "Quảng Ngãi",
+    "code": "QNG",
+    "region": "Nam Trung Bộ",
+    "area": 5155.8,
+    "population": 1231452,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 20,
+    "name": "Bình Định",
+    "code": "BD",
+    "region": "Nam Trung Bộ",
+    "area": 6050.6,
+    "population": 1487700,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 21,
+    "name": "Phú Yên",
+    "code": "PY",
+    "region": "Nam Trung Bộ",
+    "area": 5060.6,
+    "population": 873196,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 22,
+    "name": "Khánh Hòa",
+    "code": "KH",
+    "region": "Nam Trung Bộ",
+    "area": 5137.8,
+    "population": 1231108,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 23,
+    "name": "Ninh Thuận",
+    "code": "NT",
+    "region": "Nam Trung Bộ",
+    "area": 3355.3,
+    "population": 591658,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 24,
+    "name": "Bình Thuận",
+    "code": "BT",
+    "region": "Nam Trung Bộ",
+    "area": 7812.8,
+    "population": 1231964,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 25,
+    "name": "Kon Tum",
+    "code": "KT",
+    "region": "Tây Nguyên",
+    "area": 9674.2,
+    "population": 543223,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 26,
+    "name": "Gia Lai",
+    "code": "GL",
+    "region": "Tây Nguyên",
+    "area": 15536.9,
+    "population": 1520465,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 27,
+    "name": "Đắk Lắk",
+    "code": "DL",
+    "region": "Tây Nguyên",
+    "area": 13030.5,
+    "population": 1873358,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 28,
+    "name": "Đắk Nông",
+    "code": "DNO",
+    "region": "Tây Nguyên",
+    "area": 6509.3,
+    "population": 623396,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 29,
+    "name": "Lâm Đồng",
+    "code": "LDO",
+    "region": "Tây Nguyên",
+    "area": 9773.5,
+    "population": 1297547,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 30,
+    "name": "Bình Phước",
+    "code": "BP",
+    "region": "Đông Nam Bộ",
+    "area": 6876.8,
+    "population": 1002028,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 31,
+    "name": "Tây Ninh",
+    "code": "TN",
+    "region": "Đông Nam Bộ",
+    "area": 4041.3,
+    "population": 1171585,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 32,
+    "name": "Bình Dương",
+    "code": "BDU",
+    "region": "Đông Nam Bộ",
+    "area": 2694.6,
+    "population": 2465900,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 33,
+    "name": "Đồng Nai",
+    "code": "DNA",
+    "region": "Đông Nam Bộ",
+    "area": 5863.6,
+    "population": 3103000,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 34,
+    "name": "Bà Rịa - Vũng Tàu",
+    "code": "BRVT",
+    "region": "Đông Nam Bộ",
+    "area": 1981.0,
+    "population": 1154000,
+    "type": "Tỉnh"
+  }
+]

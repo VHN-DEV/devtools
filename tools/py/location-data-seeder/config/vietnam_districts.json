@@ -1,0 +1,6338 @@
+[
+  {
+    "id": 1,
+    "name": "Ba Đình",
+    "code": "HN01",
+    "province_id": 1,
+    "area": 1732.4,
+    "population": 38457,
+    "type": "Huyện"
+  },
+  {
+    "id": 2,
+    "name": "Hoàn Kiếm",
+    "code": "HN02",
+    "province_id": 1,
+    "area": 411.5,
+    "population": 208105,
+    "type": "Thị xã"
+  },
+  {
+    "id": 3,
+    "name": "Tây Hồ",
+    "code": "HN03",
+    "province_id": 1,
+    "area": 139.3,
+    "population": 464546,
+    "type": "Thị xã"
+  },
+  {
+    "id": 4,
+    "name": "Long Biên",
+    "code": "HN04",
+    "province_id": 1,
+    "area": 1168.0,
+    "population": 18343,
+    "type": "Thành phố"
+  },
+  {
+    "id": 5,
+    "name": "Cầu Giấy",
+    "code": "HN05",
+    "province_id": 1,
+    "area": 887.3,
+    "population": 263105,
+    "type": "Thị xã"
+  },
+  {
+    "id": 6,
+    "name": "Đống Đa",
+    "code": "HN06",
+    "province_id": 1,
+    "area": 966.8,
+    "population": 288837,
+    "type": "Huyện"
+  },
+  {
+    "id": 7,
+    "name": "Hai Bà Trưng",
+    "code": "HN07",
+    "province_id": 1,
+    "area": 1947.9,
+    "population": 280834,
+    "type": "Thành phố"
+  },
+  {
+    "id": 8,
+    "name": "Hoàng Mai",
+    "code": "HN08",
+    "province_id": 1,
+    "area": 589.4,
+    "population": 221848,
+    "type": "Thị xã"
+  },
+  {
+    "id": 9,
+    "name": "Thanh Xuân",
+    "code": "HN09",
+    "province_id": 1,
+    "area": 198.2,
+    "population": 487621,
+    "type": "Huyện"
+  },
+  {
+    "id": 10,
+    "name": "Sóc Sơn",
+    "code": "HN10",
+    "province_id": 1,
+    "area": 637.5,
+    "population": 228131,
+    "type": "Thị xã"
+  },
+  {
+    "id": 11,
+    "name": "Đông Anh",
+    "code": "HN11",
+    "province_id": 1,
+    "area": 394.1,
+    "population": 172544,
+    "type": "Thị xã"
+  },
+  {
+    "id": 12,
+    "name": "Gia Lâm",
+    "code": "HN12",
+    "province_id": 1,
+    "area": 227.4,
+    "population": 371514,
+    "type": "Thành phố"
+  },
+  {
+    "id": 13,
+    "name": "Huyện 13",
+    "code": "HN13",
+    "province_id": 1,
+    "area": 272.0,
+    "population": 175162,
+    "type": "Huyện"
+  },
+  {
+    "id": 14,
+    "name": "Huyện 14",
+    "code": "HN14",
+    "province_id": 1,
+    "area": 119.9,
+    "population": 360407,
+    "type": "Huyện"
+  },
+  {
+    "id": 15,
+    "name": "Huyện 15",
+    "code": "HN15",
+    "province_id": 1,
+    "area": 1541.8,
+    "population": 72133,
+    "type": "Huyện"
+  },
+  {
+    "id": 16,
+    "name": "Huyện 16",
+    "code": "HN16",
+    "province_id": 1,
+    "area": 911.0,
+    "population": 359706,
+    "type": "Huyện"
+  },
+  {
+    "id": 17,
+    "name": "Thị xã 17",
+    "code": "HN17",
+    "province_id": 1,
+    "area": 1418.9,
+    "population": 425328,
+    "type": "Thị xã"
+  },
+  {
+    "id": 18,
+    "name": "Thành phố 18",
+    "code": "HN18",
+    "province_id": 1,
+    "area": 1252.3,
+    "population": 153283,
+    "type": "Thành phố"
+  },
+  {
+    "id": 19,
+    "name": "Huyện 19",
+    "code": "HN19",
+    "province_id": 1,
+    "area": 1921.2,
+    "population": 98989,
+    "type": "Huyện"
+  },
+  {
+    "id": 20,
+    "name": "Thị xã 20",
+    "code": "HN20",
+    "province_id": 1,
+    "area": 1768.8,
+    "population": 236945,
+    "type": "Thị xã"
+  },
+  {
+    "id": 21,
+    "name": "Huyện 21",
+    "code": "HN21",
+    "province_id": 1,
+    "area": 1379.1,
+    "population": 232269,
+    "type": "Huyện"
+  },
+  {
+    "id": 22,
+    "name": "Thị xã 22",
+    "code": "HN22",
+    "province_id": 1,
+    "area": 747.9,
+    "population": 37719,
+    "type": "Thị xã"
+  },
+  {
+    "id": 23,
+    "name": "Thị xã 23",
+    "code": "HN23",
+    "province_id": 1,
+    "area": 1400.1,
+    "population": 410086,
+    "type": "Thị xã"
+  },
+  {
+    "id": 24,
+    "name": "Thị xã 24",
+    "code": "HN24",
+    "province_id": 1,
+    "area": 326.6,
+    "population": 475842,
+    "type": "Thị xã"
+  },
+  {
+    "id": 25,
+    "name": "Huyện 25",
+    "code": "HN25",
+    "province_id": 1,
+    "area": 1337.4,
+    "population": 175904,
+    "type": "Huyện"
+  },
+  {
+    "id": 26,
+    "name": "Thị xã 26",
+    "code": "HN26",
+    "province_id": 1,
+    "area": 1352.7,
+    "population": 479072,
+    "type": "Thị xã"
+  },
+  {
+    "id": 27,
+    "name": "Huyện 27",
+    "code": "HN27",
+    "province_id": 1,
+    "area": 1736.5,
+    "population": 348741,
+    "type": "Huyện"
+  },
+  {
+    "id": 28,
+    "name": "Thị xã 28",
+    "code": "HN28",
+    "province_id": 1,
+    "area": 853.9,
+    "population": 492328,
+    "type": "Thị xã"
+  },
+  {
+    "id": 29,
+    "name": "Thành phố 29",
+    "code": "HN29",
+    "province_id": 1,
+    "area": 1932.0,
+    "population": 126476,
+    "type": "Thành phố"
+  },
+  {
+    "id": 30,
+    "name": "Thị xã 30",
+    "code": "HN30",
+    "province_id": 1,
+    "area": 425.5,
+    "population": 34355,
+    "type": "Thị xã"
+  },
+  {
+    "id": 31,
+    "name": "Thành phố 1",
+    "code": "HG01",
+    "province_id": 2,
+    "area": 1385.4,
+    "population": 349339,
+    "type": "Thành phố"
+  },
+  {
+    "id": 32,
+    "name": "Thị xã 2",
+    "code": "HG02",
+    "province_id": 2,
+    "area": 965.2,
+    "population": 45909,
+    "type": "Thị xã"
+  },
+  {
+    "id": 33,
+    "name": "Huyện 3",
+    "code": "HG03",
+    "province_id": 2,
+    "area": 571.3,
+    "population": 79220,
+    "type": "Huyện"
+  },
+  {
+    "id": 34,
+    "name": "Huyện 4",
+    "code": "HG04",
+    "province_id": 2,
+    "area": 1672.9,
+    "population": 34380,
+    "type": "Huyện"
+  },
+  {
+    "id": 35,
+    "name": "Huyện 5",
+    "code": "HG05",
+    "province_id": 2,
+    "area": 1732.8,
+    "population": 493186,
+    "type": "Huyện"
+  },
+  {
+    "id": 36,
+    "name": "Huyện 6",
+    "code": "HG06",
+    "province_id": 2,
+    "area": 606.2,
+    "population": 418318,
+    "type": "Huyện"
+  },
+  {
+    "id": 37,
+    "name": "Huyện 7",
+    "code": "HG07",
+    "province_id": 2,
+    "area": 1632.8,
+    "population": 474236,
+    "type": "Huyện"
+  },
+  {
+    "id": 38,
+    "name": "Thành phố 8",
+    "code": "HG08",
+    "province_id": 2,
+    "area": 1092.2,
+    "population": 191881,
+    "type": "Thành phố"
+  },
+  {
+    "id": 39,
+    "name": "Thị xã 9",
+    "code": "HG09",
+    "province_id": 2,
+    "area": 650.0,
+    "population": 210274,
+    "type": "Thị xã"
+  },
+  {
+    "id": 40,
+    "name": "Huyện 10",
+    "code": "HG10",
+    "province_id": 2,
+    "area": 573.2,
+    "population": 378339,
+    "type": "Huyện"
+  },
+  {
+    "id": 41,
+    "name": "Thị xã 1",
+    "code": "CB01",
+    "province_id": 3,
+    "area": 1646.4,
+    "population": 338022,
+    "type": "Thị xã"
+  },
+  {
+    "id": 42,
+    "name": "Thành phố 2",
+    "code": "CB02",
+    "province_id": 3,
+    "area": 775.3,
+    "population": 47007,
+    "type": "Thành phố"
+  },
+  {
+    "id": 43,
+    "name": "Thị xã 3",
+    "code": "CB03",
+    "province_id": 3,
+    "area": 1922.9,
+    "population": 381668,
+    "type": "Thị xã"
+  },
+  {
+    "id": 44,
+    "name": "Thị xã 4",
+    "code": "CB04",
+    "province_id": 3,
+    "area": 1452.2,
+    "population": 492402,
+    "type": "Thị xã"
+  },
+  {
+    "id": 45,
+    "name": "Thị xã 5",
+    "code": "CB05",
+    "province_id": 3,
+    "area": 1597.6,
+    "population": 69783,
+    "type": "Thị xã"
+  },
+  {
+    "id": 46,
+    "name": "Thành phố 6",
+    "code": "CB06",
+    "province_id": 3,
+    "area": 1341.8,
+    "population": 176708,
+    "type": "Thành phố"
+  },
+  {
+    "id": 47,
+    "name": "Huyện 7",
+    "code": "CB07",
+    "province_id": 3,
+    "area": 674.3,
+    "population": 352965,
+    "type": "Huyện"
+  },
+  {
+    "id": 48,
+    "name": "Thị xã 8",
+    "code": "CB08",
+    "province_id": 3,
+    "area": 1941.0,
+    "population": 225883,
+    "type": "Thị xã"
+  },
+  {
+    "id": 49,
+    "name": "Huyện 9",
+    "code": "CB09",
+    "province_id": 3,
+    "area": 1317.8,
+    "population": 370052,
+    "type": "Huyện"
+  },
+  {
+    "id": 50,
+    "name": "Thị xã 10",
+    "code": "CB10",
+    "province_id": 3,
+    "area": 604.7,
+    "population": 493745,
+    "type": "Thị xã"
+  },
+  {
+    "id": 51,
+    "name": "Huyện 11",
+    "code": "CB11",
+    "province_id": 3,
+    "area": 970.7,
+    "population": 209881,
+    "type": "Huyện"
+  },
+  {
+    "id": 52,
+    "name": "Thị xã 12",
+    "code": "CB12",
+    "province_id": 3,
+    "area": 1598.2,
+    "population": 33255,
+    "type": "Thị xã"
+  },
+  {
+    "id": 53,
+    "name": "Thị xã 13",
+    "code": "CB13",
+    "province_id": 3,
+    "area": 1290.4,
+    "population": 459135,
+    "type": "Thị xã"
+  },
+  {
+    "id": 54,
+    "name": "Huyện 1",
+    "code": "BK01",
+    "province_id": 4,
+    "area": 1874.9,
+    "population": 217070,
+    "type": "Huyện"
+  },
+  {
+    "id": 55,
+    "name": "Thị xã 2",
+    "code": "BK02",
+    "province_id": 4,
+    "area": 1901.8,
+    "population": 213326,
+    "type": "Thị xã"
+  },
+  {
+    "id": 56,
+    "name": "Huyện 3",
+    "code": "BK03",
+    "province_id": 4,
+    "area": 1469.6,
+    "population": 133942,
+    "type": "Huyện"
+  },
+  {
+    "id": 57,
+    "name": "Thị xã 4",
+    "code": "BK04",
+    "province_id": 4,
+    "area": 1254.3,
+    "population": 365321,
+    "type": "Thị xã"
+  },
+  {
+    "id": 58,
+    "name": "Thành phố 5",
+    "code": "BK05",
+    "province_id": 4,
+    "area": 1956.0,
+    "population": 489693,
+    "type": "Thành phố"
+  },
+  {
+    "id": 59,
+    "name": "Huyện 6",
+    "code": "BK06",
+    "province_id": 4,
+    "area": 280.4,
+    "population": 11281,
+    "type": "Huyện"
+  },
+  {
+    "id": 60,
+    "name": "Thành phố 7",
+    "code": "BK07",
+    "province_id": 4,
+    "area": 954.0,
+    "population": 212650,
+    "type": "Thành phố"
+  },
+  {
+    "id": 61,
+    "name": "Thị xã 8",
+    "code": "BK08",
+    "province_id": 4,
+    "area": 353.4,
+    "population": 398899,
+    "type": "Thị xã"
+  },
+  {
+    "id": 62,
+    "name": "Thành phố 9",
+    "code": "BK09",
+    "province_id": 4,
+    "area": 806.0,
+    "population": 265535,
+    "type": "Thành phố"
+  },
+  {
+    "id": 63,
+    "name": "Thị xã 1",
+    "code": "TQ01",
+    "province_id": 5,
+    "area": 1297.5,
+    "population": 26259,
+    "type": "Thị xã"
+  },
+  {
+    "id": 64,
+    "name": "Huyện 2",
+    "code": "TQ02",
+    "province_id": 5,
+    "area": 1884.9,
+    "population": 390404,
+    "type": "Huyện"
+  },
+  {
+    "id": 65,
+    "name": "Thị xã 3",
+    "code": "TQ03",
+    "province_id": 5,
+    "area": 1180.1,
+    "population": 29284,
+    "type": "Thị xã"
+  },
+  {
+    "id": 66,
+    "name": "Thị xã 4",
+    "code": "TQ04",
+    "province_id": 5,
+    "area": 1563.3,
+    "population": 393131,
+    "type": "Thị xã"
+  },
+  {
+    "id": 67,
+    "name": "Thị xã 5",
+    "code": "TQ05",
+    "province_id": 5,
+    "area": 1231.0,
+    "population": 405608,
+    "type": "Thị xã"
+  },
+  {
+    "id": 68,
+    "name": "Thị xã 6",
+    "code": "TQ06",
+    "province_id": 5,
+    "area": 1920.1,
+    "population": 132103,
+    "type": "Thị xã"
+  },
+  {
+    "id": 69,
+    "name": "Huyện 7",
+    "code": "TQ07",
+    "province_id": 5,
+    "area": 518.1,
+    "population": 375164,
+    "type": "Huyện"
+  },
+  {
+    "id": 70,
+    "name": "Huyện 1",
+    "code": "LC01",
+    "province_id": 6,
+    "area": 1948.4,
+    "population": 58142,
+    "type": "Huyện"
+  },
+  {
+    "id": 71,
+    "name": "Huyện 2",
+    "code": "LC02",
+    "province_id": 6,
+    "area": 493.1,
+    "population": 486141,
+    "type": "Huyện"
+  },
+  {
+    "id": 72,
+    "name": "Thị xã 3",
+    "code": "LC03",
+    "province_id": 6,
+    "area": 1479.2,
+    "population": 146231,
+    "type": "Thị xã"
+  },
+  {
+    "id": 73,
+    "name": "Huyện 4",
+    "code": "LC04",
+    "province_id": 6,
+    "area": 1659.6,
+    "population": 217035,
+    "type": "Huyện"
+  },
+  {
+    "id": 74,
+    "name": "Huyện 5",
+    "code": "LC05",
+    "province_id": 6,
+    "area": 838.6,
+    "population": 457103,
+    "type": "Huyện"
+  },
+  {
+    "id": 75,
+    "name": "Thị xã 6",
+    "code": "LC06",
+    "province_id": 6,
+    "area": 1600.0,
+    "population": 190184,
+    "type": "Thị xã"
+  },
+  {
+    "id": 76,
+    "name": "Thị xã 7",
+    "code": "LC07",
+    "province_id": 6,
+    "area": 1162.7,
+    "population": 101996,
+    "type": "Thị xã"
+  },
+  {
+    "id": 77,
+    "name": "Thành phố 8",
+    "code": "LC08",
+    "province_id": 6,
+    "area": 105.0,
+    "population": 206814,
+    "type": "Thành phố"
+  },
+  {
+    "id": 78,
+    "name": "Thị xã 9",
+    "code": "LC09",
+    "province_id": 6,
+    "area": 699.2,
+    "population": 227654,
+    "type": "Thị xã"
+  },
+  {
+    "id": 79,
+    "name": "Huyện 10",
+    "code": "LC10",
+    "province_id": 6,
+    "area": 57.5,
+    "population": 356012,
+    "type": "Huyện"
+  },
+  {
+    "id": 80,
+    "name": "Thị xã 11",
+    "code": "LC11",
+    "province_id": 6,
+    "area": 1138.9,
+    "population": 53077,
+    "type": "Thị xã"
+  },
+  {
+    "id": 81,
+    "name": "Huyện 12",
+    "code": "LC12",
+    "province_id": 6,
+    "area": 337.0,
+    "population": 228792,
+    "type": "Huyện"
+  },
+  {
+    "id": 82,
+    "name": "Huyện 13",
+    "code": "LC13",
+    "province_id": 6,
+    "area": 94.4,
+    "population": 341351,
+    "type": "Huyện"
+  },
+  {
+    "id": 83,
+    "name": "Huyện 14",
+    "code": "LC14",
+    "province_id": 6,
+    "area": 1168.2,
+    "population": 452706,
+    "type": "Huyện"
+  },
+  {
+    "id": 84,
+    "name": "Huyện 15",
+    "code": "LC15",
+    "province_id": 6,
+    "area": 286.4,
+    "population": 239331,
+    "type": "Huyện"
+  },
+  {
+    "id": 85,
+    "name": "Huyện 1",
+    "code": "DB01",
+    "province_id": 7,
+    "area": 1244.6,
+    "population": 348455,
+    "type": "Huyện"
+  },
+  {
+    "id": 86,
+    "name": "Thị xã 2",
+    "code": "DB02",
+    "province_id": 7,
+    "area": 1614.5,
+    "population": 366742,
+    "type": "Thị xã"
+  },
+  {
+    "id": 87,
+    "name": "Thành phố 3",
+    "code": "DB03",
+    "province_id": 7,
+    "area": 1136.7,
+    "population": 278939,
+    "type": "Thành phố"
+  },
+  {
+    "id": 88,
+    "name": "Huyện 4",
+    "code": "DB04",
+    "province_id": 7,
+    "area": 230.9,
+    "population": 79718,
+    "type": "Huyện"
+  },
+  {
+    "id": 89,
+    "name": "Thành phố 5",
+    "code": "DB05",
+    "province_id": 7,
+    "area": 1416.6,
+    "population": 472256,
+    "type": "Thành phố"
+  },
+  {
+    "id": 90,
+    "name": "Huyện 1",
+    "code": "LA01",
+    "province_id": 8,
+    "area": 973.3,
+    "population": 351977,
+    "type": "Huyện"
+  },
+  {
+    "id": 91,
+    "name": "Huyện 2",
+    "code": "LA02",
+    "province_id": 8,
+    "area": 333.3,
+    "population": 19472,
+    "type": "Huyện"
+  },
+  {
+    "id": 92,
+    "name": "Thị xã 3",
+    "code": "LA03",
+    "province_id": 8,
+    "area": 1029.4,
+    "population": 378422,
+    "type": "Thị xã"
+  },
+  {
+    "id": 93,
+    "name": "Thành phố 4",
+    "code": "LA04",
+    "province_id": 8,
+    "area": 1660.8,
+    "population": 273722,
+    "type": "Thành phố"
+  },
+  {
+    "id": 94,
+    "name": "Thị xã 5",
+    "code": "LA05",
+    "province_id": 8,
+    "area": 1999.1,
+    "population": 340920,
+    "type": "Thị xã"
+  },
+  {
+    "id": 95,
+    "name": "Huyện 6",
+    "code": "LA06",
+    "province_id": 8,
+    "area": 406.9,
+    "population": 343532,
+    "type": "Huyện"
+  },
+  {
+    "id": 96,
+    "name": "Huyện 7",
+    "code": "LA07",
+    "province_id": 8,
+    "area": 1531.8,
+    "population": 383482,
+    "type": "Huyện"
+  },
+  {
+    "id": 97,
+    "name": "Thị xã 8",
+    "code": "LA08",
+    "province_id": 8,
+    "area": 655.8,
+    "population": 161102,
+    "type": "Thị xã"
+  },
+  {
+    "id": 98,
+    "name": "Huyện 1",
+    "code": "SL01",
+    "province_id": 9,
+    "area": 1437.2,
+    "population": 263912,
+    "type": "Huyện"
+  },
+  {
+    "id": 99,
+    "name": "Huyện 2",
+    "code": "SL02",
+    "province_id": 9,
+    "area": 770.0,
+    "population": 349394,
+    "type": "Huyện"
+  },
+  {
+    "id": 100,
+    "name": "Huyện 3",
+    "code": "SL03",
+    "province_id": 9,
+    "area": 356.0,
+    "population": 306123,
+    "type": "Huyện"
+  },
+  {
+    "id": 101,
+    "name": "Thành phố 4",
+    "code": "SL04",
+    "province_id": 9,
+    "area": 946.2,
+    "population": 159768,
+    "type": "Thành phố"
+  },
+  {
+    "id": 102,
+    "name": "Thành phố 5",
+    "code": "SL05",
+    "province_id": 9,
+    "area": 1124.2,
+    "population": 318697,
+    "type": "Thành phố"
+  },
+  {
+    "id": 103,
+    "name": "Thành phố 6",
+    "code": "SL06",
+    "province_id": 9,
+    "area": 677.3,
+    "population": 122294,
+    "type": "Thành phố"
+  },
+  {
+    "id": 104,
+    "name": "Huyện 1",
+    "code": "YB01",
+    "province_id": 10,
+    "area": 168.9,
+    "population": 342466,
+    "type": "Huyện"
+  },
+  {
+    "id": 105,
+    "name": "Thành phố 2",
+    "code": "YB02",
+    "province_id": 10,
+    "area": 1906.6,
+    "population": 450336,
+    "type": "Thành phố"
+  },
+  {
+    "id": 106,
+    "name": "Thành phố 3",
+    "code": "YB03",
+    "province_id": 10,
+    "area": 985.9,
+    "population": 318561,
+    "type": "Thành phố"
+  },
+  {
+    "id": 107,
+    "name": "Thành phố 4",
+    "code": "YB04",
+    "province_id": 10,
+    "area": 1311.6,
+    "population": 62306,
+    "type": "Thành phố"
+  },
+  {
+    "id": 108,
+    "name": "Thành phố 5",
+    "code": "YB05",
+    "province_id": 10,
+    "area": 508.5,
+    "population": 388234,
+    "type": "Thành phố"
+  },
+  {
+    "id": 109,
+    "name": "Thị xã 6",
+    "code": "YB06",
+    "province_id": 10,
+    "area": 943.5,
+    "population": 382672,
+    "type": "Thị xã"
+  },
+  {
+    "id": 110,
+    "name": "Huyện 7",
+    "code": "YB07",
+    "province_id": 10,
+    "area": 1042.4,
+    "population": 470785,
+    "type": "Huyện"
+  },
+  {
+    "id": 111,
+    "name": "Thị xã 8",
+    "code": "YB08",
+    "province_id": 10,
+    "area": 444.7,
+    "population": 233719,
+    "type": "Thị xã"
+  },
+  {
+    "id": 112,
+    "name": "Huyện 9",
+    "code": "YB09",
+    "province_id": 10,
+    "area": 779.4,
+    "population": 276974,
+    "type": "Huyện"
+  },
+  {
+    "id": 113,
+    "name": "Thị xã 10",
+    "code": "YB10",
+    "province_id": 10,
+    "area": 607.3,
+    "population": 57611,
+    "type": "Thị xã"
+  },
+  {
+    "id": 114,
+    "name": "Huyện 1",
+    "code": "HB01",
+    "province_id": 11,
+    "area": 1870.8,
+    "population": 84572,
+    "type": "Huyện"
+  },
+  {
+    "id": 115,
+    "name": "Huyện 2",
+    "code": "HB02",
+    "province_id": 11,
+    "area": 656.7,
+    "population": 413448,
+    "type": "Huyện"
+  },
+  {
+    "id": 116,
+    "name": "Huyện 3",
+    "code": "HB03",
+    "province_id": 11,
+    "area": 401.0,
+    "population": 399206,
+    "type": "Huyện"
+  },
+  {
+    "id": 117,
+    "name": "Thành phố 4",
+    "code": "HB04",
+    "province_id": 11,
+    "area": 694.8,
+    "population": 157881,
+    "type": "Thành phố"
+  },
+  {
+    "id": 118,
+    "name": "Thị xã 5",
+    "code": "HB05",
+    "province_id": 11,
+    "area": 557.1,
+    "population": 286409,
+    "type": "Thị xã"
+  },
+  {
+    "id": 119,
+    "name": "Huyện 6",
+    "code": "HB06",
+    "province_id": 11,
+    "area": 1821.0,
+    "population": 365320,
+    "type": "Huyện"
+  },
+  {
+    "id": 120,
+    "name": "Thị xã 7",
+    "code": "HB07",
+    "province_id": 11,
+    "area": 1503.4,
+    "population": 439871,
+    "type": "Thị xã"
+  },
+  {
+    "id": 121,
+    "name": "Thành phố 8",
+    "code": "HB08",
+    "province_id": 11,
+    "area": 610.4,
+    "population": 31805,
+    "type": "Thành phố"
+  },
+  {
+    "id": 122,
+    "name": "Huyện 9",
+    "code": "HB09",
+    "province_id": 11,
+    "area": 1070.8,
+    "population": 442377,
+    "type": "Huyện"
+  },
+  {
+    "id": 123,
+    "name": "Thị xã 10",
+    "code": "HB10",
+    "province_id": 11,
+    "area": 618.3,
+    "population": 221504,
+    "type": "Thị xã"
+  },
+  {
+    "id": 124,
+    "name": "Thành phố 11",
+    "code": "HB11",
+    "province_id": 11,
+    "area": 421.4,
+    "population": 323545,
+    "type": "Thành phố"
+  },
+  {
+    "id": 125,
+    "name": "Thành phố 12",
+    "code": "HB12",
+    "province_id": 11,
+    "area": 197.9,
+    "population": 402990,
+    "type": "Thành phố"
+  },
+  {
+    "id": 126,
+    "name": "Thành phố 13",
+    "code": "HB13",
+    "province_id": 11,
+    "area": 1832.1,
+    "population": 169065,
+    "type": "Thành phố"
+  },
+  {
+    "id": 127,
+    "name": "Huyện 14",
+    "code": "HB14",
+    "province_id": 11,
+    "area": 487.3,
+    "population": 480219,
+    "type": "Huyện"
+  },
+  {
+    "id": 128,
+    "name": "Thị xã 15",
+    "code": "HB15",
+    "province_id": 11,
+    "area": 1897.7,
+    "population": 216252,
+    "type": "Thị xã"
+  },
+  {
+    "id": 129,
+    "name": "Thị xã 1",
+    "code": "TN01",
+    "province_id": 12,
+    "area": 333.1,
+    "population": 486345,
+    "type": "Thị xã"
+  },
+  {
+    "id": 130,
+    "name": "Huyện 2",
+    "code": "TN02",
+    "province_id": 12,
+    "area": 790.8,
+    "population": 316356,
+    "type": "Huyện"
+  },
+  {
+    "id": 131,
+    "name": "Thành phố 3",
+    "code": "TN03",
+    "province_id": 12,
+    "area": 1751.9,
+    "population": 142878,
+    "type": "Thành phố"
+  },
+  {
+    "id": 132,
+    "name": "Thị xã 4",
+    "code": "TN04",
+    "province_id": 12,
+    "area": 844.5,
+    "population": 196579,
+    "type": "Thị xã"
+  },
+  {
+    "id": 133,
+    "name": "Thành phố 5",
+    "code": "TN05",
+    "province_id": 12,
+    "area": 1863.6,
+    "population": 461832,
+    "type": "Thành phố"
+  },
+  {
+    "id": 134,
+    "name": "Thị xã 1",
+    "code": "LS01",
+    "province_id": 13,
+    "area": 1369.8,
+    "population": 473094,
+    "type": "Thị xã"
+  },
+  {
+    "id": 135,
+    "name": "Thị xã 2",
+    "code": "LS02",
+    "province_id": 13,
+    "area": 401.2,
+    "population": 140112,
+    "type": "Thị xã"
+  },
+  {
+    "id": 136,
+    "name": "Huyện 3",
+    "code": "LS03",
+    "province_id": 13,
+    "area": 1183.2,
+    "population": 280920,
+    "type": "Huyện"
+  },
+  {
+    "id": 137,
+    "name": "Huyện 4",
+    "code": "LS04",
+    "province_id": 13,
+    "area": 782.2,
+    "population": 469502,
+    "type": "Huyện"
+  },
+  {
+    "id": 138,
+    "name": "Thị xã 5",
+    "code": "LS05",
+    "province_id": 13,
+    "area": 559.1,
+    "population": 306520,
+    "type": "Thị xã"
+  },
+  {
+    "id": 139,
+    "name": "Thị xã 6",
+    "code": "LS06",
+    "province_id": 13,
+    "area": 136.0,
+    "population": 86159,
+    "type": "Thị xã"
+  },
+  {
+    "id": 140,
+    "name": "Thị xã 7",
+    "code": "LS07",
+    "province_id": 13,
+    "area": 1981.1,
+    "population": 86406,
+    "type": "Thị xã"
+  },
+  {
+    "id": 141,
+    "name": "Thị xã 1",
+    "code": "QN01",
+    "province_id": 14,
+    "area": 779.9,
+    "population": 48057,
+    "type": "Thị xã"
+  },
+  {
+    "id": 142,
+    "name": "Thành phố 2",
+    "code": "QN02",
+    "province_id": 14,
+    "area": 874.8,
+    "population": 364622,
+    "type": "Thành phố"
+  },
+  {
+    "id": 143,
+    "name": "Huyện 3",
+    "code": "QN03",
+    "province_id": 14,
+    "area": 816.3,
+    "population": 284746,
+    "type": "Huyện"
+  },
+  {
+    "id": 144,
+    "name": "Huyện 4",
+    "code": "QN04",
+    "province_id": 14,
+    "area": 215.3,
+    "population": 305014,
+    "type": "Huyện"
+  },
+  {
+    "id": 145,
+    "name": "Thị xã 5",
+    "code": "QN05",
+    "province_id": 14,
+    "area": 1390.9,
+    "population": 89908,
+    "type": "Thị xã"
+  },
+  {
+    "id": 146,
+    "name": "Huyện 6",
+    "code": "QN06",
+    "province_id": 14,
+    "area": 824.2,
+    "population": 129685,
+    "type": "Huyện"
+  },
+  {
+    "id": 147,
+    "name": "Huyện 7",
+    "code": "QN07",
+    "province_id": 14,
+    "area": 811.9,
+    "population": 403979,
+    "type": "Huyện"
+  },
+  {
+    "id": 148,
+    "name": "Huyện 8",
+    "code": "QN08",
+    "province_id": 14,
+    "area": 164.1,
+    "population": 360220,
+    "type": "Huyện"
+  },
+  {
+    "id": 149,
+    "name": "Huyện 9",
+    "code": "QN09",
+    "province_id": 14,
+    "area": 128.5,
+    "population": 36686,
+    "type": "Huyện"
+  },
+  {
+    "id": 150,
+    "name": "Thành phố 10",
+    "code": "QN10",
+    "province_id": 14,
+    "area": 1283.8,
+    "population": 352834,
+    "type": "Thành phố"
+  },
+  {
+    "id": 151,
+    "name": "Huyện 11",
+    "code": "QN11",
+    "province_id": 14,
+    "area": 1480.4,
+    "population": 42239,
+    "type": "Huyện"
+  },
+  {
+    "id": 152,
+    "name": "Thị xã 12",
+    "code": "QN12",
+    "province_id": 14,
+    "area": 1059.4,
+    "population": 330434,
+    "type": "Thị xã"
+  },
+  {
+    "id": 153,
+    "name": "Thị xã 13",
+    "code": "QN13",
+    "province_id": 14,
+    "area": 1127.3,
+    "population": 335238,
+    "type": "Thị xã"
+  },
+  {
+    "id": 154,
+    "name": "Huyện 14",
+    "code": "QN14",
+    "province_id": 14,
+    "area": 1373.5,
+    "population": 153979,
+    "type": "Huyện"
+  },
+  {
+    "id": 155,
+    "name": "Huyện 15",
+    "code": "QN15",
+    "province_id": 14,
+    "area": 183.3,
+    "population": 277631,
+    "type": "Huyện"
+  },
+  {
+    "id": 156,
+    "name": "Thành phố 1",
+    "code": "BG01",
+    "province_id": 15,
+    "area": 1045.2,
+    "population": 119289,
+    "type": "Thành phố"
+  },
+  {
+    "id": 157,
+    "name": "Thị xã 2",
+    "code": "BG02",
+    "province_id": 15,
+    "area": 255.0,
+    "population": 447008,
+    "type": "Thị xã"
+  },
+  {
+    "id": 158,
+    "name": "Huyện 3",
+    "code": "BG03",
+    "province_id": 15,
+    "area": 1183.1,
+    "population": 421881,
+    "type": "Huyện"
+  },
+  {
+    "id": 159,
+    "name": "Huyện 4",
+    "code": "BG04",
+    "province_id": 15,
+    "area": 1891.0,
+    "population": 298869,
+    "type": "Huyện"
+  },
+  {
+    "id": 160,
+    "name": "Huyện 5",
+    "code": "BG05",
+    "province_id": 15,
+    "area": 1490.8,
+    "population": 149608,
+    "type": "Huyện"
+  },
+  {
+    "id": 161,
+    "name": "Thị xã 6",
+    "code": "BG06",
+    "province_id": 15,
+    "area": 115.3,
+    "population": 405512,
+    "type": "Thị xã"
+  },
+  {
+    "id": 162,
+    "name": "Huyện 7",
+    "code": "BG07",
+    "province_id": 15,
+    "area": 1664.5,
+    "population": 289550,
+    "type": "Huyện"
+  },
+  {
+    "id": 163,
+    "name": "Thành phố 8",
+    "code": "BG08",
+    "province_id": 15,
+    "area": 255.0,
+    "population": 221065,
+    "type": "Thành phố"
+  },
+  {
+    "id": 164,
+    "name": "Thị xã 9",
+    "code": "BG09",
+    "province_id": 15,
+    "area": 1342.8,
+    "population": 356217,
+    "type": "Thị xã"
+  },
+  {
+    "id": 165,
+    "name": "Thành phố 10",
+    "code": "BG10",
+    "province_id": 15,
+    "area": 1910.2,
+    "population": 203563,
+    "type": "Thành phố"
+  },
+  {
+    "id": 166,
+    "name": "Thành phố 11",
+    "code": "BG11",
+    "province_id": 15,
+    "area": 1235.8,
+    "population": 207528,
+    "type": "Thành phố"
+  },
+  {
+    "id": 167,
+    "name": "Thị xã 12",
+    "code": "BG12",
+    "province_id": 15,
+    "area": 1741.7,
+    "population": 131551,
+    "type": "Thị xã"
+  },
+  {
+    "id": 168,
+    "name": "Thành phố 1",
+    "code": "PT01",
+    "province_id": 16,
+    "area": 115.9,
+    "population": 148657,
+    "type": "Thành phố"
+  },
+  {
+    "id": 169,
+    "name": "Thành phố 2",
+    "code": "PT02",
+    "province_id": 16,
+    "area": 506.8,
+    "population": 321549,
+    "type": "Thành phố"
+  },
+  {
+    "id": 170,
+    "name": "Huyện 3",
+    "code": "PT03",
+    "province_id": 16,
+    "area": 305.9,
+    "population": 198272,
+    "type": "Huyện"
+  },
+  {
+    "id": 171,
+    "name": "Huyện 4",
+    "code": "PT04",
+    "province_id": 16,
+    "area": 54.6,
+    "population": 230794,
+    "type": "Huyện"
+  },
+  {
+    "id": 172,
+    "name": "Thành phố 5",
+    "code": "PT05",
+    "province_id": 16,
+    "area": 635.9,
+    "population": 467945,
+    "type": "Thành phố"
+  },
+  {
+    "id": 173,
+    "name": "Thị xã 6",
+    "code": "PT06",
+    "province_id": 16,
+    "area": 1713.9,
+    "population": 486145,
+    "type": "Thị xã"
+  },
+  {
+    "id": 174,
+    "name": "Thành phố 7",
+    "code": "PT07",
+    "province_id": 16,
+    "area": 1252.4,
+    "population": 163250,
+    "type": "Thành phố"
+  },
+  {
+    "id": 175,
+    "name": "Huyện 8",
+    "code": "PT08",
+    "province_id": 16,
+    "area": 992.2,
+    "population": 368223,
+    "type": "Huyện"
+  },
+  {
+    "id": 176,
+    "name": "Thị xã 9",
+    "code": "PT09",
+    "province_id": 16,
+    "area": 347.8,
+    "population": 382199,
+    "type": "Thị xã"
+  },
+  {
+    "id": 177,
+    "name": "Thị xã 10",
+    "code": "PT10",
+    "province_id": 16,
+    "area": 549.6,
+    "population": 290959,
+    "type": "Thị xã"
+  },
+  {
+    "id": 178,
+    "name": "Huyện 11",
+    "code": "PT11",
+    "province_id": 16,
+    "area": 1210.9,
+    "population": 350475,
+    "type": "Huyện"
+  },
+  {
+    "id": 179,
+    "name": "Thị xã 12",
+    "code": "PT12",
+    "province_id": 16,
+    "area": 60.3,
+    "population": 374291,
+    "type": "Thị xã"
+  },
+  {
+    "id": 180,
+    "name": "Thị xã 13",
+    "code": "PT13",
+    "province_id": 16,
+    "area": 642.5,
+    "population": 388954,
+    "type": "Thị xã"
+  },
+  {
+    "id": 181,
+    "name": "Thành phố 14",
+    "code": "PT14",
+    "province_id": 16,
+    "area": 1232.9,
+    "population": 247682,
+    "type": "Thành phố"
+  },
+  {
+    "id": 182,
+    "name": "Thị xã 15",
+    "code": "PT15",
+    "province_id": 16,
+    "area": 1222.0,
+    "population": 167065,
+    "type": "Thị xã"
+  },
+  {
+    "id": 183,
+    "name": "Thị xã 1",
+    "code": "VP01",
+    "province_id": 17,
+    "area": 699.4,
+    "population": 347083,
+    "type": "Thị xã"
+  },
+  {
+    "id": 184,
+    "name": "Thành phố 2",
+    "code": "VP02",
+    "province_id": 17,
+    "area": 934.3,
+    "population": 17719,
+    "type": "Thành phố"
+  },
+  {
+    "id": 185,
+    "name": "Thành phố 3",
+    "code": "VP03",
+    "province_id": 17,
+    "area": 1552.4,
+    "population": 364950,
+    "type": "Thành phố"
+  },
+  {
+    "id": 186,
+    "name": "Thị xã 4",
+    "code": "VP04",
+    "province_id": 17,
+    "area": 1812.6,
+    "population": 218525,
+    "type": "Thị xã"
+  },
+  {
+    "id": 187,
+    "name": "Huyện 5",
+    "code": "VP05",
+    "province_id": 17,
+    "area": 1869.0,
+    "population": 252441,
+    "type": "Huyện"
+  },
+  {
+    "id": 188,
+    "name": "Thị xã 6",
+    "code": "VP06",
+    "province_id": 17,
+    "area": 521.4,
+    "population": 228057,
+    "type": "Thị xã"
+  },
+  {
+    "id": 189,
+    "name": "Huyện 7",
+    "code": "VP07",
+    "province_id": 17,
+    "area": 1479.9,
+    "population": 236987,
+    "type": "Huyện"
+  },
+  {
+    "id": 190,
+    "name": "Huyện 8",
+    "code": "VP08",
+    "province_id": 17,
+    "area": 1356.7,
+    "population": 319025,
+    "type": "Huyện"
+  },
+  {
+    "id": 191,
+    "name": "Thành phố 9",
+    "code": "VP09",
+    "province_id": 17,
+    "area": 1288.1,
+    "population": 235650,
+    "type": "Thành phố"
+  },
+  {
+    "id": 192,
+    "name": "Thị xã 10",
+    "code": "VP10",
+    "province_id": 17,
+    "area": 1823.3,
+    "population": 105324,
+    "type": "Thị xã"
+  },
+  {
+    "id": 193,
+    "name": "Thị xã 1",
+    "code": "BN01",
+    "province_id": 18,
+    "area": 1205.3,
+    "population": 499823,
+    "type": "Thị xã"
+  },
+  {
+    "id": 194,
+    "name": "Huyện 2",
+    "code": "BN02",
+    "province_id": 18,
+    "area": 1003.7,
+    "population": 249127,
+    "type": "Huyện"
+  },
+  {
+    "id": 195,
+    "name": "Huyện 3",
+    "code": "BN03",
+    "province_id": 18,
+    "area": 1433.6,
+    "population": 475876,
+    "type": "Huyện"
+  },
+  {
+    "id": 196,
+    "name": "Huyện 4",
+    "code": "BN04",
+    "province_id": 18,
+    "area": 667.5,
+    "population": 185884,
+    "type": "Huyện"
+  },
+  {
+    "id": 197,
+    "name": "Thành phố 5",
+    "code": "BN05",
+    "province_id": 18,
+    "area": 1458.1,
+    "population": 111815,
+    "type": "Thành phố"
+  },
+  {
+    "id": 198,
+    "name": "Thành phố 1",
+    "code": "HD01",
+    "province_id": 19,
+    "area": 920.5,
+    "population": 113436,
+    "type": "Thành phố"
+  },
+  {
+    "id": 199,
+    "name": "Huyện 2",
+    "code": "HD02",
+    "province_id": 19,
+    "area": 1264.6,
+    "population": 355871,
+    "type": "Huyện"
+  },
+  {
+    "id": 200,
+    "name": "Thành phố 3",
+    "code": "HD03",
+    "province_id": 19,
+    "area": 1574.2,
+    "population": 167436,
+    "type": "Thành phố"
+  },
+  {
+    "id": 201,
+    "name": "Huyện 4",
+    "code": "HD04",
+    "province_id": 19,
+    "area": 963.9,
+    "population": 446587,
+    "type": "Huyện"
+  },
+  {
+    "id": 202,
+    "name": "Thành phố 5",
+    "code": "HD05",
+    "province_id": 19,
+    "area": 1257.1,
+    "population": 478120,
+    "type": "Thành phố"
+  },
+  {
+    "id": 203,
+    "name": "Thị xã 6",
+    "code": "HD06",
+    "province_id": 19,
+    "area": 915.5,
+    "population": 211655,
+    "type": "Thị xã"
+  },
+  {
+    "id": 204,
+    "name": "Huyện 7",
+    "code": "HD07",
+    "province_id": 19,
+    "area": 1199.7,
+    "population": 327401,
+    "type": "Huyện"
+  },
+  {
+    "id": 205,
+    "name": "Huyện 8",
+    "code": "HD08",
+    "province_id": 19,
+    "area": 1526.9,
+    "population": 411515,
+    "type": "Huyện"
+  },
+  {
+    "id": 206,
+    "name": "Thị xã 9",
+    "code": "HD09",
+    "province_id": 19,
+    "area": 1259.0,
+    "population": 238214,
+    "type": "Thị xã"
+  },
+  {
+    "id": 207,
+    "name": "Thị xã 10",
+    "code": "HD10",
+    "province_id": 19,
+    "area": 860.6,
+    "population": 325406,
+    "type": "Thị xã"
+  },
+  {
+    "id": 208,
+    "name": "Huyện 11",
+    "code": "HD11",
+    "province_id": 19,
+    "area": 1402.9,
+    "population": 437855,
+    "type": "Huyện"
+  },
+  {
+    "id": 209,
+    "name": "Thành phố 12",
+    "code": "HD12",
+    "province_id": 19,
+    "area": 1400.5,
+    "population": 224863,
+    "type": "Thành phố"
+  },
+  {
+    "id": 210,
+    "name": "Thị xã 1",
+    "code": "HP01",
+    "province_id": 20,
+    "area": 730.9,
+    "population": 458310,
+    "type": "Thị xã"
+  },
+  {
+    "id": 211,
+    "name": "Huyện 2",
+    "code": "HP02",
+    "province_id": 20,
+    "area": 699.7,
+    "population": 25922,
+    "type": "Huyện"
+  },
+  {
+    "id": 212,
+    "name": "Thị xã 3",
+    "code": "HP03",
+    "province_id": 20,
+    "area": 456.0,
+    "population": 77551,
+    "type": "Thị xã"
+  },
+  {
+    "id": 213,
+    "name": "Huyện 4",
+    "code": "HP04",
+    "province_id": 20,
+    "area": 880.4,
+    "population": 241467,
+    "type": "Huyện"
+  },
+  {
+    "id": 214,
+    "name": "Thành phố 5",
+    "code": "HP05",
+    "province_id": 20,
+    "area": 1004.5,
+    "population": 344275,
+    "type": "Thành phố"
+  },
+  {
+    "id": 215,
+    "name": "Thành phố 6",
+    "code": "HP06",
+    "province_id": 20,
+    "area": 50.1,
+    "population": 57124,
+    "type": "Thành phố"
+  },
+  {
+    "id": 216,
+    "name": "Huyện 7",
+    "code": "HP07",
+    "province_id": 20,
+    "area": 613.8,
+    "population": 162970,
+    "type": "Huyện"
+  },
+  {
+    "id": 217,
+    "name": "Huyện 8",
+    "code": "HP08",
+    "province_id": 20,
+    "area": 1078.2,
+    "population": 275580,
+    "type": "Huyện"
+  },
+  {
+    "id": 218,
+    "name": "Thị xã 9",
+    "code": "HP09",
+    "province_id": 20,
+    "area": 1964.3,
+    "population": 380409,
+    "type": "Thị xã"
+  },
+  {
+    "id": 219,
+    "name": "Huyện 1",
+    "code": "HY01",
+    "province_id": 21,
+    "area": 858.3,
+    "population": 279798,
+    "type": "Huyện"
+  },
+  {
+    "id": 220,
+    "name": "Huyện 2",
+    "code": "HY02",
+    "province_id": 21,
+    "area": 473.4,
+    "population": 266260,
+    "type": "Huyện"
+  },
+  {
+    "id": 221,
+    "name": "Thị xã 3",
+    "code": "HY03",
+    "province_id": 21,
+    "area": 1515.9,
+    "population": 254342,
+    "type": "Thị xã"
+  },
+  {
+    "id": 222,
+    "name": "Huyện 4",
+    "code": "HY04",
+    "province_id": 21,
+    "area": 143.0,
+    "population": 434449,
+    "type": "Huyện"
+  },
+  {
+    "id": 223,
+    "name": "Thị xã 5",
+    "code": "HY05",
+    "province_id": 21,
+    "area": 1726.2,
+    "population": 341245,
+    "type": "Thị xã"
+  },
+  {
+    "id": 224,
+    "name": "Thành phố 6",
+    "code": "HY06",
+    "province_id": 21,
+    "area": 416.4,
+    "population": 28738,
+    "type": "Thành phố"
+  },
+  {
+    "id": 225,
+    "name": "Thị xã 7",
+    "code": "HY07",
+    "province_id": 21,
+    "area": 990.3,
+    "population": 23246,
+    "type": "Thị xã"
+  },
+  {
+    "id": 226,
+    "name": "Thành phố 8",
+    "code": "HY08",
+    "province_id": 21,
+    "area": 584.0,
+    "population": 422034,
+    "type": "Thành phố"
+  },
+  {
+    "id": 227,
+    "name": "Thị xã 9",
+    "code": "HY09",
+    "province_id": 21,
+    "area": 317.6,
+    "population": 189217,
+    "type": "Thị xã"
+  },
+  {
+    "id": 228,
+    "name": "Thị xã 1",
+    "code": "TB01",
+    "province_id": 22,
+    "area": 713.5,
+    "population": 393798,
+    "type": "Thị xã"
+  },
+  {
+    "id": 229,
+    "name": "Thị xã 2",
+    "code": "TB02",
+    "province_id": 22,
+    "area": 306.1,
+    "population": 90151,
+    "type": "Thị xã"
+  },
+  {
+    "id": 230,
+    "name": "Thành phố 3",
+    "code": "TB03",
+    "province_id": 22,
+    "area": 873.5,
+    "population": 471053,
+    "type": "Thành phố"
+  },
+  {
+    "id": 231,
+    "name": "Huyện 4",
+    "code": "TB04",
+    "province_id": 22,
+    "area": 486.0,
+    "population": 397456,
+    "type": "Huyện"
+  },
+  {
+    "id": 232,
+    "name": "Thị xã 5",
+    "code": "TB05",
+    "province_id": 22,
+    "area": 1471.6,
+    "population": 495458,
+    "type": "Thị xã"
+  },
+  {
+    "id": 233,
+    "name": "Thị xã 6",
+    "code": "TB06",
+    "province_id": 22,
+    "area": 387.6,
+    "population": 436166,
+    "type": "Thị xã"
+  },
+  {
+    "id": 234,
+    "name": "Thành phố 7",
+    "code": "TB07",
+    "province_id": 22,
+    "area": 842.1,
+    "population": 153139,
+    "type": "Thành phố"
+  },
+  {
+    "id": 235,
+    "name": "Huyện 8",
+    "code": "TB08",
+    "province_id": 22,
+    "area": 299.8,
+    "population": 452937,
+    "type": "Huyện"
+  },
+  {
+    "id": 236,
+    "name": "Huyện 9",
+    "code": "TB09",
+    "province_id": 22,
+    "area": 925.8,
+    "population": 363930,
+    "type": "Huyện"
+  },
+  {
+    "id": 237,
+    "name": "Thị xã 10",
+    "code": "TB10",
+    "province_id": 22,
+    "area": 952.1,
+    "population": 52974,
+    "type": "Thị xã"
+  },
+  {
+    "id": 238,
+    "name": "Thị xã 11",
+    "code": "TB11",
+    "province_id": 22,
+    "area": 937.4,
+    "population": 391496,
+    "type": "Thị xã"
+  },
+  {
+    "id": 239,
+    "name": "Huyện 12",
+    "code": "TB12",
+    "province_id": 22,
+    "area": 1156.9,
+    "population": 467174,
+    "type": "Huyện"
+  },
+  {
+    "id": 240,
+    "name": "Thành phố 13",
+    "code": "TB13",
+    "province_id": 22,
+    "area": 836.5,
+    "population": 228281,
+    "type": "Thành phố"
+  },
+  {
+    "id": 241,
+    "name": "Thành phố 14",
+    "code": "TB14",
+    "province_id": 22,
+    "area": 1552.6,
+    "population": 237769,
+    "type": "Thành phố"
+  },
+  {
+    "id": 242,
+    "name": "Huyện 1",
+    "code": "HM01",
+    "province_id": 23,
+    "area": 1447.3,
+    "population": 468813,
+    "type": "Huyện"
+  },
+  {
+    "id": 243,
+    "name": "Huyện 2",
+    "code": "HM02",
+    "province_id": 23,
+    "area": 1400.8,
+    "population": 424479,
+    "type": "Huyện"
+  },
+  {
+    "id": 244,
+    "name": "Thành phố 3",
+    "code": "HM03",
+    "province_id": 23,
+    "area": 283.2,
+    "population": 282097,
+    "type": "Thành phố"
+  },
+  {
+    "id": 245,
+    "name": "Thành phố 4",
+    "code": "HM04",
+    "province_id": 23,
+    "area": 1803.8,
+    "population": 296832,
+    "type": "Thành phố"
+  },
+  {
+    "id": 246,
+    "name": "Thị xã 5",
+    "code": "HM05",
+    "province_id": 23,
+    "area": 1387.6,
+    "population": 316997,
+    "type": "Thị xã"
+  },
+  {
+    "id": 247,
+    "name": "Thành phố 6",
+    "code": "HM06",
+    "province_id": 23,
+    "area": 1843.8,
+    "population": 321004,
+    "type": "Thành phố"
+  },
+  {
+    "id": 248,
+    "name": "Thị xã 7",
+    "code": "HM07",
+    "province_id": 23,
+    "area": 83.4,
+    "population": 116167,
+    "type": "Thị xã"
+  },
+  {
+    "id": 249,
+    "name": "Thị xã 8",
+    "code": "HM08",
+    "province_id": 23,
+    "area": 77.4,
+    "population": 28762,
+    "type": "Thị xã"
+  },
+  {
+    "id": 250,
+    "name": "Thành phố 9",
+    "code": "HM09",
+    "province_id": 23,
+    "area": 330.7,
+    "population": 234434,
+    "type": "Thành phố"
+  },
+  {
+    "id": 251,
+    "name": "Thị xã 10",
+    "code": "HM10",
+    "province_id": 23,
+    "area": 1037.5,
+    "population": 381444,
+    "type": "Thị xã"
+  },
+  {
+    "id": 252,
+    "name": "Huyện 11",
+    "code": "HM11",
+    "province_id": 23,
+    "area": 454.6,
+    "population": 69397,
+    "type": "Huyện"
+  },
+  {
+    "id": 253,
+    "name": "Thị xã 12",
+    "code": "HM12",
+    "province_id": 23,
+    "area": 1440.0,
+    "population": 466668,
+    "type": "Thị xã"
+  },
+  {
+    "id": 254,
+    "name": "Thành phố 1",
+    "code": "ND01",
+    "province_id": 24,
+    "area": 1475.7,
+    "population": 31795,
+    "type": "Thành phố"
+  },
+  {
+    "id": 255,
+    "name": "Thành phố 2",
+    "code": "ND02",
+    "province_id": 24,
+    "area": 685.6,
+    "population": 319677,
+    "type": "Thành phố"
+  },
+  {
+    "id": 256,
+    "name": "Thành phố 3",
+    "code": "ND03",
+    "province_id": 24,
+    "area": 902.2,
+    "population": 407378,
+    "type": "Thành phố"
+  },
+  {
+    "id": 257,
+    "name": "Thành phố 4",
+    "code": "ND04",
+    "province_id": 24,
+    "area": 1496.1,
+    "population": 54338,
+    "type": "Thành phố"
+  },
+  {
+    "id": 258,
+    "name": "Huyện 5",
+    "code": "ND05",
+    "province_id": 24,
+    "area": 1590.2,
+    "population": 326688,
+    "type": "Huyện"
+  },
+  {
+    "id": 259,
+    "name": "Huyện 6",
+    "code": "ND06",
+    "province_id": 24,
+    "area": 1270.0,
+    "population": 480954,
+    "type": "Huyện"
+  },
+  {
+    "id": 260,
+    "name": "Huyện 7",
+    "code": "ND07",
+    "province_id": 24,
+    "area": 1399.0,
+    "population": 350008,
+    "type": "Huyện"
+  },
+  {
+    "id": 261,
+    "name": "Huyện 1",
+    "code": "NB01",
+    "province_id": 25,
+    "area": 1751.8,
+    "population": 14037,
+    "type": "Huyện"
+  },
+  {
+    "id": 262,
+    "name": "Huyện 2",
+    "code": "NB02",
+    "province_id": 25,
+    "area": 464.8,
+    "population": 32103,
+    "type": "Huyện"
+  },
+  {
+    "id": 263,
+    "name": "Huyện 3",
+    "code": "NB03",
+    "province_id": 25,
+    "area": 1530.4,
+    "population": 182797,
+    "type": "Huyện"
+  },
+  {
+    "id": 264,
+    "name": "Huyện 4",
+    "code": "NB04",
+    "province_id": 25,
+    "area": 1497.4,
+    "population": 201845,
+    "type": "Huyện"
+  },
+  {
+    "id": 265,
+    "name": "Thành phố 5",
+    "code": "NB05",
+    "province_id": 25,
+    "area": 1441.2,
+    "population": 339919,
+    "type": "Thành phố"
+  },
+  {
+    "id": 266,
+    "name": "Thị xã 6",
+    "code": "NB06",
+    "province_id": 25,
+    "area": 580.3,
+    "population": 434283,
+    "type": "Thị xã"
+  },
+  {
+    "id": 267,
+    "name": "Thị xã 7",
+    "code": "NB07",
+    "province_id": 25,
+    "area": 1560.4,
+    "population": 460152,
+    "type": "Thị xã"
+  },
+  {
+    "id": 268,
+    "name": "Thị xã 8",
+    "code": "NB08",
+    "province_id": 25,
+    "area": 95.5,
+    "population": 201986,
+    "type": "Thị xã"
+  },
+  {
+    "id": 269,
+    "name": "Thị xã 9",
+    "code": "NB09",
+    "province_id": 25,
+    "area": 89.1,
+    "population": 469543,
+    "type": "Thị xã"
+  },
+  {
+    "id": 270,
+    "name": "Huyện 10",
+    "code": "NB10",
+    "province_id": 25,
+    "area": 1736.9,
+    "population": 381903,
+    "type": "Huyện"
+  },
+  {
+    "id": 271,
+    "name": "Thành phố 11",
+    "code": "NB11",
+    "province_id": 25,
+    "area": 757.2,
+    "population": 185548,
+    "type": "Thành phố"
+  },
+  {
+    "id": 272,
+    "name": "Huyện 12",
+    "code": "NB12",
+    "province_id": 25,
+    "area": 1606.0,
+    "population": 38625,
+    "type": "Huyện"
+  },
+  {
+    "id": 273,
+    "name": "Huyện 13",
+    "code": "NB13",
+    "province_id": 25,
+    "area": 548.6,
+    "population": 216911,
+    "type": "Huyện"
+  },
+  {
+    "id": 274,
+    "name": "Thị xã 1",
+    "code": "TH01",
+    "province_id": 26,
+    "area": 1244.5,
+    "population": 89179,
+    "type": "Thị xã"
+  },
+  {
+    "id": 275,
+    "name": "Thị xã 2",
+    "code": "TH02",
+    "province_id": 26,
+    "area": 1747.5,
+    "population": 464678,
+    "type": "Thị xã"
+  },
+  {
+    "id": 276,
+    "name": "Thành phố 3",
+    "code": "TH03",
+    "province_id": 26,
+    "area": 814.6,
+    "population": 97439,
+    "type": "Thành phố"
+  },
+  {
+    "id": 277,
+    "name": "Thị xã 4",
+    "code": "TH04",
+    "province_id": 26,
+    "area": 637.7,
+    "population": 459113,
+    "type": "Thị xã"
+  },
+  {
+    "id": 278,
+    "name": "Thành phố 5",
+    "code": "TH05",
+    "province_id": 26,
+    "area": 815.5,
+    "population": 88787,
+    "type": "Thành phố"
+  },
+  {
+    "id": 279,
+    "name": "Huyện 6",
+    "code": "TH06",
+    "province_id": 26,
+    "area": 1782.8,
+    "population": 369161,
+    "type": "Huyện"
+  },
+  {
+    "id": 280,
+    "name": "Huyện 7",
+    "code": "TH07",
+    "province_id": 26,
+    "area": 562.1,
+    "population": 126638,
+    "type": "Huyện"
+  },
+  {
+    "id": 281,
+    "name": "Huyện 8",
+    "code": "TH08",
+    "province_id": 26,
+    "area": 546.6,
+    "population": 420860,
+    "type": "Huyện"
+  },
+  {
+    "id": 282,
+    "name": "Thị xã 9",
+    "code": "TH09",
+    "province_id": 26,
+    "area": 512.5,
+    "population": 201790,
+    "type": "Thị xã"
+  },
+  {
+    "id": 283,
+    "name": "Thành phố 10",
+    "code": "TH10",
+    "province_id": 26,
+    "area": 392.1,
+    "population": 255469,
+    "type": "Thành phố"
+  },
+  {
+    "id": 284,
+    "name": "Thị xã 11",
+    "code": "TH11",
+    "province_id": 26,
+    "area": 708.8,
+    "population": 235269,
+    "type": "Thị xã"
+  },
+  {
+    "id": 285,
+    "name": "Thị xã 12",
+    "code": "TH12",
+    "province_id": 26,
+    "area": 430.5,
+    "population": 184181,
+    "type": "Thị xã"
+  },
+  {
+    "id": 286,
+    "name": "Thị xã 13",
+    "code": "TH13",
+    "province_id": 26,
+    "area": 1286.0,
+    "population": 334044,
+    "type": "Thị xã"
+  },
+  {
+    "id": 287,
+    "name": "Huyện 14",
+    "code": "TH14",
+    "province_id": 26,
+    "area": 1532.4,
+    "population": 229322,
+    "type": "Huyện"
+  },
+  {
+    "id": 288,
+    "name": "Thành phố 15",
+    "code": "TH15",
+    "province_id": 26,
+    "area": 386.3,
+    "population": 469439,
+    "type": "Thành phố"
+  },
+  {
+    "id": 289,
+    "name": "Thị xã 16",
+    "code": "TH16",
+    "province_id": 26,
+    "area": 1499.9,
+    "population": 117034,
+    "type": "Thị xã"
+  },
+  {
+    "id": 290,
+    "name": "Thị xã 17",
+    "code": "TH17",
+    "province_id": 26,
+    "area": 1083.8,
+    "population": 460694,
+    "type": "Thị xã"
+  },
+  {
+    "id": 291,
+    "name": "Huyện 18",
+    "code": "TH18",
+    "province_id": 26,
+    "area": 1615.5,
+    "population": 344347,
+    "type": "Huyện"
+  },
+  {
+    "id": 292,
+    "name": "Thành phố 19",
+    "code": "TH19",
+    "province_id": 26,
+    "area": 1163.9,
+    "population": 252437,
+    "type": "Thành phố"
+  },
+  {
+    "id": 293,
+    "name": "Huyện 20",
+    "code": "TH20",
+    "province_id": 26,
+    "area": 715.7,
+    "population": 61047,
+    "type": "Huyện"
+  },
+  {
+    "id": 294,
+    "name": "Thành phố 21",
+    "code": "TH21",
+    "province_id": 26,
+    "area": 1443.0,
+    "population": 343641,
+    "type": "Thành phố"
+  },
+  {
+    "id": 295,
+    "name": "Thị xã 22",
+    "code": "TH22",
+    "province_id": 26,
+    "area": 1122.6,
+    "population": 440672,
+    "type": "Thị xã"
+  },
+  {
+    "id": 296,
+    "name": "Thị xã 23",
+    "code": "TH23",
+    "province_id": 26,
+    "area": 561.2,
+    "population": 388182,
+    "type": "Thị xã"
+  },
+  {
+    "id": 297,
+    "name": "Thị xã 24",
+    "code": "TH24",
+    "province_id": 26,
+    "area": 211.2,
+    "population": 273543,
+    "type": "Thị xã"
+  },
+  {
+    "id": 298,
+    "name": "Thị xã 25",
+    "code": "TH25",
+    "province_id": 26,
+    "area": 1461.6,
+    "population": 497072,
+    "type": "Thị xã"
+  },
+  {
+    "id": 299,
+    "name": "Huyện 26",
+    "code": "TH26",
+    "province_id": 26,
+    "area": 968.4,
+    "population": 169833,
+    "type": "Huyện"
+  },
+  {
+    "id": 300,
+    "name": "Thị xã 27",
+    "code": "TH27",
+    "province_id": 26,
+    "area": 1471.0,
+    "population": 424038,
+    "type": "Thị xã"
+  },
+  {
+    "id": 301,
+    "name": "Huyện 1",
+    "code": "NA01",
+    "province_id": 27,
+    "area": 1834.0,
+    "population": 491896,
+    "type": "Huyện"
+  },
+  {
+    "id": 302,
+    "name": "Huyện 2",
+    "code": "NA02",
+    "province_id": 27,
+    "area": 1166.5,
+    "population": 15222,
+    "type": "Huyện"
+  },
+  {
+    "id": 303,
+    "name": "Thành phố 3",
+    "code": "NA03",
+    "province_id": 27,
+    "area": 1634.4,
+    "population": 331417,
+    "type": "Thành phố"
+  },
+  {
+    "id": 304,
+    "name": "Thành phố 4",
+    "code": "NA04",
+    "province_id": 27,
+    "area": 1027.5,
+    "population": 293232,
+    "type": "Thành phố"
+  },
+  {
+    "id": 305,
+    "name": "Thị xã 5",
+    "code": "NA05",
+    "province_id": 27,
+    "area": 1065.8,
+    "population": 206164,
+    "type": "Thị xã"
+  },
+  {
+    "id": 306,
+    "name": "Huyện 6",
+    "code": "NA06",
+    "province_id": 27,
+    "area": 1218.5,
+    "population": 242507,
+    "type": "Huyện"
+  },
+  {
+    "id": 307,
+    "name": "Thị xã 7",
+    "code": "NA07",
+    "province_id": 27,
+    "area": 514.7,
+    "population": 251669,
+    "type": "Thị xã"
+  },
+  {
+    "id": 308,
+    "name": "Huyện 8",
+    "code": "NA08",
+    "province_id": 27,
+    "area": 1082.4,
+    "population": 59374,
+    "type": "Huyện"
+  },
+  {
+    "id": 309,
+    "name": "Huyện 9",
+    "code": "NA09",
+    "province_id": 27,
+    "area": 1790.8,
+    "population": 368129,
+    "type": "Huyện"
+  },
+  {
+    "id": 310,
+    "name": "Huyện 10",
+    "code": "NA10",
+    "province_id": 27,
+    "area": 1915.7,
+    "population": 497295,
+    "type": "Huyện"
+  },
+  {
+    "id": 311,
+    "name": "Thị xã 11",
+    "code": "NA11",
+    "province_id": 27,
+    "area": 1293.0,
+    "population": 274670,
+    "type": "Thị xã"
+  },
+  {
+    "id": 312,
+    "name": "Thành phố 12",
+    "code": "NA12",
+    "province_id": 27,
+    "area": 915.2,
+    "population": 440467,
+    "type": "Thành phố"
+  },
+  {
+    "id": 313,
+    "name": "Thị xã 13",
+    "code": "NA13",
+    "province_id": 27,
+    "area": 463.4,
+    "population": 67180,
+    "type": "Thị xã"
+  },
+  {
+    "id": 314,
+    "name": "Huyện 14",
+    "code": "NA14",
+    "province_id": 27,
+    "area": 776.1,
+    "population": 105211,
+    "type": "Huyện"
+  },
+  {
+    "id": 315,
+    "name": "Thị xã 15",
+    "code": "NA15",
+    "province_id": 27,
+    "area": 1516.8,
+    "population": 425552,
+    "type": "Thị xã"
+  },
+  {
+    "id": 316,
+    "name": "Thị xã 16",
+    "code": "NA16",
+    "province_id": 27,
+    "area": 223.0,
+    "population": 39175,
+    "type": "Thị xã"
+  },
+  {
+    "id": 317,
+    "name": "Thành phố 17",
+    "code": "NA17",
+    "province_id": 27,
+    "area": 522.2,
+    "population": 334665,
+    "type": "Thành phố"
+  },
+  {
+    "id": 318,
+    "name": "Thành phố 18",
+    "code": "NA18",
+    "province_id": 27,
+    "area": 1579.6,
+    "population": 97127,
+    "type": "Thành phố"
+  },
+  {
+    "id": 319,
+    "name": "Huyện 19",
+    "code": "NA19",
+    "province_id": 27,
+    "area": 1390.7,
+    "population": 163101,
+    "type": "Huyện"
+  },
+  {
+    "id": 320,
+    "name": "Thành phố 20",
+    "code": "NA20",
+    "province_id": 27,
+    "area": 1297.4,
+    "population": 350387,
+    "type": "Thành phố"
+  },
+  {
+    "id": 321,
+    "name": "Thị xã 21",
+    "code": "NA21",
+    "province_id": 27,
+    "area": 501.4,
+    "population": 184062,
+    "type": "Thị xã"
+  },
+  {
+    "id": 322,
+    "name": "Thành phố 1",
+    "code": "HT01",
+    "province_id": 28,
+    "area": 990.1,
+    "population": 298312,
+    "type": "Thành phố"
+  },
+  {
+    "id": 323,
+    "name": "Thị xã 2",
+    "code": "HT02",
+    "province_id": 28,
+    "area": 519.0,
+    "population": 215846,
+    "type": "Thị xã"
+  },
+  {
+    "id": 324,
+    "name": "Thành phố 3",
+    "code": "HT03",
+    "province_id": 28,
+    "area": 1439.2,
+    "population": 199707,
+    "type": "Thành phố"
+  },
+  {
+    "id": 325,
+    "name": "Thị xã 4",
+    "code": "HT04",
+    "province_id": 28,
+    "area": 295.1,
+    "population": 53383,
+    "type": "Thị xã"
+  },
+  {
+    "id": 326,
+    "name": "Thị xã 5",
+    "code": "HT05",
+    "province_id": 28,
+    "area": 1904.9,
+    "population": 57990,
+    "type": "Thị xã"
+  },
+  {
+    "id": 327,
+    "name": "Huyện 6",
+    "code": "HT06",
+    "province_id": 28,
+    "area": 1674.4,
+    "population": 125525,
+    "type": "Huyện"
+  },
+  {
+    "id": 328,
+    "name": "Thị xã 7",
+    "code": "HT07",
+    "province_id": 28,
+    "area": 1552.6,
+    "population": 229617,
+    "type": "Thị xã"
+  },
+  {
+    "id": 329,
+    "name": "Thị xã 8",
+    "code": "HT08",
+    "province_id": 28,
+    "area": 1364.3,
+    "population": 412650,
+    "type": "Thị xã"
+  },
+  {
+    "id": 330,
+    "name": "Huyện 9",
+    "code": "HT09",
+    "province_id": 28,
+    "area": 1944.5,
+    "population": 284733,
+    "type": "Huyện"
+  },
+  {
+    "id": 331,
+    "name": "Huyện 1",
+    "code": "QB01",
+    "province_id": 29,
+    "area": 610.2,
+    "population": 313323,
+    "type": "Huyện"
+  },
+  {
+    "id": 332,
+    "name": "Huyện 2",
+    "code": "QB02",
+    "province_id": 29,
+    "area": 726.3,
+    "population": 385417,
+    "type": "Huyện"
+  },
+  {
+    "id": 333,
+    "name": "Huyện 3",
+    "code": "QB03",
+    "province_id": 29,
+    "area": 1085.7,
+    "population": 354758,
+    "type": "Huyện"
+  },
+  {
+    "id": 334,
+    "name": "Huyện 4",
+    "code": "QB04",
+    "province_id": 29,
+    "area": 1464.8,
+    "population": 170929,
+    "type": "Huyện"
+  },
+  {
+    "id": 335,
+    "name": "Thị xã 5",
+    "code": "QB05",
+    "province_id": 29,
+    "area": 1951.9,
+    "population": 174988,
+    "type": "Thị xã"
+  },
+  {
+    "id": 336,
+    "name": "Huyện 6",
+    "code": "QB06",
+    "province_id": 29,
+    "area": 794.3,
+    "population": 318421,
+    "type": "Huyện"
+  },
+  {
+    "id": 337,
+    "name": "Thị xã 7",
+    "code": "QB07",
+    "province_id": 29,
+    "area": 982.8,
+    "population": 77210,
+    "type": "Thị xã"
+  },
+  {
+    "id": 338,
+    "name": "Thị xã 8",
+    "code": "QB08",
+    "province_id": 29,
+    "area": 343.5,
+    "population": 457837,
+    "type": "Thị xã"
+  },
+  {
+    "id": 339,
+    "name": "Huyện 9",
+    "code": "QB09",
+    "province_id": 29,
+    "area": 97.8,
+    "population": 418833,
+    "type": "Huyện"
+  },
+  {
+    "id": 340,
+    "name": "Huyện 1",
+    "code": "QT01",
+    "province_id": 30,
+    "area": 375.0,
+    "population": 406766,
+    "type": "Huyện"
+  },
+  {
+    "id": 341,
+    "name": "Thành phố 2",
+    "code": "QT02",
+    "province_id": 30,
+    "area": 1896.6,
+    "population": 478800,
+    "type": "Thành phố"
+  },
+  {
+    "id": 342,
+    "name": "Thành phố 3",
+    "code": "QT03",
+    "province_id": 30,
+    "area": 677.1,
+    "population": 347280,
+    "type": "Thành phố"
+  },
+  {
+    "id": 343,
+    "name": "Huyện 4",
+    "code": "QT04",
+    "province_id": 30,
+    "area": 1942.9,
+    "population": 39245,
+    "type": "Huyện"
+  },
+  {
+    "id": 344,
+    "name": "Huyện 5",
+    "code": "QT05",
+    "province_id": 30,
+    "area": 1979.2,
+    "population": 127654,
+    "type": "Huyện"
+  },
+  {
+    "id": 345,
+    "name": "Thị xã 6",
+    "code": "QT06",
+    "province_id": 30,
+    "area": 756.0,
+    "population": 129904,
+    "type": "Thị xã"
+  },
+  {
+    "id": 346,
+    "name": "Thị xã 7",
+    "code": "QT07",
+    "province_id": 30,
+    "area": 1008.0,
+    "population": 491408,
+    "type": "Thị xã"
+  },
+  {
+    "id": 347,
+    "name": "Huyện 8",
+    "code": "QT08",
+    "province_id": 30,
+    "area": 413.3,
+    "population": 292569,
+    "type": "Huyện"
+  },
+  {
+    "id": 348,
+    "name": "Huyện 9",
+    "code": "QT09",
+    "province_id": 30,
+    "area": 187.9,
+    "population": 129896,
+    "type": "Huyện"
+  },
+  {
+    "id": 349,
+    "name": "Thị xã 10",
+    "code": "QT10",
+    "province_id": 30,
+    "area": 497.5,
+    "population": 123674,
+    "type": "Thị xã"
+  },
+  {
+    "id": 350,
+    "name": "Huyện 11",
+    "code": "QT11",
+    "province_id": 30,
+    "area": 592.9,
+    "population": 485088,
+    "type": "Huyện"
+  },
+  {
+    "id": 351,
+    "name": "Thành phố 12",
+    "code": "QT12",
+    "province_id": 30,
+    "area": 1414.8,
+    "population": 332520,
+    "type": "Thành phố"
+  },
+  {
+    "id": 352,
+    "name": "Huyện 13",
+    "code": "QT13",
+    "province_id": 30,
+    "area": 1629.3,
+    "population": 325625,
+    "type": "Huyện"
+  },
+  {
+    "id": 353,
+    "name": "Huyện 14",
+    "code": "QT14",
+    "province_id": 30,
+    "area": 966.2,
+    "population": 119229,
+    "type": "Huyện"
+  },
+  {
+    "id": 354,
+    "name": "Thị xã 1",
+    "code": "TTH01",
+    "province_id": 31,
+    "area": 859.9,
+    "population": 180327,
+    "type": "Thị xã"
+  },
+  {
+    "id": 355,
+    "name": "Huyện 2",
+    "code": "TTH02",
+    "province_id": 31,
+    "area": 1458.9,
+    "population": 69547,
+    "type": "Huyện"
+  },
+  {
+    "id": 356,
+    "name": "Huyện 3",
+    "code": "TTH03",
+    "province_id": 31,
+    "area": 622.8,
+    "population": 294674,
+    "type": "Huyện"
+  },
+  {
+    "id": 357,
+    "name": "Thành phố 4",
+    "code": "TTH04",
+    "province_id": 31,
+    "area": 1617.7,
+    "population": 16221,
+    "type": "Thành phố"
+  },
+  {
+    "id": 358,
+    "name": "Huyện 5",
+    "code": "TTH05",
+    "province_id": 31,
+    "area": 520.3,
+    "population": 339189,
+    "type": "Huyện"
+  },
+  {
+    "id": 359,
+    "name": "Thị xã 6",
+    "code": "TTH06",
+    "province_id": 31,
+    "area": 1663.1,
+    "population": 207727,
+    "type": "Thị xã"
+  },
+  {
+    "id": 360,
+    "name": "Huyện 7",
+    "code": "TTH07",
+    "province_id": 31,
+    "area": 559.2,
+    "population": 486340,
+    "type": "Huyện"
+  },
+  {
+    "id": 361,
+    "name": "Huyện 8",
+    "code": "TTH08",
+    "province_id": 31,
+    "area": 614.3,
+    "population": 286562,
+    "type": "Huyện"
+  },
+  {
+    "id": 362,
+    "name": "Thành phố 9",
+    "code": "TTH09",
+    "province_id": 31,
+    "area": 1145.8,
+    "population": 141708,
+    "type": "Thành phố"
+  },
+  {
+    "id": 363,
+    "name": "Huyện 1",
+    "code": "DN01",
+    "province_id": 32,
+    "area": 1754.3,
+    "population": 184241,
+    "type": "Huyện"
+  },
+  {
+    "id": 364,
+    "name": "Thành phố 2",
+    "code": "DN02",
+    "province_id": 32,
+    "area": 1231.0,
+    "population": 378227,
+    "type": "Thành phố"
+  },
+  {
+    "id": 365,
+    "name": "Huyện 3",
+    "code": "DN03",
+    "province_id": 32,
+    "area": 1046.1,
+    "population": 160253,
+    "type": "Huyện"
+  },
+  {
+    "id": 366,
+    "name": "Thị xã 4",
+    "code": "DN04",
+    "province_id": 32,
+    "area": 1481.4,
+    "population": 216619,
+    "type": "Thị xã"
+  },
+  {
+    "id": 367,
+    "name": "Thị xã 5",
+    "code": "DN05",
+    "province_id": 32,
+    "area": 1549.8,
+    "population": 380831,
+    "type": "Thị xã"
+  },
+  {
+    "id": 368,
+    "name": "Thành phố 6",
+    "code": "DN06",
+    "province_id": 32,
+    "area": 1226.4,
+    "population": 159556,
+    "type": "Thành phố"
+  },
+  {
+    "id": 369,
+    "name": "Thị xã 7",
+    "code": "DN07",
+    "province_id": 32,
+    "area": 324.4,
+    "population": 224920,
+    "type": "Thị xã"
+  },
+  {
+    "id": 370,
+    "name": "Thị xã 1",
+    "code": "QNA01",
+    "province_id": 33,
+    "area": 629.4,
+    "population": 121013,
+    "type": "Thị xã"
+  },
+  {
+    "id": 371,
+    "name": "Thành phố 2",
+    "code": "QNA02",
+    "province_id": 33,
+    "area": 665.0,
+    "population": 483342,
+    "type": "Thành phố"
+  },
+  {
+    "id": 372,
+    "name": "Thành phố 3",
+    "code": "QNA03",
+    "province_id": 33,
+    "area": 1230.7,
+    "population": 317277,
+    "type": "Thành phố"
+  },
+  {
+    "id": 373,
+    "name": "Huyện 4",
+    "code": "QNA04",
+    "province_id": 33,
+    "area": 400.7,
+    "population": 136886,
+    "type": "Huyện"
+  },
+  {
+    "id": 374,
+    "name": "Thị xã 5",
+    "code": "QNA05",
+    "province_id": 33,
+    "area": 1128.1,
+    "population": 304529,
+    "type": "Thị xã"
+  },
+  {
+    "id": 375,
+    "name": "Huyện 6",
+    "code": "QNA06",
+    "province_id": 33,
+    "area": 465.3,
+    "population": 404361,
+    "type": "Huyện"
+  },
+  {
+    "id": 376,
+    "name": "Thành phố 7",
+    "code": "QNA07",
+    "province_id": 33,
+    "area": 186.8,
+    "population": 442533,
+    "type": "Thành phố"
+  },
+  {
+    "id": 377,
+    "name": "Thành phố 8",
+    "code": "QNA08",
+    "province_id": 33,
+    "area": 1477.6,
+    "population": 261781,
+    "type": "Thành phố"
+  },
+  {
+    "id": 378,
+    "name": "Huyện 9",
+    "code": "QNA09",
+    "province_id": 33,
+    "area": 1370.7,
+    "population": 73546,
+    "type": "Huyện"
+  },
+  {
+    "id": 379,
+    "name": "Thành phố 10",
+    "code": "QNA10",
+    "province_id": 33,
+    "area": 812.0,
+    "population": 30351,
+    "type": "Thành phố"
+  },
+  {
+    "id": 380,
+    "name": "Huyện 11",
+    "code": "QNA11",
+    "province_id": 33,
+    "area": 1385.8,
+    "population": 217615,
+    "type": "Huyện"
+  },
+  {
+    "id": 381,
+    "name": "Thị xã 1",
+    "code": "QNG01",
+    "province_id": 34,
+    "area": 1611.9,
+    "population": 329407,
+    "type": "Thị xã"
+  },
+  {
+    "id": 382,
+    "name": "Thị xã 2",
+    "code": "QNG02",
+    "province_id": 34,
+    "area": 1360.7,
+    "population": 498090,
+    "type": "Thị xã"
+  },
+  {
+    "id": 383,
+    "name": "Thị xã 3",
+    "code": "QNG03",
+    "province_id": 34,
+    "area": 1649.0,
+    "population": 255853,
+    "type": "Thị xã"
+  },
+  {
+    "id": 384,
+    "name": "Thị xã 4",
+    "code": "QNG04",
+    "province_id": 34,
+    "area": 883.7,
+    "population": 91654,
+    "type": "Thị xã"
+  },
+  {
+    "id": 385,
+    "name": "Thị xã 5",
+    "code": "QNG05",
+    "province_id": 34,
+    "area": 1397.9,
+    "population": 107607,
+    "type": "Thị xã"
+  },
+  {
+    "id": 386,
+    "name": "Thị xã 6",
+    "code": "QNG06",
+    "province_id": 34,
+    "area": 1237.3,
+    "population": 132324,
+    "type": "Thị xã"
+  },
+  {
+    "id": 387,
+    "name": "Thị xã 7",
+    "code": "QNG07",
+    "province_id": 34,
+    "area": 703.0,
+    "population": 370768,
+    "type": "Thị xã"
+  },
+  {
+    "id": 388,
+    "name": "Thành phố 1",
+    "code": "BD01",
+    "province_id": 35,
+    "area": 358.3,
+    "population": 125738,
+    "type": "Thành phố"
+  },
+  {
+    "id": 389,
+    "name": "Thị xã 2",
+    "code": "BD02",
+    "province_id": 35,
+    "area": 1041.0,
+    "population": 27926,
+    "type": "Thị xã"
+  },
+  {
+    "id": 390,
+    "name": "Huyện 3",
+    "code": "BD03",
+    "province_id": 35,
+    "area": 152.3,
+    "population": 283206,
+    "type": "Huyện"
+  },
+  {
+    "id": 391,
+    "name": "Thị xã 4",
+    "code": "BD04",
+    "province_id": 35,
+    "area": 1418.6,
+    "population": 181850,
+    "type": "Thị xã"
+  },
+  {
+    "id": 392,
+    "name": "Huyện 5",
+    "code": "BD05",
+    "province_id": 35,
+    "area": 450.3,
+    "population": 234825,
+    "type": "Huyện"
+  },
+  {
+    "id": 393,
+    "name": "Huyện 6",
+    "code": "BD06",
+    "province_id": 35,
+    "area": 1022.4,
+    "population": 201967,
+    "type": "Huyện"
+  },
+  {
+    "id": 394,
+    "name": "Thành phố 1",
+    "code": "PY01",
+    "province_id": 36,
+    "area": 1270.4,
+    "population": 470706,
+    "type": "Thành phố"
+  },
+  {
+    "id": 395,
+    "name": "Huyện 2",
+    "code": "PY02",
+    "province_id": 36,
+    "area": 1111.9,
+    "population": 203775,
+    "type": "Huyện"
+  },
+  {
+    "id": 396,
+    "name": "Huyện 3",
+    "code": "PY03",
+    "province_id": 36,
+    "area": 1810.5,
+    "population": 495498,
+    "type": "Huyện"
+  },
+  {
+    "id": 397,
+    "name": "Thị xã 4",
+    "code": "PY04",
+    "province_id": 36,
+    "area": 1461.3,
+    "population": 135173,
+    "type": "Thị xã"
+  },
+  {
+    "id": 398,
+    "name": "Thành phố 5",
+    "code": "PY05",
+    "province_id": 36,
+    "area": 1547.5,
+    "population": 42389,
+    "type": "Thành phố"
+  },
+  {
+    "id": 399,
+    "name": "Thành phố 6",
+    "code": "PY06",
+    "province_id": 36,
+    "area": 1596.5,
+    "population": 256416,
+    "type": "Thành phố"
+  },
+  {
+    "id": 400,
+    "name": "Huyện 7",
+    "code": "PY07",
+    "province_id": 36,
+    "area": 578.1,
+    "population": 209689,
+    "type": "Huyện"
+  },
+  {
+    "id": 401,
+    "name": "Thành phố 8",
+    "code": "PY08",
+    "province_id": 36,
+    "area": 1134.0,
+    "population": 191680,
+    "type": "Thành phố"
+  },
+  {
+    "id": 402,
+    "name": "Thành phố 9",
+    "code": "PY09",
+    "province_id": 36,
+    "area": 1525.4,
+    "population": 269831,
+    "type": "Thành phố"
+  },
+  {
+    "id": 403,
+    "name": "Huyện 10",
+    "code": "PY10",
+    "province_id": 36,
+    "area": 1994.8,
+    "population": 256792,
+    "type": "Huyện"
+  },
+  {
+    "id": 404,
+    "name": "Huyện 11",
+    "code": "PY11",
+    "province_id": 36,
+    "area": 859.8,
+    "population": 191967,
+    "type": "Huyện"
+  },
+  {
+    "id": 405,
+    "name": "Huyện 12",
+    "code": "PY12",
+    "province_id": 36,
+    "area": 585.4,
+    "population": 27424,
+    "type": "Huyện"
+  },
+  {
+    "id": 406,
+    "name": "Huyện 13",
+    "code": "PY13",
+    "province_id": 36,
+    "area": 1071.2,
+    "population": 270684,
+    "type": "Huyện"
+  },
+  {
+    "id": 407,
+    "name": "Thành phố 14",
+    "code": "PY14",
+    "province_id": 36,
+    "area": 659.5,
+    "population": 289850,
+    "type": "Thành phố"
+  },
+  {
+    "id": 408,
+    "name": "Huyện 15",
+    "code": "PY15",
+    "province_id": 36,
+    "area": 371.4,
+    "population": 156449,
+    "type": "Huyện"
+  },
+  {
+    "id": 409,
+    "name": "Huyện 1",
+    "code": "KH01",
+    "province_id": 37,
+    "area": 961.6,
+    "population": 36615,
+    "type": "Huyện"
+  },
+  {
+    "id": 410,
+    "name": "Huyện 2",
+    "code": "KH02",
+    "province_id": 37,
+    "area": 1769.2,
+    "population": 41673,
+    "type": "Huyện"
+  },
+  {
+    "id": 411,
+    "name": "Thành phố 3",
+    "code": "KH03",
+    "province_id": 37,
+    "area": 636.9,
+    "population": 358311,
+    "type": "Thành phố"
+  },
+  {
+    "id": 412,
+    "name": "Thị xã 4",
+    "code": "KH04",
+    "province_id": 37,
+    "area": 1182.0,
+    "population": 487959,
+    "type": "Thị xã"
+  },
+  {
+    "id": 413,
+    "name": "Thị xã 5",
+    "code": "KH05",
+    "province_id": 37,
+    "area": 733.7,
+    "population": 398596,
+    "type": "Thị xã"
+  },
+  {
+    "id": 414,
+    "name": "Huyện 6",
+    "code": "KH06",
+    "province_id": 37,
+    "area": 1372.7,
+    "population": 74156,
+    "type": "Huyện"
+  },
+  {
+    "id": 415,
+    "name": "Thị xã 7",
+    "code": "KH07",
+    "province_id": 37,
+    "area": 714.1,
+    "population": 346215,
+    "type": "Thị xã"
+  },
+  {
+    "id": 416,
+    "name": "Thị xã 8",
+    "code": "KH08",
+    "province_id": 37,
+    "area": 1559.6,
+    "population": 67735,
+    "type": "Thị xã"
+  },
+  {
+    "id": 417,
+    "name": "Thị xã 9",
+    "code": "KH09",
+    "province_id": 37,
+    "area": 822.0,
+    "population": 461788,
+    "type": "Thị xã"
+  },
+  {
+    "id": 418,
+    "name": "Thị xã 1",
+    "code": "NT01",
+    "province_id": 38,
+    "area": 456.7,
+    "population": 180144,
+    "type": "Thị xã"
+  },
+  {
+    "id": 419,
+    "name": "Thị xã 2",
+    "code": "NT02",
+    "province_id": 38,
+    "area": 911.6,
+    "population": 30426,
+    "type": "Thị xã"
+  },
+  {
+    "id": 420,
+    "name": "Thành phố 3",
+    "code": "NT03",
+    "province_id": 38,
+    "area": 298.2,
+    "population": 149952,
+    "type": "Thành phố"
+  },
+  {
+    "id": 421,
+    "name": "Thị xã 4",
+    "code": "NT04",
+    "province_id": 38,
+    "area": 1977.5,
+    "population": 357015,
+    "type": "Thị xã"
+  },
+  {
+    "id": 422,
+    "name": "Huyện 5",
+    "code": "NT05",
+    "province_id": 38,
+    "area": 315.9,
+    "population": 297676,
+    "type": "Huyện"
+  },
+  {
+    "id": 423,
+    "name": "Huyện 6",
+    "code": "NT06",
+    "province_id": 38,
+    "area": 1207.5,
+    "population": 249954,
+    "type": "Huyện"
+  },
+  {
+    "id": 424,
+    "name": "Thị xã 7",
+    "code": "NT07",
+    "province_id": 38,
+    "area": 1209.2,
+    "population": 191024,
+    "type": "Thị xã"
+  },
+  {
+    "id": 425,
+    "name": "Huyện 1",
+    "code": "BT01",
+    "province_id": 39,
+    "area": 908.5,
+    "population": 376176,
+    "type": "Huyện"
+  },
+  {
+    "id": 426,
+    "name": "Thành phố 2",
+    "code": "BT02",
+    "province_id": 39,
+    "area": 1885.5,
+    "population": 405330,
+    "type": "Thành phố"
+  },
+  {
+    "id": 427,
+    "name": "Thành phố 3",
+    "code": "BT03",
+    "province_id": 39,
+    "area": 1964.6,
+    "population": 202139,
+    "type": "Thành phố"
+  },
+  {
+    "id": 428,
+    "name": "Huyện 4",
+    "code": "BT04",
+    "province_id": 39,
+    "area": 1341.8,
+    "population": 238207,
+    "type": "Huyện"
+  },
+  {
+    "id": 429,
+    "name": "Thành phố 5",
+    "code": "BT05",
+    "province_id": 39,
+    "area": 1442.5,
+    "population": 376206,
+    "type": "Thành phố"
+  },
+  {
+    "id": 430,
+    "name": "Thị xã 6",
+    "code": "BT06",
+    "province_id": 39,
+    "area": 1885.6,
+    "population": 148364,
+    "type": "Thị xã"
+  },
+  {
+    "id": 431,
+    "name": "Thị xã 7",
+    "code": "BT07",
+    "province_id": 39,
+    "area": 838.9,
+    "population": 220151,
+    "type": "Thị xã"
+  },
+  {
+    "id": 432,
+    "name": "Thị xã 8",
+    "code": "BT08",
+    "province_id": 39,
+    "area": 848.6,
+    "population": 436174,
+    "type": "Thị xã"
+  },
+  {
+    "id": 433,
+    "name": "Thị xã 9",
+    "code": "BT09",
+    "province_id": 39,
+    "area": 1869.4,
+    "population": 212359,
+    "type": "Thị xã"
+  },
+  {
+    "id": 434,
+    "name": "Huyện 10",
+    "code": "BT10",
+    "province_id": 39,
+    "area": 1807.6,
+    "population": 498865,
+    "type": "Huyện"
+  },
+  {
+    "id": 435,
+    "name": "Thị xã 1",
+    "code": "KT01",
+    "province_id": 40,
+    "area": 710.7,
+    "population": 204808,
+    "type": "Thị xã"
+  },
+  {
+    "id": 436,
+    "name": "Huyện 2",
+    "code": "KT02",
+    "province_id": 40,
+    "area": 575.2,
+    "population": 172299,
+    "type": "Huyện"
+  },
+  {
+    "id": 437,
+    "name": "Thành phố 3",
+    "code": "KT03",
+    "province_id": 40,
+    "area": 505.0,
+    "population": 420741,
+    "type": "Thành phố"
+  },
+  {
+    "id": 438,
+    "name": "Huyện 4",
+    "code": "KT04",
+    "province_id": 40,
+    "area": 726.2,
+    "population": 364269,
+    "type": "Huyện"
+  },
+  {
+    "id": 439,
+    "name": "Thị xã 5",
+    "code": "KT05",
+    "province_id": 40,
+    "area": 1540.2,
+    "population": 340146,
+    "type": "Thị xã"
+  },
+  {
+    "id": 440,
+    "name": "Thành phố 6",
+    "code": "KT06",
+    "province_id": 40,
+    "area": 776.5,
+    "population": 336191,
+    "type": "Thành phố"
+  },
+  {
+    "id": 441,
+    "name": "Huyện 1",
+    "code": "GL01",
+    "province_id": 41,
+    "area": 1293.4,
+    "population": 467210,
+    "type": "Huyện"
+  },
+  {
+    "id": 442,
+    "name": "Huyện 2",
+    "code": "GL02",
+    "province_id": 41,
+    "area": 1197.1,
+    "population": 211007,
+    "type": "Huyện"
+  },
+  {
+    "id": 443,
+    "name": "Thành phố 3",
+    "code": "GL03",
+    "province_id": 41,
+    "area": 1137.3,
+    "population": 218776,
+    "type": "Thành phố"
+  },
+  {
+    "id": 444,
+    "name": "Thành phố 4",
+    "code": "GL04",
+    "province_id": 41,
+    "area": 1169.9,
+    "population": 415299,
+    "type": "Thành phố"
+  },
+  {
+    "id": 445,
+    "name": "Thị xã 5",
+    "code": "GL05",
+    "province_id": 41,
+    "area": 631.1,
+    "population": 356415,
+    "type": "Thị xã"
+  },
+  {
+    "id": 446,
+    "name": "Thành phố 6",
+    "code": "GL06",
+    "province_id": 41,
+    "area": 493.4,
+    "population": 484849,
+    "type": "Thành phố"
+  },
+  {
+    "id": 447,
+    "name": "Thành phố 7",
+    "code": "GL07",
+    "province_id": 41,
+    "area": 239.5,
+    "population": 254267,
+    "type": "Thành phố"
+  },
+  {
+    "id": 448,
+    "name": "Huyện 8",
+    "code": "GL08",
+    "province_id": 41,
+    "area": 161.9,
+    "population": 283057,
+    "type": "Huyện"
+  },
+  {
+    "id": 449,
+    "name": "Thị xã 9",
+    "code": "GL09",
+    "province_id": 41,
+    "area": 814.2,
+    "population": 151978,
+    "type": "Thị xã"
+  },
+  {
+    "id": 450,
+    "name": "Thị xã 10",
+    "code": "GL10",
+    "province_id": 41,
+    "area": 1342.7,
+    "population": 45147,
+    "type": "Thị xã"
+  },
+  {
+    "id": 451,
+    "name": "Thành phố 11",
+    "code": "GL11",
+    "province_id": 41,
+    "area": 159.8,
+    "population": 296598,
+    "type": "Thành phố"
+  },
+  {
+    "id": 452,
+    "name": "Thị xã 12",
+    "code": "GL12",
+    "province_id": 41,
+    "area": 62.8,
+    "population": 390304,
+    "type": "Thị xã"
+  },
+  {
+    "id": 453,
+    "name": "Thị xã 13",
+    "code": "GL13",
+    "province_id": 41,
+    "area": 105.3,
+    "population": 53525,
+    "type": "Thị xã"
+  },
+  {
+    "id": 454,
+    "name": "Thị xã 14",
+    "code": "GL14",
+    "province_id": 41,
+    "area": 580.9,
+    "population": 114538,
+    "type": "Thị xã"
+  },
+  {
+    "id": 455,
+    "name": "Thị xã 15",
+    "code": "GL15",
+    "province_id": 41,
+    "area": 119.3,
+    "population": 449262,
+    "type": "Thị xã"
+  },
+  {
+    "id": 456,
+    "name": "Huyện 16",
+    "code": "GL16",
+    "province_id": 41,
+    "area": 611.2,
+    "population": 326100,
+    "type": "Huyện"
+  },
+  {
+    "id": 457,
+    "name": "Huyện 17",
+    "code": "GL17",
+    "province_id": 41,
+    "area": 764.8,
+    "population": 174348,
+    "type": "Huyện"
+  },
+  {
+    "id": 458,
+    "name": "Huyện 1",
+    "code": "DL01",
+    "province_id": 42,
+    "area": 1964.8,
+    "population": 424802,
+    "type": "Huyện"
+  },
+  {
+    "id": 459,
+    "name": "Thị xã 2",
+    "code": "DL02",
+    "province_id": 42,
+    "area": 293.7,
+    "population": 354031,
+    "type": "Thị xã"
+  },
+  {
+    "id": 460,
+    "name": "Huyện 3",
+    "code": "DL03",
+    "province_id": 42,
+    "area": 1173.9,
+    "population": 61780,
+    "type": "Huyện"
+  },
+  {
+    "id": 461,
+    "name": "Huyện 4",
+    "code": "DL04",
+    "province_id": 42,
+    "area": 1819.8,
+    "population": 171806,
+    "type": "Huyện"
+  },
+  {
+    "id": 462,
+    "name": "Huyện 5",
+    "code": "DL05",
+    "province_id": 42,
+    "area": 1610.3,
+    "population": 375108,
+    "type": "Huyện"
+  },
+  {
+    "id": 463,
+    "name": "Thị xã 6",
+    "code": "DL06",
+    "province_id": 42,
+    "area": 621.5,
+    "population": 227853,
+    "type": "Thị xã"
+  },
+  {
+    "id": 464,
+    "name": "Thị xã 7",
+    "code": "DL07",
+    "province_id": 42,
+    "area": 1347.4,
+    "population": 494770,
+    "type": "Thị xã"
+  },
+  {
+    "id": 465,
+    "name": "Thành phố 8",
+    "code": "DL08",
+    "province_id": 42,
+    "area": 158.5,
+    "population": 384005,
+    "type": "Thành phố"
+  },
+  {
+    "id": 466,
+    "name": "Thị xã 9",
+    "code": "DL09",
+    "province_id": 42,
+    "area": 1395.6,
+    "population": 367156,
+    "type": "Thị xã"
+  },
+  {
+    "id": 467,
+    "name": "Huyện 10",
+    "code": "DL10",
+    "province_id": 42,
+    "area": 624.3,
+    "population": 433468,
+    "type": "Huyện"
+  },
+  {
+    "id": 468,
+    "name": "Huyện 11",
+    "code": "DL11",
+    "province_id": 42,
+    "area": 963.6,
+    "population": 235823,
+    "type": "Huyện"
+  },
+  {
+    "id": 469,
+    "name": "Huyện 12",
+    "code": "DL12",
+    "province_id": 42,
+    "area": 290.6,
+    "population": 355486,
+    "type": "Huyện"
+  },
+  {
+    "id": 470,
+    "name": "Thành phố 13",
+    "code": "DL13",
+    "province_id": 42,
+    "area": 619.9,
+    "population": 382959,
+    "type": "Thành phố"
+  },
+  {
+    "id": 471,
+    "name": "Huyện 14",
+    "code": "DL14",
+    "province_id": 42,
+    "area": 494.4,
+    "population": 20224,
+    "type": "Huyện"
+  },
+  {
+    "id": 472,
+    "name": "Thị xã 15",
+    "code": "DL15",
+    "province_id": 42,
+    "area": 736.7,
+    "population": 259590,
+    "type": "Thị xã"
+  },
+  {
+    "id": 473,
+    "name": "Thị xã 16",
+    "code": "DL16",
+    "province_id": 42,
+    "area": 1392.8,
+    "population": 310416,
+    "type": "Thị xã"
+  },
+  {
+    "id": 474,
+    "name": "Huyện 17",
+    "code": "DL17",
+    "province_id": 42,
+    "area": 484.7,
+    "population": 437146,
+    "type": "Huyện"
+  },
+  {
+    "id": 475,
+    "name": "Thành phố 1",
+    "code": "DNO01",
+    "province_id": 43,
+    "area": 1326.9,
+    "population": 305115,
+    "type": "Thành phố"
+  },
+  {
+    "id": 476,
+    "name": "Thành phố 2",
+    "code": "DNO02",
+    "province_id": 43,
+    "area": 109.8,
+    "population": 31714,
+    "type": "Thành phố"
+  },
+  {
+    "id": 477,
+    "name": "Thị xã 3",
+    "code": "DNO03",
+    "province_id": 43,
+    "area": 741.2,
+    "population": 360457,
+    "type": "Thị xã"
+  },
+  {
+    "id": 478,
+    "name": "Huyện 4",
+    "code": "DNO04",
+    "province_id": 43,
+    "area": 353.3,
+    "population": 120936,
+    "type": "Huyện"
+  },
+  {
+    "id": 479,
+    "name": "Thành phố 5",
+    "code": "DNO05",
+    "province_id": 43,
+    "area": 1693.5,
+    "population": 462675,
+    "type": "Thành phố"
+  },
+  {
+    "id": 480,
+    "name": "Thị xã 6",
+    "code": "DNO06",
+    "province_id": 43,
+    "area": 615.0,
+    "population": 402937,
+    "type": "Thị xã"
+  },
+  {
+    "id": 481,
+    "name": "Thị xã 7",
+    "code": "DNO07",
+    "province_id": 43,
+    "area": 1177.3,
+    "population": 388937,
+    "type": "Thị xã"
+  },
+  {
+    "id": 482,
+    "name": "Thị xã 8",
+    "code": "DNO08",
+    "province_id": 43,
+    "area": 598.1,
+    "population": 322628,
+    "type": "Thị xã"
+  },
+  {
+    "id": 483,
+    "name": "Thị xã 9",
+    "code": "DNO09",
+    "province_id": 43,
+    "area": 676.6,
+    "population": 260520,
+    "type": "Thị xã"
+  },
+  {
+    "id": 484,
+    "name": "Thị xã 10",
+    "code": "DNO10",
+    "province_id": 43,
+    "area": 1814.1,
+    "population": 417763,
+    "type": "Thị xã"
+  },
+  {
+    "id": 485,
+    "name": "Huyện 11",
+    "code": "DNO11",
+    "province_id": 43,
+    "area": 1194.0,
+    "population": 108390,
+    "type": "Huyện"
+  },
+  {
+    "id": 486,
+    "name": "Thị xã 12",
+    "code": "DNO12",
+    "province_id": 43,
+    "area": 1571.1,
+    "population": 365436,
+    "type": "Thị xã"
+  },
+  {
+    "id": 487,
+    "name": "Huyện 1",
+    "code": "LDO01",
+    "province_id": 44,
+    "area": 1708.6,
+    "population": 69324,
+    "type": "Huyện"
+  },
+  {
+    "id": 488,
+    "name": "Thị xã 2",
+    "code": "LDO02",
+    "province_id": 44,
+    "area": 147.5,
+    "population": 427525,
+    "type": "Thị xã"
+  },
+  {
+    "id": 489,
+    "name": "Huyện 3",
+    "code": "LDO03",
+    "province_id": 44,
+    "area": 1679.0,
+    "population": 130902,
+    "type": "Huyện"
+  },
+  {
+    "id": 490,
+    "name": "Huyện 4",
+    "code": "LDO04",
+    "province_id": 44,
+    "area": 1004.2,
+    "population": 168413,
+    "type": "Huyện"
+  },
+  {
+    "id": 491,
+    "name": "Huyện 5",
+    "code": "LDO05",
+    "province_id": 44,
+    "area": 497.1,
+    "population": 480631,
+    "type": "Huyện"
+  },
+  {
+    "id": 492,
+    "name": "Huyện 6",
+    "code": "LDO06",
+    "province_id": 44,
+    "area": 587.0,
+    "population": 372418,
+    "type": "Huyện"
+  },
+  {
+    "id": 493,
+    "name": "Thành phố 7",
+    "code": "LDO07",
+    "province_id": 44,
+    "area": 1512.5,
+    "population": 395620,
+    "type": "Thành phố"
+  },
+  {
+    "id": 494,
+    "name": "Thị xã 8",
+    "code": "LDO08",
+    "province_id": 44,
+    "area": 573.3,
+    "population": 311703,
+    "type": "Thị xã"
+  },
+  {
+    "id": 495,
+    "name": "Huyện 9",
+    "code": "LDO09",
+    "province_id": 44,
+    "area": 951.9,
+    "population": 228590,
+    "type": "Huyện"
+  },
+  {
+    "id": 496,
+    "name": "Thị xã 10",
+    "code": "LDO10",
+    "province_id": 44,
+    "area": 1695.6,
+    "population": 490327,
+    "type": "Thị xã"
+  },
+  {
+    "id": 497,
+    "name": "Thị xã 11",
+    "code": "LDO11",
+    "province_id": 44,
+    "area": 613.9,
+    "population": 234521,
+    "type": "Thị xã"
+  },
+  {
+    "id": 498,
+    "name": "Huyện 12",
+    "code": "LDO12",
+    "province_id": 44,
+    "area": 1685.0,
+    "population": 204427,
+    "type": "Huyện"
+  },
+  {
+    "id": 499,
+    "name": "Huyện 13",
+    "code": "LDO13",
+    "province_id": 44,
+    "area": 1503.8,
+    "population": 285793,
+    "type": "Huyện"
+  },
+  {
+    "id": 500,
+    "name": "Thị xã 1",
+    "code": "BP01",
+    "province_id": 45,
+    "area": 1138.1,
+    "population": 195218,
+    "type": "Thị xã"
+  },
+  {
+    "id": 501,
+    "name": "Thành phố 2",
+    "code": "BP02",
+    "province_id": 45,
+    "area": 1447.4,
+    "population": 218419,
+    "type": "Thành phố"
+  },
+  {
+    "id": 502,
+    "name": "Huyện 3",
+    "code": "BP03",
+    "province_id": 45,
+    "area": 555.1,
+    "population": 346830,
+    "type": "Huyện"
+  },
+  {
+    "id": 503,
+    "name": "Thị xã 4",
+    "code": "BP04",
+    "province_id": 45,
+    "area": 432.9,
+    "population": 134155,
+    "type": "Thị xã"
+  },
+  {
+    "id": 504,
+    "name": "Huyện 5",
+    "code": "BP05",
+    "province_id": 45,
+    "area": 1397.7,
+    "population": 208304,
+    "type": "Huyện"
+  },
+  {
+    "id": 505,
+    "name": "Thành phố 6",
+    "code": "BP06",
+    "province_id": 45,
+    "area": 268.2,
+    "population": 484805,
+    "type": "Thành phố"
+  },
+  {
+    "id": 506,
+    "name": "Huyện 7",
+    "code": "BP07",
+    "province_id": 45,
+    "area": 449.6,
+    "population": 328704,
+    "type": "Huyện"
+  },
+  {
+    "id": 507,
+    "name": "Huyện 8",
+    "code": "BP08",
+    "province_id": 45,
+    "area": 1556.0,
+    "population": 481282,
+    "type": "Huyện"
+  },
+  {
+    "id": 508,
+    "name": "Thị xã 9",
+    "code": "BP09",
+    "province_id": 45,
+    "area": 1307.4,
+    "population": 361006,
+    "type": "Thị xã"
+  },
+  {
+    "id": 509,
+    "name": "Thị xã 1",
+    "code": "TNIN01",
+    "province_id": 46,
+    "area": 1594.8,
+    "population": 311213,
+    "type": "Thị xã"
+  },
+  {
+    "id": 510,
+    "name": "Huyện 2",
+    "code": "TNIN02",
+    "province_id": 46,
+    "area": 1562.1,
+    "population": 176042,
+    "type": "Huyện"
+  },
+  {
+    "id": 511,
+    "name": "Thành phố 3",
+    "code": "TNIN03",
+    "province_id": 46,
+    "area": 1559.2,
+    "population": 366470,
+    "type": "Thành phố"
+  },
+  {
+    "id": 512,
+    "name": "Thị xã 4",
+    "code": "TNIN04",
+    "province_id": 46,
+    "area": 651.6,
+    "population": 152784,
+    "type": "Thị xã"
+  },
+  {
+    "id": 513,
+    "name": "Thành phố 5",
+    "code": "TNIN05",
+    "province_id": 46,
+    "area": 141.2,
+    "population": 217277,
+    "type": "Thành phố"
+  },
+  {
+    "id": 514,
+    "name": "Thị xã 6",
+    "code": "TNIN06",
+    "province_id": 46,
+    "area": 628.2,
+    "population": 143596,
+    "type": "Thị xã"
+  },
+  {
+    "id": 515,
+    "name": "Thị xã 7",
+    "code": "TNIN07",
+    "province_id": 46,
+    "area": 1095.3,
+    "population": 114759,
+    "type": "Thị xã"
+  },
+  {
+    "id": 516,
+    "name": "Thị xã 1",
+    "code": "BDU01",
+    "province_id": 47,
+    "area": 581.6,
+    "population": 258986,
+    "type": "Thị xã"
+  },
+  {
+    "id": 517,
+    "name": "Thành phố 2",
+    "code": "BDU02",
+    "province_id": 47,
+    "area": 239.1,
+    "population": 177035,
+    "type": "Thành phố"
+  },
+  {
+    "id": 518,
+    "name": "Thị xã 3",
+    "code": "BDU03",
+    "province_id": 47,
+    "area": 1483.1,
+    "population": 480274,
+    "type": "Thị xã"
+  },
+  {
+    "id": 519,
+    "name": "Huyện 4",
+    "code": "BDU04",
+    "province_id": 47,
+    "area": 1036.5,
+    "population": 453096,
+    "type": "Huyện"
+  },
+  {
+    "id": 520,
+    "name": "Huyện 5",
+    "code": "BDU05",
+    "province_id": 47,
+    "area": 1842.3,
+    "population": 269125,
+    "type": "Huyện"
+  },
+  {
+    "id": 521,
+    "name": "Huyện 6",
+    "code": "BDU06",
+    "province_id": 47,
+    "area": 855.2,
+    "population": 301449,
+    "type": "Huyện"
+  },
+  {
+    "id": 522,
+    "name": "Thành phố 7",
+    "code": "BDU07",
+    "province_id": 47,
+    "area": 1901.5,
+    "population": 52143,
+    "type": "Thành phố"
+  },
+  {
+    "id": 523,
+    "name": "Huyện 8",
+    "code": "BDU08",
+    "province_id": 47,
+    "area": 1597.0,
+    "population": 110199,
+    "type": "Huyện"
+  },
+  {
+    "id": 524,
+    "name": "Thị xã 9",
+    "code": "BDU09",
+    "province_id": 47,
+    "area": 1995.4,
+    "population": 149207,
+    "type": "Thị xã"
+  },
+  {
+    "id": 525,
+    "name": "Thị xã 10",
+    "code": "BDU10",
+    "province_id": 47,
+    "area": 1394.4,
+    "population": 462970,
+    "type": "Thị xã"
+  },
+  {
+    "id": 526,
+    "name": "Huyện 11",
+    "code": "BDU11",
+    "province_id": 47,
+    "area": 1951.1,
+    "population": 216512,
+    "type": "Huyện"
+  },
+  {
+    "id": 527,
+    "name": "Huyện 12",
+    "code": "BDU12",
+    "province_id": 47,
+    "area": 1058.4,
+    "population": 476517,
+    "type": "Huyện"
+  },
+  {
+    "id": 528,
+    "name": "Thành phố 1",
+    "code": "DNA01",
+    "province_id": 48,
+    "area": 1108.0,
+    "population": 41077,
+    "type": "Thành phố"
+  },
+  {
+    "id": 529,
+    "name": "Thành phố 2",
+    "code": "DNA02",
+    "province_id": 48,
+    "area": 736.5,
+    "population": 93804,
+    "type": "Thành phố"
+  },
+  {
+    "id": 530,
+    "name": "Thị xã 3",
+    "code": "DNA03",
+    "province_id": 48,
+    "area": 1368.4,
+    "population": 418680,
+    "type": "Thị xã"
+  },
+  {
+    "id": 531,
+    "name": "Thị xã 4",
+    "code": "DNA04",
+    "province_id": 48,
+    "area": 139.7,
+    "population": 428756,
+    "type": "Thị xã"
+  },
+  {
+    "id": 532,
+    "name": "Thành phố 5",
+    "code": "DNA05",
+    "province_id": 48,
+    "area": 1725.9,
+    "population": 271474,
+    "type": "Thành phố"
+  },
+  {
+    "id": 533,
+    "name": "Thành phố 6",
+    "code": "DNA06",
+    "province_id": 48,
+    "area": 486.8,
+    "population": 39795,
+    "type": "Thành phố"
+  },
+  {
+    "id": 534,
+    "name": "Thị xã 7",
+    "code": "DNA07",
+    "province_id": 48,
+    "area": 1755.6,
+    "population": 15830,
+    "type": "Thị xã"
+  },
+  {
+    "id": 535,
+    "name": "Huyện 8",
+    "code": "DNA08",
+    "province_id": 48,
+    "area": 332.4,
+    "population": 314233,
+    "type": "Huyện"
+  },
+  {
+    "id": 536,
+    "name": "Thị xã 9",
+    "code": "DNA09",
+    "province_id": 48,
+    "area": 1916.4,
+    "population": 418114,
+    "type": "Thị xã"
+  },
+  {
+    "id": 537,
+    "name": "Huyện 10",
+    "code": "DNA10",
+    "province_id": 48,
+    "area": 967.0,
+    "population": 463605,
+    "type": "Huyện"
+  },
+  {
+    "id": 538,
+    "name": "Thành phố 11",
+    "code": "DNA11",
+    "province_id": 48,
+    "area": 367.1,
+    "population": 81095,
+    "type": "Thành phố"
+  },
+  {
+    "id": 539,
+    "name": "Huyện 1",
+    "code": "BRVT01",
+    "province_id": 49,
+    "area": 571.3,
+    "population": 207238,
+    "type": "Huyện"
+  },
+  {
+    "id": 540,
+    "name": "Thành phố 2",
+    "code": "BRVT02",
+    "province_id": 49,
+    "area": 1063.1,
+    "population": 430119,
+    "type": "Thành phố"
+  },
+  {
+    "id": 541,
+    "name": "Thị xã 3",
+    "code": "BRVT03",
+    "province_id": 49,
+    "area": 658.0,
+    "population": 104150,
+    "type": "Thị xã"
+  },
+  {
+    "id": 542,
+    "name": "Thị xã 4",
+    "code": "BRVT04",
+    "province_id": 49,
+    "area": 1270.2,
+    "population": 165224,
+    "type": "Thị xã"
+  },
+  {
+    "id": 543,
+    "name": "Thị xã 5",
+    "code": "BRVT05",
+    "province_id": 49,
+    "area": 1140.1,
+    "population": 446278,
+    "type": "Thị xã"
+  },
+  {
+    "id": 544,
+    "name": "Huyện 6",
+    "code": "BRVT06",
+    "province_id": 49,
+    "area": 128.0,
+    "population": 297255,
+    "type": "Huyện"
+  },
+  {
+    "id": 545,
+    "name": "Thị xã 7",
+    "code": "BRVT07",
+    "province_id": 49,
+    "area": 344.3,
+    "population": 300120,
+    "type": "Thị xã"
+  },
+  {
+    "id": 546,
+    "name": "Thị xã 8",
+    "code": "BRVT08",
+    "province_id": 49,
+    "area": 768.7,
+    "population": 202122,
+    "type": "Thị xã"
+  },
+  {
+    "id": 547,
+    "name": "Huyện 9",
+    "code": "BRVT09",
+    "province_id": 49,
+    "area": 542.8,
+    "population": 381660,
+    "type": "Huyện"
+  },
+  {
+    "id": 548,
+    "name": "Huyện 10",
+    "code": "BRVT10",
+    "province_id": 49,
+    "area": 324.1,
+    "population": 438217,
+    "type": "Huyện"
+  },
+  {
+    "id": 549,
+    "name": "Quận 1",
+    "code": "HCM01",
+    "province_id": 50,
+    "area": 895.0,
+    "population": 89467,
+    "type": "Quận"
+  },
+  {
+    "id": 550,
+    "name": "Quận 3",
+    "code": "HCM02",
+    "province_id": 50,
+    "area": 1309.2,
+    "population": 110250,
+    "type": "Quận"
+  },
+  {
+    "id": 551,
+    "name": "Quận 4",
+    "code": "HCM03",
+    "province_id": 50,
+    "area": 1934.8,
+    "population": 472515,
+    "type": "Quận"
+  },
+  {
+    "id": 552,
+    "name": "Quận 5",
+    "code": "HCM04",
+    "province_id": 50,
+    "area": 1850.5,
+    "population": 386273,
+    "type": "Quận"
+  },
+  {
+    "id": 553,
+    "name": "Quận 6",
+    "code": "HCM05",
+    "province_id": 50,
+    "area": 955.3,
+    "population": 488609,
+    "type": "Quận"
+  },
+  {
+    "id": 554,
+    "name": "Quận 7",
+    "code": "HCM06",
+    "province_id": 50,
+    "area": 1087.7,
+    "population": 250680,
+    "type": "Quận"
+  },
+  {
+    "id": 555,
+    "name": "Quận 8",
+    "code": "HCM07",
+    "province_id": 50,
+    "area": 294.0,
+    "population": 130649,
+    "type": "Quận"
+  },
+  {
+    "id": 556,
+    "name": "Quận 10",
+    "code": "HCM08",
+    "province_id": 50,
+    "area": 838.2,
+    "population": 158774,
+    "type": "Quận"
+  },
+  {
+    "id": 557,
+    "name": "Quận 11",
+    "code": "HCM09",
+    "province_id": 50,
+    "area": 1163.4,
+    "population": 435469,
+    "type": "Quận"
+  },
+  {
+    "id": 558,
+    "name": "Quận 12",
+    "code": "HCM10",
+    "province_id": 50,
+    "area": 681.9,
+    "population": 254823,
+    "type": "Quận"
+  },
+  {
+    "id": 559,
+    "name": "Thủ Đức",
+    "code": "HCM11",
+    "province_id": 50,
+    "area": 746.4,
+    "population": 464347,
+    "type": "Quận"
+  },
+  {
+    "id": 560,
+    "name": "Gò Vấp",
+    "code": "HCM12",
+    "province_id": 50,
+    "area": 409.3,
+    "population": 252642,
+    "type": "Quận"
+  },
+  {
+    "id": 561,
+    "name": "Bình Thạnh",
+    "code": "HCM13",
+    "province_id": 50,
+    "area": 1401.8,
+    "population": 44407,
+    "type": "Quận"
+  },
+  {
+    "id": 562,
+    "name": "Tân Bình",
+    "code": "HCM14",
+    "province_id": 50,
+    "area": 420.4,
+    "population": 71956,
+    "type": "Quận"
+  },
+  {
+    "id": 563,
+    "name": "Tân Phú",
+    "code": "HCM15",
+    "province_id": 50,
+    "area": 1999.9,
+    "population": 453728,
+    "type": "Quận"
+  },
+  {
+    "id": 564,
+    "name": "Phú Nhuận",
+    "code": "HCM16",
+    "province_id": 50,
+    "area": 1342.6,
+    "population": 370098,
+    "type": "Quận"
+  },
+  {
+    "id": 565,
+    "name": "Bình Tân",
+    "code": "HCM17",
+    "province_id": 50,
+    "area": 1901.5,
+    "population": 460549,
+    "type": "Quận"
+  },
+  {
+    "id": 566,
+    "name": "Củ Chi",
+    "code": "HCM18",
+    "province_id": 50,
+    "area": 843.3,
+    "population": 254325,
+    "type": "Quận"
+  },
+  {
+    "id": 567,
+    "name": "Hóc Môn",
+    "code": "HCM19",
+    "province_id": 50,
+    "area": 1129.0,
+    "population": 328848,
+    "type": "Quận"
+  },
+  {
+    "id": 568,
+    "name": "Nhà Bè",
+    "code": "HCM20",
+    "province_id": 50,
+    "area": 1917.8,
+    "population": 280751,
+    "type": "Huyện"
+  },
+  {
+    "id": 569,
+    "name": "Cần Giờ",
+    "code": "HCM21",
+    "province_id": 50,
+    "area": 1022.2,
+    "population": 98252,
+    "type": "Huyện"
+  },
+  {
+    "id": 570,
+    "name": "Huyện 22",
+    "code": "HCM22",
+    "province_id": 50,
+    "area": 1650.2,
+    "population": 320183,
+    "type": "Huyện"
+  },
+  {
+    "id": 571,
+    "name": "Huyện 23",
+    "code": "HCM23",
+    "province_id": 50,
+    "area": 324.1,
+    "population": 341265,
+    "type": "Huyện"
+  },
+  {
+    "id": 572,
+    "name": "Thành phố 24",
+    "code": "HCM24",
+    "province_id": 50,
+    "area": 105.0,
+    "population": 170269,
+    "type": "Thành phố"
+  },
+  {
+    "id": 573,
+    "name": "Thị xã 25",
+    "code": "HCM25",
+    "province_id": 50,
+    "area": 232.1,
+    "population": 232331,
+    "type": "Thị xã"
+  },
+  {
+    "id": 574,
+    "name": "Huyện 1",
+    "code": "LAO01",
+    "province_id": 51,
+    "area": 1379.0,
+    "population": 389336,
+    "type": "Huyện"
+  },
+  {
+    "id": 575,
+    "name": "Huyện 2",
+    "code": "LAO02",
+    "province_id": 51,
+    "area": 553.1,
+    "population": 132205,
+    "type": "Huyện"
+  },
+  {
+    "id": 576,
+    "name": "Thị xã 3",
+    "code": "LAO03",
+    "province_id": 51,
+    "area": 806.6,
+    "population": 479806,
+    "type": "Thị xã"
+  },
+  {
+    "id": 577,
+    "name": "Thị xã 4",
+    "code": "LAO04",
+    "province_id": 51,
+    "area": 215.8,
+    "population": 492287,
+    "type": "Thị xã"
+  },
+  {
+    "id": 578,
+    "name": "Huyện 5",
+    "code": "LAO05",
+    "province_id": 51,
+    "area": 1391.8,
+    "population": 23673,
+    "type": "Huyện"
+  },
+  {
+    "id": 579,
+    "name": "Huyện 6",
+    "code": "LAO06",
+    "province_id": 51,
+    "area": 738.9,
+    "population": 276739,
+    "type": "Huyện"
+  },
+  {
+    "id": 580,
+    "name": "Thị xã 7",
+    "code": "LAO07",
+    "province_id": 51,
+    "area": 1638.5,
+    "population": 328754,
+    "type": "Thị xã"
+  },
+  {
+    "id": 581,
+    "name": "Thành phố 8",
+    "code": "LAO08",
+    "province_id": 51,
+    "area": 900.0,
+    "population": 199153,
+    "type": "Thành phố"
+  },
+  {
+    "id": 582,
+    "name": "Huyện 9",
+    "code": "LAO09",
+    "province_id": 51,
+    "area": 140.3,
+    "population": 237376,
+    "type": "Huyện"
+  },
+  {
+    "id": 583,
+    "name": "Thành phố 10",
+    "code": "LAO10",
+    "province_id": 51,
+    "area": 820.2,
+    "population": 13749,
+    "type": "Thành phố"
+  },
+  {
+    "id": 584,
+    "name": "Thành phố 11",
+    "code": "LAO11",
+    "province_id": 51,
+    "area": 1280.8,
+    "population": 232868,
+    "type": "Thành phố"
+  },
+  {
+    "id": 585,
+    "name": "Huyện 1",
+    "code": "TGI01",
+    "province_id": 52,
+    "area": 898.1,
+    "population": 31104,
+    "type": "Huyện"
+  },
+  {
+    "id": 586,
+    "name": "Huyện 2",
+    "code": "TGI02",
+    "province_id": 52,
+    "area": 727.8,
+    "population": 359131,
+    "type": "Huyện"
+  },
+  {
+    "id": 587,
+    "name": "Huyện 3",
+    "code": "TGI03",
+    "province_id": 52,
+    "area": 1414.0,
+    "population": 108947,
+    "type": "Huyện"
+  },
+  {
+    "id": 588,
+    "name": "Thành phố 4",
+    "code": "TGI04",
+    "province_id": 52,
+    "area": 282.3,
+    "population": 191799,
+    "type": "Thành phố"
+  },
+  {
+    "id": 589,
+    "name": "Thành phố 5",
+    "code": "TGI05",
+    "province_id": 52,
+    "area": 787.4,
+    "population": 15371,
+    "type": "Thành phố"
+  },
+  {
+    "id": 590,
+    "name": "Thị xã 6",
+    "code": "TGI06",
+    "province_id": 52,
+    "area": 846.4,
+    "population": 293826,
+    "type": "Thị xã"
+  },
+  {
+    "id": 591,
+    "name": "Thị xã 7",
+    "code": "TGI07",
+    "province_id": 52,
+    "area": 1821.4,
+    "population": 268706,
+    "type": "Thị xã"
+  },
+  {
+    "id": 592,
+    "name": "Huyện 8",
+    "code": "TGI08",
+    "province_id": 52,
+    "area": 923.9,
+    "population": 131595,
+    "type": "Huyện"
+  },
+  {
+    "id": 593,
+    "name": "Thành phố 1",
+    "code": "BTR01",
+    "province_id": 53,
+    "area": 668.0,
+    "population": 294203,
+    "type": "Thành phố"
+  },
+  {
+    "id": 594,
+    "name": "Huyện 2",
+    "code": "BTR02",
+    "province_id": 53,
+    "area": 1664.7,
+    "population": 489143,
+    "type": "Huyện"
+  },
+  {
+    "id": 595,
+    "name": "Thị xã 3",
+    "code": "BTR03",
+    "province_id": 53,
+    "area": 631.0,
+    "population": 264391,
+    "type": "Thị xã"
+  },
+  {
+    "id": 596,
+    "name": "Huyện 4",
+    "code": "BTR04",
+    "province_id": 53,
+    "area": 159.7,
+    "population": 492278,
+    "type": "Huyện"
+  },
+  {
+    "id": 597,
+    "name": "Thị xã 5",
+    "code": "BTR05",
+    "province_id": 53,
+    "area": 1671.3,
+    "population": 14183,
+    "type": "Thị xã"
+  },
+  {
+    "id": 598,
+    "name": "Thị xã 6",
+    "code": "BTR06",
+    "province_id": 53,
+    "area": 1164.1,
+    "population": 427522,
+    "type": "Thị xã"
+  },
+  {
+    "id": 599,
+    "name": "Huyện 7",
+    "code": "BTR07",
+    "province_id": 53,
+    "area": 1617.3,
+    "population": 331468,
+    "type": "Huyện"
+  },
+  {
+    "id": 600,
+    "name": "Thị xã 8",
+    "code": "BTR08",
+    "province_id": 53,
+    "area": 848.1,
+    "population": 382385,
+    "type": "Thị xã"
+  },
+  {
+    "id": 601,
+    "name": "Huyện 9",
+    "code": "BTR09",
+    "province_id": 53,
+    "area": 1832.0,
+    "population": 433111,
+    "type": "Huyện"
+  },
+  {
+    "id": 602,
+    "name": "Thành phố 10",
+    "code": "BTR10",
+    "province_id": 53,
+    "area": 1116.6,
+    "population": 118318,
+    "type": "Thành phố"
+  },
+  {
+    "id": 603,
+    "name": "Thành phố 11",
+    "code": "BTR11",
+    "province_id": 53,
+    "area": 1819.2,
+    "population": 413472,
+    "type": "Thành phố"
+  },
+  {
+    "id": 604,
+    "name": "Thị xã 1",
+    "code": "TVI01",
+    "province_id": 54,
+    "area": 1131.8,
+    "population": 48699,
+    "type": "Thị xã"
+  },
+  {
+    "id": 605,
+    "name": "Thị xã 2",
+    "code": "TVI02",
+    "province_id": 54,
+    "area": 896.0,
+    "population": 404062,
+    "type": "Thị xã"
+  },
+  {
+    "id": 606,
+    "name": "Thành phố 3",
+    "code": "TVI03",
+    "province_id": 54,
+    "area": 993.6,
+    "population": 476190,
+    "type": "Thành phố"
+  },
+  {
+    "id": 607,
+    "name": "Huyện 4",
+    "code": "TVI04",
+    "province_id": 54,
+    "area": 1723.7,
+    "population": 81884,
+    "type": "Huyện"
+  },
+  {
+    "id": 608,
+    "name": "Thành phố 5",
+    "code": "TVI05",
+    "province_id": 54,
+    "area": 640.6,
+    "population": 246411,
+    "type": "Thành phố"
+  },
+  {
+    "id": 609,
+    "name": "Thị xã 1",
+    "code": "VLO01",
+    "province_id": 55,
+    "area": 420.5,
+    "population": 451282,
+    "type": "Thị xã"
+  },
+  {
+    "id": 610,
+    "name": "Thành phố 2",
+    "code": "VLO02",
+    "province_id": 55,
+    "area": 1251.3,
+    "population": 375252,
+    "type": "Thành phố"
+  },
+  {
+    "id": 611,
+    "name": "Thành phố 3",
+    "code": "VLO03",
+    "province_id": 55,
+    "area": 1112.4,
+    "population": 48699,
+    "type": "Thành phố"
+  },
+  {
+    "id": 612,
+    "name": "Thành phố 4",
+    "code": "VLO04",
+    "province_id": 55,
+    "area": 411.2,
+    "population": 137749,
+    "type": "Thành phố"
+  },
+  {
+    "id": 613,
+    "name": "Huyện 5",
+    "code": "VLO05",
+    "province_id": 55,
+    "area": 445.4,
+    "population": 28829,
+    "type": "Huyện"
+  },
+  {
+    "id": 614,
+    "name": "Huyện 6",
+    "code": "VLO06",
+    "province_id": 55,
+    "area": 494.4,
+    "population": 125173,
+    "type": "Huyện"
+  },
+  {
+    "id": 615,
+    "name": "Thị xã 7",
+    "code": "VLO07",
+    "province_id": 55,
+    "area": 1554.2,
+    "population": 265121,
+    "type": "Thị xã"
+  },
+  {
+    "id": 616,
+    "name": "Thành phố 8",
+    "code": "VLO08",
+    "province_id": 55,
+    "area": 1895.3,
+    "population": 31160,
+    "type": "Thành phố"
+  },
+  {
+    "id": 617,
+    "name": "Thành phố 1",
+    "code": "DTH01",
+    "province_id": 56,
+    "area": 553.5,
+    "population": 163973,
+    "type": "Thành phố"
+  },
+  {
+    "id": 618,
+    "name": "Thành phố 2",
+    "code": "DTH02",
+    "province_id": 56,
+    "area": 1414.1,
+    "population": 193997,
+    "type": "Thành phố"
+  },
+  {
+    "id": 619,
+    "name": "Huyện 3",
+    "code": "DTH03",
+    "province_id": 56,
+    "area": 772.2,
+    "population": 374398,
+    "type": "Huyện"
+  },
+  {
+    "id": 620,
+    "name": "Huyện 4",
+    "code": "DTH04",
+    "province_id": 56,
+    "area": 1368.0,
+    "population": 409990,
+    "type": "Huyện"
+  },
+  {
+    "id": 621,
+    "name": "Thị xã 5",
+    "code": "DTH05",
+    "province_id": 56,
+    "area": 294.9,
+    "population": 362243,
+    "type": "Thị xã"
+  },
+  {
+    "id": 622,
+    "name": "Huyện 6",
+    "code": "DTH06",
+    "province_id": 56,
+    "area": 579.4,
+    "population": 77874,
+    "type": "Huyện"
+  },
+  {
+    "id": 623,
+    "name": "Thị xã 7",
+    "code": "DTH07",
+    "province_id": 56,
+    "area": 1096.7,
+    "population": 27740,
+    "type": "Thị xã"
+  },
+  {
+    "id": 624,
+    "name": "Huyện 8",
+    "code": "DTH08",
+    "province_id": 56,
+    "area": 725.3,
+    "population": 360781,
+    "type": "Huyện"
+  },
+  {
+    "id": 625,
+    "name": "Huyện 9",
+    "code": "DTH09",
+    "province_id": 56,
+    "area": 1554.0,
+    "population": 215466,
+    "type": "Huyện"
+  },
+  {
+    "id": 626,
+    "name": "Thị xã 10",
+    "code": "DTH10",
+    "province_id": 56,
+    "area": 1737.1,
+    "population": 46558,
+    "type": "Thị xã"
+  },
+  {
+    "id": 627,
+    "name": "Huyện 11",
+    "code": "DTH11",
+    "province_id": 56,
+    "area": 312.5,
+    "population": 340080,
+    "type": "Huyện"
+  },
+  {
+    "id": 628,
+    "name": "Huyện 12",
+    "code": "DTH12",
+    "province_id": 56,
+    "area": 496.8,
+    "population": 130563,
+    "type": "Huyện"
+  },
+  {
+    "id": 629,
+    "name": "Huyện 1",
+    "code": "AGI01",
+    "province_id": 57,
+    "area": 1637.1,
+    "population": 303701,
+    "type": "Huyện"
+  },
+  {
+    "id": 630,
+    "name": "Huyện 2",
+    "code": "AGI02",
+    "province_id": 57,
+    "area": 52.8,
+    "population": 136796,
+    "type": "Huyện"
+  },
+  {
+    "id": 631,
+    "name": "Thị xã 3",
+    "code": "AGI03",
+    "province_id": 57,
+    "area": 1491.1,
+    "population": 433466,
+    "type": "Thị xã"
+  },
+  {
+    "id": 632,
+    "name": "Thị xã 4",
+    "code": "AGI04",
+    "province_id": 57,
+    "area": 1939.4,
+    "population": 321125,
+    "type": "Thị xã"
+  },
+  {
+    "id": 633,
+    "name": "Thị xã 5",
+    "code": "AGI05",
+    "province_id": 57,
+    "area": 267.0,
+    "population": 193843,
+    "type": "Thị xã"
+  },
+  {
+    "id": 634,
+    "name": "Thị xã 6",
+    "code": "AGI06",
+    "province_id": 57,
+    "area": 666.7,
+    "population": 359358,
+    "type": "Thị xã"
+  },
+  {
+    "id": 635,
+    "name": "Huyện 7",
+    "code": "AGI07",
+    "province_id": 57,
+    "area": 485.2,
+    "population": 243041,
+    "type": "Huyện"
+  },
+  {
+    "id": 636,
+    "name": "Thị xã 8",
+    "code": "AGI08",
+    "province_id": 57,
+    "area": 1476.4,
+    "population": 229390,
+    "type": "Thị xã"
+  },
+  {
+    "id": 637,
+    "name": "Huyện 1",
+    "code": "KGI01",
+    "province_id": 58,
+    "area": 1046.8,
+    "population": 495558,
+    "type": "Huyện"
+  },
+  {
+    "id": 638,
+    "name": "Thành phố 2",
+    "code": "KGI02",
+    "province_id": 58,
+    "area": 1240.5,
+    "population": 338156,
+    "type": "Thành phố"
+  },
+  {
+    "id": 639,
+    "name": "Huyện 3",
+    "code": "KGI03",
+    "province_id": 58,
+    "area": 1035.7,
+    "population": 158007,
+    "type": "Huyện"
+  },
+  {
+    "id": 640,
+    "name": "Thành phố 4",
+    "code": "KGI04",
+    "province_id": 58,
+    "area": 1144.1,
+    "population": 77114,
+    "type": "Thành phố"
+  },
+  {
+    "id": 641,
+    "name": "Huyện 5",
+    "code": "KGI05",
+    "province_id": 58,
+    "area": 1934.9,
+    "population": 229138,
+    "type": "Huyện"
+  },
+  {
+    "id": 642,
+    "name": "Thành phố 6",
+    "code": "KGI06",
+    "province_id": 58,
+    "area": 1263.0,
+    "population": 409995,
+    "type": "Thành phố"
+  },
+  {
+    "id": 643,
+    "name": "Huyện 7",
+    "code": "KGI07",
+    "province_id": 58,
+    "area": 1370.2,
+    "population": 181737,
+    "type": "Huyện"
+  },
+  {
+    "id": 644,
+    "name": "Thành phố 8",
+    "code": "KGI08",
+    "province_id": 58,
+    "area": 1575.4,
+    "population": 367230,
+    "type": "Thành phố"
+  },
+  {
+    "id": 645,
+    "name": "Thành phố 9",
+    "code": "KGI09",
+    "province_id": 58,
+    "area": 1860.9,
+    "population": 306159,
+    "type": "Thành phố"
+  },
+  {
+    "id": 646,
+    "name": "Huyện 10",
+    "code": "KGI10",
+    "province_id": 58,
+    "area": 490.3,
+    "population": 226391,
+    "type": "Huyện"
+  },
+  {
+    "id": 647,
+    "name": "Thành phố 11",
+    "code": "KGI11",
+    "province_id": 58,
+    "area": 1973.0,
+    "population": 440246,
+    "type": "Thành phố"
+  },
+  {
+    "id": 648,
+    "name": "Thành phố 12",
+    "code": "KGI12",
+    "province_id": 58,
+    "area": 288.6,
+    "population": 428961,
+    "type": "Thành phố"
+  },
+  {
+    "id": 649,
+    "name": "Thành phố 13",
+    "code": "KGI13",
+    "province_id": 58,
+    "area": 1908.5,
+    "population": 492847,
+    "type": "Thành phố"
+  },
+  {
+    "id": 650,
+    "name": "Huyện 1",
+    "code": "CTO01",
+    "province_id": 59,
+    "area": 191.6,
+    "population": 398581,
+    "type": "Huyện"
+  },
+  {
+    "id": 651,
+    "name": "Huyện 2",
+    "code": "CTO02",
+    "province_id": 59,
+    "area": 786.1,
+    "population": 269182,
+    "type": "Huyện"
+  },
+  {
+    "id": 652,
+    "name": "Thị xã 3",
+    "code": "CTO03",
+    "province_id": 59,
+    "area": 183.6,
+    "population": 49214,
+    "type": "Thị xã"
+  },
+  {
+    "id": 653,
+    "name": "Thành phố 4",
+    "code": "CTO04",
+    "province_id": 59,
+    "area": 538.0,
+    "population": 148000,
+    "type": "Thành phố"
+  },
+  {
+    "id": 654,
+    "name": "Huyện 5",
+    "code": "CTO05",
+    "province_id": 59,
+    "area": 1777.5,
+    "population": 291406,
+    "type": "Huyện"
+  },
+  {
+    "id": 655,
+    "name": "Huyện 6",
+    "code": "CTO06",
+    "province_id": 59,
+    "area": 1496.9,
+    "population": 248779,
+    "type": "Huyện"
+  },
+  {
+    "id": 656,
+    "name": "Huyện 7",
+    "code": "CTO07",
+    "province_id": 59,
+    "area": 889.9,
+    "population": 192752,
+    "type": "Huyện"
+  },
+  {
+    "id": 657,
+    "name": "Huyện 8",
+    "code": "CTO08",
+    "province_id": 59,
+    "area": 1271.4,
+    "population": 148635,
+    "type": "Huyện"
+  },
+  {
+    "id": 658,
+    "name": "Thị xã 9",
+    "code": "CTO09",
+    "province_id": 59,
+    "area": 1457.5,
+    "population": 131589,
+    "type": "Thị xã"
+  },
+  {
+    "id": 659,
+    "name": "Thành phố 10",
+    "code": "CTO10",
+    "province_id": 59,
+    "area": 181.5,
+    "population": 433412,
+    "type": "Thành phố"
+  },
+  {
+    "id": 660,
+    "name": "Huyện 11",
+    "code": "CTO11",
+    "province_id": 59,
+    "area": 101.8,
+    "population": 362057,
+    "type": "Huyện"
+  },
+  {
+    "id": 661,
+    "name": "Thành phố 1",
+    "code": "HGI01",
+    "province_id": 60,
+    "area": 1108.2,
+    "population": 279185,
+    "type": "Thành phố"
+  },
+  {
+    "id": 662,
+    "name": "Huyện 2",
+    "code": "HGI02",
+    "province_id": 60,
+    "area": 1373.3,
+    "population": 350484,
+    "type": "Huyện"
+  },
+  {
+    "id": 663,
+    "name": "Huyện 3",
+    "code": "HGI03",
+    "province_id": 60,
+    "area": 365.9,
+    "population": 455950,
+    "type": "Huyện"
+  },
+  {
+    "id": 664,
+    "name": "Thị xã 4",
+    "code": "HGI04",
+    "province_id": 60,
+    "area": 1540.9,
+    "population": 152863,
+    "type": "Thị xã"
+  },
+  {
+    "id": 665,
+    "name": "Thành phố 5",
+    "code": "HGI05",
+    "province_id": 60,
+    "area": 1297.7,
+    "population": 443391,
+    "type": "Thành phố"
+  },
+  {
+    "id": 666,
+    "name": "Huyện 6",
+    "code": "HGI06",
+    "province_id": 60,
+    "area": 52.8,
+    "population": 472479,
+    "type": "Huyện"
+  },
+  {
+    "id": 667,
+    "name": "Thị xã 7",
+    "code": "HGI07",
+    "province_id": 60,
+    "area": 200.2,
+    "population": 262634,
+    "type": "Thị xã"
+  },
+  {
+    "id": 668,
+    "name": "Huyện 8",
+    "code": "HGI08",
+    "province_id": 60,
+    "area": 269.4,
+    "population": 59474,
+    "type": "Huyện"
+  },
+  {
+    "id": 669,
+    "name": "Thành phố 1",
+    "code": "STR01",
+    "province_id": 61,
+    "area": 1573.2,
+    "population": 138274,
+    "type": "Thành phố"
+  },
+  {
+    "id": 670,
+    "name": "Huyện 2",
+    "code": "STR02",
+    "province_id": 61,
+    "area": 788.6,
+    "population": 370145,
+    "type": "Huyện"
+  },
+  {
+    "id": 671,
+    "name": "Thành phố 3",
+    "code": "STR03",
+    "province_id": 61,
+    "area": 727.6,
+    "population": 465964,
+    "type": "Thành phố"
+  },
+  {
+    "id": 672,
+    "name": "Thị xã 4",
+    "code": "STR04",
+    "province_id": 61,
+    "area": 762.4,
+    "population": 322351,
+    "type": "Thị xã"
+  },
+  {
+    "id": 673,
+    "name": "Thị xã 5",
+    "code": "STR05",
+    "province_id": 61,
+    "area": 1723.5,
+    "population": 315845,
+    "type": "Thị xã"
+  },
+  {
+    "id": 674,
+    "name": "Thị xã 6",
+    "code": "STR06",
+    "province_id": 61,
+    "area": 1417.1,
+    "population": 102345,
+    "type": "Thị xã"
+  },
+  {
+    "id": 675,
+    "name": "Thành phố 7",
+    "code": "STR07",
+    "province_id": 61,
+    "area": 901.5,
+    "population": 95589,
+    "type": "Thành phố"
+  },
+  {
+    "id": 676,
+    "name": "Thành phố 8",
+    "code": "STR08",
+    "province_id": 61,
+    "area": 406.4,
+    "population": 463772,
+    "type": "Thành phố"
+  },
+  {
+    "id": 677,
+    "name": "Thị xã 9",
+    "code": "STR09",
+    "province_id": 61,
+    "area": 1233.9,
+    "population": 355841,
+    "type": "Thị xã"
+  },
+  {
+    "id": 678,
+    "name": "Huyện 10",
+    "code": "STR10",
+    "province_id": 61,
+    "area": 1924.8,
+    "population": 94127,
+    "type": "Huyện"
+  },
+  {
+    "id": 679,
+    "name": "Thành phố 11",
+    "code": "STR11",
+    "province_id": 61,
+    "area": 1468.9,
+    "population": 141426,
+    "type": "Thành phố"
+  },
+  {
+    "id": 680,
+    "name": "Thị xã 12",
+    "code": "STR12",
+    "province_id": 61,
+    "area": 1046.3,
+    "population": 79000,
+    "type": "Thị xã"
+  },
+  {
+    "id": 681,
+    "name": "Huyện 13",
+    "code": "STR13",
+    "province_id": 61,
+    "area": 1221.3,
+    "population": 264233,
+    "type": "Huyện"
+  },
+  {
+    "id": 682,
+    "name": "Huyện 1",
+    "code": "BLI01",
+    "province_id": 62,
+    "area": 780.2,
+    "population": 51261,
+    "type": "Huyện"
+  },
+  {
+    "id": 683,
+    "name": "Thị xã 2",
+    "code": "BLI02",
+    "province_id": 62,
+    "area": 1964.0,
+    "population": 45314,
+    "type": "Thị xã"
+  },
+  {
+    "id": 684,
+    "name": "Huyện 3",
+    "code": "BLI03",
+    "province_id": 62,
+    "area": 390.2,
+    "population": 494140,
+    "type": "Huyện"
+  },
+  {
+    "id": 685,
+    "name": "Thị xã 4",
+    "code": "BLI04",
+    "province_id": 62,
+    "area": 1668.5,
+    "population": 182831,
+    "type": "Thị xã"
+  },
+  {
+    "id": 686,
+    "name": "Huyện 5",
+    "code": "BLI05",
+    "province_id": 62,
+    "area": 1139.7,
+    "population": 193391,
+    "type": "Huyện"
+  },
+  {
+    "id": 687,
+    "name": "Thị xã 6",
+    "code": "BLI06",
+    "province_id": 62,
+    "area": 268.1,
+    "population": 435087,
+    "type": "Thị xã"
+  },
+  {
+    "id": 688,
+    "name": "Thành phố 7",
+    "code": "BLI07",
+    "province_id": 62,
+    "area": 372.6,
+    "population": 71517,
+    "type": "Thành phố"
+  },
+  {
+    "id": 689,
+    "name": "Thành phố 8",
+    "code": "BLI08",
+    "province_id": 62,
+    "area": 1724.3,
+    "population": 149810,
+    "type": "Thành phố"
+  },
+  {
+    "id": 690,
+    "name": "Thị xã 9",
+    "code": "BLI09",
+    "province_id": 62,
+    "area": 480.8,
+    "population": 95824,
+    "type": "Thị xã"
+  },
+  {
+    "id": 691,
+    "name": "Thành phố 10",
+    "code": "BLI10",
+    "province_id": 62,
+    "area": 1322.9,
+    "population": 38017,
+    "type": "Thành phố"
+  },
+  {
+    "id": 692,
+    "name": "Huyện 11",
+    "code": "BLI11",
+    "province_id": 62,
+    "area": 162.8,
+    "population": 140258,
+    "type": "Huyện"
+  },
+  {
+    "id": 693,
+    "name": "Thành phố 12",
+    "code": "BLI12",
+    "province_id": 62,
+    "area": 1749.0,
+    "population": 268550,
+    "type": "Thành phố"
+  },
+  {
+    "id": 694,
+    "name": "Huyện 13",
+    "code": "BLI13",
+    "province_id": 62,
+    "area": 1545.7,
+    "population": 335581,
+    "type": "Huyện"
+  },
+  {
+    "id": 695,
+    "name": "Huyện 1",
+    "code": "CMA01",
+    "province_id": 63,
+    "area": 1184.0,
+    "population": 153301,
+    "type": "Huyện"
+  },
+  {
+    "id": 696,
+    "name": "Huyện 2",
+    "code": "CMA02",
+    "province_id": 63,
+    "area": 1358.5,
+    "population": 479322,
+    "type": "Huyện"
+  },
+  {
+    "id": 697,
+    "name": "Thị xã 3",
+    "code": "CMA03",
+    "province_id": 63,
+    "area": 1746.6,
+    "population": 403276,
+    "type": "Thị xã"
+  },
+  {
+    "id": 698,
+    "name": "Thành phố 4",
+    "code": "CMA04",
+    "province_id": 63,
+    "area": 624.7,
+    "population": 390262,
+    "type": "Thành phố"
+  },
+  {
+    "id": 699,
+    "name": "Huyện 5",
+    "code": "CMA05",
+    "province_id": 63,
+    "area": 128.4,
+    "population": 281798,
+    "type": "Huyện"
+  },
+  {
+    "id": 700,
+    "name": "Thị xã 6",
+    "code": "CMA06",
+    "province_id": 63,
+    "area": 1516.0,
+    "population": 180925,
+    "type": "Thị xã"
+  },
+  {
+    "id": 701,
+    "name": "Thành phố 7",
+    "code": "CMA07",
+    "province_id": 63,
+    "area": 1358.3,
+    "population": 154346,
+    "type": "Thành phố"
+  },
+  {
+    "id": 702,
+    "name": "Thị xã 8",
+    "code": "CMA08",
+    "province_id": 63,
+    "area": 527.5,
+    "population": 28451,
+    "type": "Thị xã"
+  },
+  {
+    "id": 703,
+    "name": "Huyện 9",
+    "code": "CMA09",
+    "province_id": 63,
+    "area": 370.9,
+    "population": 31984,
+    "type": "Huyện"
+  },
+  {
+    "id": 704,
+    "name": "Thị xã 10",
+    "code": "CMA10",
+    "province_id": 63,
+    "area": 782.1,
+    "population": 204173,
+    "type": "Thị xã"
+  }
+]

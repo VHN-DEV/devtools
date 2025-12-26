@@ -6,6 +6,7 @@
     "video-converter.py"
   ],
   "recent": [
+    "location-data-seeder.py",
     "copy-changed-files.py",
     "compress-images.py",
     "ssh-manager.py",
@@ -14,8 +15,7 @@
     "qr-code.py",
     "scan-malware.py",
     "json-formatter.py",
-    "video-converter.py",
-    "setup-project-linux.py"
+    "video-converter.py"
   ],
   "settings": {
     "show_descriptions": false,
@@ -35,12 +35,14 @@
     "tool_usage": {
       "ssh-manager.py": 5,
       "copy-changed-files.py": 13,
-      "compress-images.py": 4
+      "compress-images.py": 4,
+      "location-data-seeder.py": 8
     },
     "last_used": {
       "ssh-manager.py": 1766470166.4072776,
       "copy-changed-files.py": 1766653806.8552165,
-      "compress-images.py": 1766550321.313668
+      "compress-images.py": 1766550321.313668,
+      "location-data-seeder.py": 1766717458.0931587
     }
   }
 }
