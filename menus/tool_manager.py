@@ -1166,7 +1166,7 @@ class ToolManager:
             Colors.info(f"📊 Active: {Colors.bold(str(total))}"),
         ]
         if disabled_count > 0:
-            stats_parts.append(Colors.error(f" 🔒 Disabled: {Colors.bold(str(disabled_count))} "))
+            stats_parts.append(Colors.error(f"🔒 Disabled: {Colors.bold(str(disabled_count))} "))
         stats_parts.append(Colors.warning(f" ⭐ Favorites: {Colors.bold(str(favorites_count))} "))
         stats_parts.append(Colors.secondary(f" 📚 Recent: {Colors.bold(str(recent_count))} "))
         
