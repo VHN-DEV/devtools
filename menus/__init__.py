@@ -2371,7 +2371,7 @@ def main():
             prompt_prefix = Colors.primary("┌─") + " " + Colors.bold(Colors.info(prompt_title)) + Colors.primary(" " + "─" * prompt_title_padding + "┐")
             print(f"  {prompt_prefix}")
             
-            prompt_text = "Chọn tool (h=help, q=quit, set=settings):"
+            prompt_text = "Chọn tool (h=help, l=list, set=settings):"
             prompt_text_display_width = get_display_width(prompt_text)
             # Tính padding cần thiết để đủ width
             prompt_text_padding = prompt_width - prompt_text_display_width - 3

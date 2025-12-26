@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Hà Nội",
+    "name": "TP. Hà Nội",
     "code": "HN",
     "region": "Đồng bằng sông Hồng",
     "area": 3358.6,
@@ -10,7 +10,7 @@
   },
   {
     "id": 2,
-    "name": "Hồ Chí Minh",
+    "name": "TP. Hồ Chí Minh",
     "code": "HCM",
     "region": "Đông Nam Bộ",
     "area": 2061.4,
@@ -19,7 +19,7 @@
   },
   {
     "id": 3,
-    "name": "Hải Phòng",
+    "name": "TP. Hải Phòng",
     "code": "HP",
     "region": "Đồng bằng sông Hồng",
     "area": 1523.9,
@@ -28,7 +28,7 @@
   },
   {
     "id": 4,
-    "name": "Cần Thơ",
+    "name": "TP. Cần Thơ",
     "code": "CT",
     "region": "Đồng bằng sông Cửu Long",
     "area": 1439.2,
@@ -37,7 +37,7 @@
   },
   {
     "id": 5,
-    "name": "Đà Nẵng",
+    "name": "TP. Đà Nẵng",
     "code": "DN",
     "region": "Nam Trung Bộ",
     "area": 1284.9,
@@ -303,6 +303,132 @@
     "region": "Đông Nam Bộ",
     "area": 1981.0,
     "population": 1154000,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 35,
+    "name": "Cao Bằng",
+    "code": "CB",
+    "region": "Đông Bắc Bộ",
+    "area": 6703.1,
+    "population": 530341,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 36,
+    "name": "Tuyên Quang",
+    "code": "TQ",
+    "region": "Đông Bắc Bộ",
+    "area": 5867.9,
+    "population": 784811,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 37,
+    "name": "Lào Cai",
+    "code": "LC",
+    "region": "Tây Bắc Bộ",
+    "area": 6364.0,
+    "population": 733971,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 38,
+    "name": "Điện Biên",
+    "code": "DB",
+    "region": "Tây Bắc Bộ",
+    "area": 9541.3,
+    "population": 601801,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 39,
+    "name": "Lai Châu",
+    "code": "LCH",
+    "region": "Tây Bắc Bộ",
+    "area": 9068.8,
+    "population": 460196,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 40,
+    "name": "Sơn La",
+    "code": "SL",
+    "region": "Tây Bắc Bộ",
+    "area": 14123.5,
+    "population": 1253645,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 41,
+    "name": "Thái Nguyên",
+    "code": "TN",
+    "region": "Đông Bắc Bộ",
+    "area": 3526.6,
+    "population": 1297532,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 42,
+    "name": "Lạng Sơn",
+    "code": "LS",
+    "region": "Đông Bắc Bộ",
+    "area": 8312.3,
+    "population": 781655,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 43,
+    "name": "Quảng Ninh",
+    "code": "QN",
+    "region": "Đông Bắc Bộ",
+    "area": 6178.2,
+    "population": 1320328,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 44,
+    "name": "Phú Thọ",
+    "code": "PT",
+    "region": "Đông Bắc Bộ",
+    "area": 3534.6,
+    "population": 1463728,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 45,
+    "name": "Vĩnh Long",
+    "code": "VL",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 1474.8,
+    "population": 1022797,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 46,
+    "name": "Đồng Tháp",
+    "code": "DT",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 3383.8,
+    "population": 1594676,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 47,
+    "name": "An Giang",
+    "code": "AG",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 3536.7,
+    "population": 1907542,
+    "type": "Tỉnh"
+  },
+  {
+    "id": 48,
+    "name": "Cà Mau",
+    "code": "CM",
+    "region": "Đồng bằng sông Cửu Long",
+    "area": 5221.2,
+    "population": 1197404,
     "type": "Tỉnh"
   }
 ]
