@@ -44,5 +44,9 @@
       "compress-images.py": 1766550321.313668,
       "location-data-seeder.py": 1766717458.0931587
     }
+  },
+  "categories": {
+    "manual_assignments": {},
+    "custom_categories": {}
   }
 }

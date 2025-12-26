@@ -58,10 +58,13 @@ class ToolManager:
         
         # Lazy loading: chỉ load metadata khi cần
         self._lazy_loaded_metadata = set()
-        
+
+        # Load custom categories từ config
+        self.load_custom_categories()
+
         # Danh sách tools theo đúng thứ tự hiển thị (được cập nhật mỗi khi hiển thị menu)
         self.displayed_tools_order = []
-        
+
         # Tools ưu tiên hiển thị lên đầu danh sách
         # Mục đích: Các tools hay dùng nhất hoặc quan trọng nhất sẽ hiển thị trước
         # Lý do: Dễ dàng truy cập nhanh các tools thường xuyên sử dụng
@@ -73,12 +76,12 @@ class ToolManager:
     def _load_config(self) -> Dict:
         """
         Load config từ file
-        
+
         Returns:
             dict: Config data
-        
+
         Giải thích:
-        - Lưu favorites, recent tools, settings, disabled_tools
+        - Lưu favorites, recent tools, settings, disabled_tools, categories
         - Tạo config mặc định nếu chưa có
         - Đảm bảo các field mới được thêm vào config cũ (migration)
         """
@@ -93,9 +96,13 @@ class ToolManager:
             'statistics': {
                 'tool_usage': {},  # Số lần sử dụng mỗi tool
                 'last_used': {}    # Timestamp lần cuối sử dụng
+            },
+            'categories': {
+                'manual_assignments': {},  # Manual category assignments cho tools
+                'custom_categories': {}    # Custom categories do user tạo
             }
         }
-        
+
         if self.config_file.exists():
             try:
                 with open(self.config_file, 'r', encoding='utf-8') as f:
@@ -111,7 +118,7 @@ class ToolManager:
                         for key, value in default_config['settings'].items():
                             if key not in loaded_config['settings']:
                                 loaded_config['settings'][key] = value
-                    
+
                     # Đảm bảo statistics có trong config
                     if 'statistics' not in loaded_config:
                         loaded_config['statistics'] = default_config['statistics']
@@ -121,11 +128,21 @@ class ToolManager:
                             loaded_config['statistics']['tool_usage'] = {}
                         if 'last_used' not in loaded_config['statistics']:
                             loaded_config['statistics']['last_used'] = {}
-                    
+
+                    # Đảm bảo categories có trong config
+                    if 'categories' not in loaded_config:
+                        loaded_config['categories'] = default_config['categories']
+                    else:
+                        # Đảm bảo các field categories có đầy đủ
+                        if 'manual_assignments' not in loaded_config['categories']:
+                            loaded_config['categories']['manual_assignments'] = {}
+                        if 'custom_categories' not in loaded_config['categories']:
+                            loaded_config['categories']['custom_categories'] = {}
+
                     return loaded_config
             except Exception:
                 pass
-        
+
         # Config mặc định
         return default_config
     
@@ -2026,4 +2043,218 @@ class ToolManager:
             import traceback
             traceback.print_exc()
             return False
+
+    # ==================== CATEGORY MANAGEMENT ====================
+
+    def get_manual_category_assignment(self, tool: str) -> Optional[str]:
+        """
+        Lấy category được assign manual cho tool
+
+        Args:
+            tool: Tên file tool
+
+        Returns:
+            str or None: Category key nếu có manual assignment
+        """
+        return self.config['categories']['manual_assignments'].get(tool)
+
+    def set_manual_category_assignment(self, tool: str, category_key: str) -> bool:
+        """
+        Set manual category assignment cho tool
+
+        Args:
+            tool: Tên file tool
+            category_key: Category key
+
+        Returns:
+            bool: True nếu thành công
+        """
+        from utils.categories import CATEGORIES
+
+        if category_key not in CATEGORIES:
+            return False
+
+        self.config['categories']['manual_assignments'][tool] = category_key
+        self._save_config()
+
+        # Invalidate cache để category mới có hiệu lực
+        self._cached_tool_list = None
+        self._cache_timestamp = None
+
+        return True
+
+    def remove_manual_category_assignment(self, tool: str) -> bool:
+        """
+        Xóa manual category assignment của tool
+
+        Args:
+            tool: Tên file tool
+
+        Returns:
+            bool: True nếu thành công
+        """
+        if tool in self.config['categories']['manual_assignments']:
+            del self.config['categories']['manual_assignments'][tool]
+            self._save_config()
+
+            # Invalidate cache
+            self._cached_tool_list = None
+            self._cache_timestamp = None
+
+            return True
+        return False
+
+    def get_custom_categories(self) -> Dict[str, Dict]:
+        """
+        Lấy danh sách custom categories
+
+        Returns:
+            dict: Custom categories
+        """
+        return self.config['categories']['custom_categories'].copy()
+
+    def add_custom_category(self, key: str, name: str, icon: str, description: str = "", color: str = "WHITE") -> bool:
+        """
+        Thêm custom category
+
+        Args:
+            key: Unique key
+            name: Display name
+            icon: Emoji icon
+            description: Description
+            color: Color
+
+        Returns:
+            bool: True nếu thành công
+        """
+        if key in self.config['categories']['custom_categories']:
+            return False
+
+        # Thêm vào config
+        self.config['categories']['custom_categories'][key] = {
+            'name': name,
+            'icon': icon,
+            'description': description,
+            'color': color,
+            'keywords': []
+        }
+
+        # Thêm vào global CATEGORIES
+        from utils.categories import CATEGORIES
+        CATEGORIES[key] = {
+            'icon': icon,
+            'name': name,
+            'description': description,
+            'color': color,
+            'keywords': [],
+            'tools': []
+        }
+
+        self._save_config()
+        return True
+
+    def update_custom_category(self, key: str, name: str = None, icon: str = None, description: str = None, color: str = None) -> bool:
+        """
+        Cập nhật custom category
+
+        Args:
+            key: Category key
+            name: New name (optional)
+            icon: New icon (optional)
+            description: New description (optional)
+            color: New color (optional)
+
+        Returns:
+            bool: True nếu thành công
+        """
+        if key not in self.config['categories']['custom_categories']:
+            return False
+
+        # Update config
+        if name is not None:
+            self.config['categories']['custom_categories'][key]['name'] = name
+        if icon is not None:
+            self.config['categories']['custom_categories'][key]['icon'] = icon
+        if description is not None:
+            self.config['categories']['custom_categories'][key]['description'] = description
+        if color is not None:
+            self.config['categories']['custom_categories'][key]['color'] = color
+
+        # Update global CATEGORIES
+        from utils.categories import CATEGORIES
+        if name is not None:
+            CATEGORIES[key]['name'] = name
+        if icon is not None:
+            CATEGORIES[key]['icon'] = icon
+        if description is not None:
+            CATEGORIES[key]['description'] = description
+        if color is not None:
+            CATEGORIES[key]['color'] = color
+
+        self._save_config()
+        return True
+
+    def delete_custom_category(self, key: str) -> bool:
+        """
+        Xóa custom category
+
+        Args:
+            key: Category key
+
+        Returns:
+            bool: True nếu thành công
+        """
+        if key not in self.config['categories']['custom_categories']:
+            return False
+
+        # Xóa khỏi config
+        del self.config['categories']['custom_categories'][key]
+
+        # Xóa khỏi global CATEGORIES
+        from utils.categories import CATEGORIES
+        if key in CATEGORIES:
+            del CATEGORIES[key]
+
+        # Xóa manual assignments liên quan
+        tools_to_remove = []
+        for tool, category in self.config['categories']['manual_assignments'].items():
+            if category == key:
+                tools_to_remove.append(tool)
+
+        for tool in tools_to_remove:
+            del self.config['categories']['manual_assignments'][tool]
+
+        self._save_config()
+
+        # Invalidate cache
+        self._cached_tool_list = None
+        self._cache_timestamp = None
+
+        return True
+
+    def load_custom_categories(self):
+        """
+        Load custom categories từ config vào global CATEGORIES
+        """
+        from utils.categories import CATEGORIES
+
+        for key, category_data in self.config['categories']['custom_categories'].items():
+            CATEGORIES[key] = {
+                'icon': category_data['icon'],
+                'name': category_data['name'],
+                'description': category_data['description'],
+                'color': category_data['color'],
+                'keywords': category_data.get('keywords', []),
+                'tools': []
+            }
+
+    def get_category_stats(self) -> Dict[str, Dict]:
+        """
+        Lấy thống kê categories với số tools
+
+        Returns:
+            dict: Thống kê categories
+        """
+        from utils.categories import get_category_stats
+        return get_category_stats()
 

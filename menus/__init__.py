@@ -1564,10 +1564,11 @@ def _show_settings_menu(manager):
         print(f"   2. {Colors.info('max_recent')} - Số lượng recent tools tối đa")
         print(f"   3. {Colors.info('theme')} - Đổi theme (dark/light/custom)")
         print(f"   4. {Colors.info('create-tool')} - Tạo tool mới")
+        print(f"   5. {Colors.info('categories')} - Quản lý categories")
         print(f"   0. {Colors.muted('Quay lại')}")
         print()
-        
-        choice = input(f"{Colors.primary('Chọn tùy chọn')} (0-4): ").strip()
+
+        choice = input(f"{Colors.primary('Chọn tùy chọn')} (0-5): ").strip()
         
         if choice == '0':
             break
@@ -1604,9 +1605,318 @@ def _show_settings_menu(manager):
         elif choice == '4':
             # Chạy script create-tool
             _run_create_tool_script(manager)
+        elif choice == '5':
+            # Quản lý categories
+            _show_categories_menu(manager)
         else:
             print()
             print(Colors.error("❌ Lựa chọn không hợp lệ"))
+            print()
+
+
+def _show_categories_menu(manager):
+    """Hiển thị menu quản lý categories"""
+    while True:
+        print()
+        print_separator("─", 70, Colors.INFO)
+        print(Colors.bold("📂 QUẢN LÝ CATEGORIES"))
+        print_separator("─", 70, Colors.INFO)
+        print()
+
+        # Hiển thị thống kê categories
+        stats = manager.get_category_stats()
+        print(Colors.bold("📊 Thống kê categories:"))
+        for key, stat in stats.items():
+            icon = stat['icon']
+            name = stat['name']
+            count = stat['tool_count']
+            color_name = stat['color']
+            print(f"   {icon} {Colors.bold(key)} ({Colors.info(str(count))} tools) - {Colors.muted(name)}")
+        print()
+
+        # Hiển thị manual assignments
+        manual_assignments = manager.config['categories'].get('manual_assignments', {})
+        if manual_assignments:
+            print(Colors.bold("🔧 Manual assignments:"))
+            for tool, category in manual_assignments.items():
+                tool_name = manager.get_tool_display_name(tool)
+                print(f"   {Colors.secondary(tool_name)} → {Colors.info(category)}")
+            print()
+
+        print_separator("─", 70, Colors.INFO)
+        print()
+        print(Colors.bold("📝 Tùy chọn:"))
+        print(f"   1. {Colors.info('view')} - Xem chi tiết category")
+        print(f"   2. {Colors.info('assign')} - Gán tool vào category cụ thể")
+        print(f"   3. {Colors.info('add')} - Thêm category mới")
+        print(f"   4. {Colors.info('edit')} - Chỉnh sửa category")
+        print(f"   5. {Colors.info('delete')} - Xóa category")
+        print(f"   0. {Colors.muted('Quay lại')}")
+        print()
+
+        choice = input(f"{Colors.primary('Chọn tùy chọn')} (0-5): ").strip()
+
+        if choice == '0':
+            break
+        elif choice == '1':
+            # Xem chi tiết category
+            _show_category_details(manager)
+        elif choice == '2':
+            # Gán tool vào category
+            _assign_tool_to_category(manager)
+        elif choice == '3':
+            # Thêm category mới
+            _add_custom_category(manager)
+        elif choice == '4':
+            # Chỉnh sửa category
+            _edit_custom_category(manager)
+        elif choice == '5':
+            # Xóa category
+            _delete_custom_category(manager)
+        else:
+            print()
+            print(Colors.error("❌ Lựa chọn không hợp lệ"))
+            print()
+
+
+def _show_category_details(manager):
+    """Xem chi tiết category và tools trong đó"""
+    from utils.categories import CATEGORIES
+
+    print()
+    print(Colors.bold("📂 Danh sách categories:"))
+
+    categories = list(CATEGORIES.keys())
+    for idx, key in enumerate(categories, 1):
+        cat_info = CATEGORIES[key]
+        print(f"   {idx}. {cat_info['icon']} {Colors.bold(key)} - {cat_info['name']}")
+
+    print()
+    choice = input(f"{Colors.primary('Chọn category để xem chi tiết')} (1-{len(categories)} hoặc Enter để hủy): ").strip()
+
+    if not choice or not choice.isdigit():
+        return
+
+    idx = int(choice) - 1
+    if 0 <= idx < len(categories):
+        category_key = categories[idx]
+        cat_info = CATEGORIES[category_key]
+
+        print()
+        print_separator("─", 70, Colors.INFO)
+        print(f"{cat_info['icon']} {Colors.bold(cat_info['name'])} ({category_key})")
+        print_separator("─", 70, Colors.INFO)
+        print(f"   {Colors.muted('Mô tả:')} {cat_info['description']}")
+        print(f"   {Colors.muted('Keywords:')} {', '.join(cat_info['keywords'])}")
+        print(f"   {Colors.muted('Color:')} {cat_info['color']}")
+
+        tools = cat_info['tools']
+        print(f"   {Colors.muted('Tools:')} {len(tools)} tool(s)")
+        if tools:
+            print()
+            for tool in tools:
+                tool_name = manager.get_tool_display_name(tool)
+                print(f"     • {tool_name}")
+        print()
+
+
+def _assign_tool_to_category(manager):
+    """Gán tool vào category cụ thể"""
+    from utils.categories import CATEGORIES
+
+    # Hiển thị danh sách tools
+    tools = manager.get_all_tools_including_disabled()
+    print()
+    print(Colors.bold("🔧 Chọn tool để gán category:"))
+
+    for idx, tool in enumerate(tools, 1):
+        tool_name = manager.get_tool_display_name(tool)
+        current_category = manager.get_manual_category_assignment(tool)
+        if current_category:
+            category_info = f" → {Colors.info(current_category)}"
+        else:
+            # Auto-detected category
+            from utils.categories import detect_tool_category
+            tags = manager.get_tool_tags(tool)
+            auto_category = detect_tool_category(tool, tags)
+            category_info = f" → {Colors.muted(auto_category)} (auto)"
+        print(f"   {idx:2d}. {tool_name}{category_info}")
+
+    print()
+    choice = input(f"{Colors.primary('Chọn tool')} (1-{len(tools)} hoặc Enter để hủy): ").strip()
+
+    if not choice or not choice.isdigit():
+        return
+
+    idx = int(choice) - 1
+    if 0 <= idx < len(tools):
+        selected_tool = tools[idx]
+        tool_name = manager.get_tool_display_name(selected_tool)
+
+        # Hiển thị danh sách categories
+        print()
+        print(Colors.bold("📂 Chọn category đích:"))
+
+        categories = list(CATEGORIES.keys())
+        for idx, key in enumerate(categories, 1):
+            cat_info = CATEGORIES[key]
+            print(f"   {idx}. {cat_info['icon']} {Colors.bold(key)} - {cat_info['name']}")
+
+        print()
+        cat_choice = input(f"{Colors.primary('Chọn category')} (1-{len(categories)} hoặc Enter để hủy): ").strip()
+
+        if not cat_choice or not cat_choice.isdigit():
+            return
+
+        cat_idx = int(cat_choice) - 1
+        if 0 <= cat_idx < len(categories):
+            selected_category = categories[cat_idx]
+
+            # Gán category
+            if manager.set_manual_category_assignment(selected_tool, selected_category):
+                print()
+                print(Colors.success(f"✅ Đã gán {Colors.bold(tool_name)} vào category {Colors.info(selected_category)}"))
+                print()
+            else:
+                print()
+                print(Colors.error(f"❌ Không thể gán category cho tool này"))
+                print()
+
+
+def _add_custom_category(manager):
+    """Thêm category mới"""
+    print()
+    print(Colors.bold("➕ Thêm category mới"))
+    print()
+
+    # Nhập thông tin
+    key = input(f"{Colors.primary('Key duy nhất')}: ").strip()
+    if not key:
+        print(Colors.error("❌ Key không được để trống"))
+        return
+
+    # Check if key already exists
+    from utils.categories import CATEGORIES
+    if key in CATEGORIES:
+        print(Colors.error(f"❌ Category key '{key}' đã tồn tại"))
+        return
+
+    name = input(f"{Colors.primary('Tên hiển thị')}: ").strip()
+    if not name:
+        print(Colors.error("❌ Tên không được để trống"))
+        return
+
+    icon = input(f"{Colors.primary('Icon (emoji)')} (mặc định 🔧): ").strip() or "🔧"
+    description = input(f"{Colors.primary('Mô tả')}: ").strip()
+    color = input(f"{Colors.primary('Color')} (BLUE, GREEN, RED, etc.) (mặc định WHITE): ").strip().upper() or "WHITE"
+
+    # Thêm category
+    if manager.add_custom_category(key, name, icon, description, color):
+        print()
+        print(Colors.success(f"✅ Đã thêm category mới: {Colors.bold(name)} ({key})"))
+        print()
+    else:
+        print()
+        print(Colors.error("❌ Không thể thêm category"))
+        print()
+
+
+def _edit_custom_category(manager):
+    """Chỉnh sửa category"""
+    custom_categories = manager.get_custom_categories()
+    if not custom_categories:
+        print()
+        print(Colors.warning("⚠️  Không có custom categories nào để chỉnh sửa"))
+        print()
+        return
+
+    print()
+    print(Colors.bold("✏️  Chọn category để chỉnh sửa:"))
+
+    categories = list(custom_categories.keys())
+    for idx, key in enumerate(categories, 1):
+        cat_info = custom_categories[key]
+        print(f"   {idx}. {cat_info['icon']} {Colors.bold(key)} - {cat_info['name']}")
+
+    print()
+    choice = input(f"{Colors.primary('Chọn category')} (1-{len(categories)} hoặc Enter để hủy): ").strip()
+
+    if not choice or not choice.isdigit():
+        return
+
+    idx = int(choice) - 1
+    if 0 <= idx < len(categories):
+        category_key = categories[idx]
+        cat_info = custom_categories[category_key]
+
+        print()
+        print(Colors.bold(f"✏️  Chỉnh sửa category: {cat_info['name']} ({category_key})"))
+        print()
+
+        # Nhập thông tin mới (Enter để giữ nguyên)
+        name = input(f"{Colors.primary('Tên mới')} (hiện tại: {cat_info['name']}): ").strip() or cat_info['name']
+        icon = input(f"{Colors.primary('Icon mới')} (hiện tại: {cat_info['icon']}): ").strip() or cat_info['icon']
+        description = input(f"{Colors.primary('Mô tả mới')} (hiện tại: {cat_info.get('description', '')}): ").strip() or cat_info.get('description', '')
+        color = input(f"{Colors.primary('Color mới')} (hiện tại: {cat_info['color']}): ").strip().upper() or cat_info['color']
+
+        # Cập nhật category
+        if manager.update_custom_category(category_key, name, icon, description, color):
+            print()
+            print(Colors.success(f"✅ Đã cập nhật category: {Colors.bold(name)} ({category_key})"))
+            print()
+        else:
+            print()
+            print(Colors.error("❌ Không thể cập nhật category"))
+            print()
+
+
+def _delete_custom_category(manager):
+    """Xóa custom category"""
+    custom_categories = manager.get_custom_categories()
+    if not custom_categories:
+        print()
+        print(Colors.warning("⚠️  Không có custom categories nào để xóa"))
+        print()
+        return
+
+    print()
+    print(Colors.bold("🗑️  Chọn category để xóa:"))
+
+    categories = list(custom_categories.keys())
+    for idx, key in enumerate(categories, 1):
+        cat_info = custom_categories[key]
+        tool_count = len(cat_info.get('tools', []))
+        print(f"   {idx}. {cat_info['icon']} {Colors.bold(key)} - {cat_info['name']} ({tool_count} tools)")
+
+    print()
+    choice = input(f"{Colors.primary('Chọn category')} (1-{len(categories)} hoặc Enter để hủy): ").strip()
+
+    if not choice or not choice.isdigit():
+        return
+
+    idx = int(choice) - 1
+    if 0 <= idx < len(categories):
+        category_key = categories[idx]
+        cat_info = custom_categories[category_key]
+
+        print()
+        print(Colors.warning(f"⚠️  Bạn có chắc chắn muốn xóa category: {Colors.bold(cat_info['name'])} ({category_key})?"))
+        print(Colors.muted("   Tất cả manual assignments liên quan sẽ bị xóa."))
+        print()
+
+        confirm = input(f"{Colors.primary('Nhập YES để xác nhận')}: ").strip()
+        if confirm.upper() == 'YES':
+            if manager.delete_custom_category(category_key):
+                print()
+                print(Colors.success(f"✅ Đã xóa category: {Colors.bold(cat_info['name'])} ({category_key})"))
+                print()
+            else:
+                print()
+                print(Colors.error("❌ Không thể xóa category"))
+                print()
+        else:
+            print()
+            print(Colors.info("ℹ️  Đã hủy xóa"))
             print()
 
 
@@ -2061,7 +2371,7 @@ def main():
             prompt_prefix = Colors.primary("┌─") + " " + Colors.bold(Colors.info(prompt_title)) + Colors.primary(" " + "─" * prompt_title_padding + "┐")
             print(f"  {prompt_prefix}")
             
-            prompt_text = "Chọn tool (h=help, q=quit):"
+            prompt_text = "Chọn tool (h=help, q=quit, set=settings):"
             prompt_text_display_width = get_display_width(prompt_text)
             # Tính padding cần thiết để đủ width
             prompt_text_padding = prompt_width - prompt_text_display_width - 3

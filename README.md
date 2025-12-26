@@ -187,7 +187,7 @@ python __main__.py
   16. Quản lý và cài đặt dự án (Linux/Ubuntu)
 ============================================================
 
->>> Chọn tool (h=help, q=quit):
+>>> Chọn tool (h=help, q=quit, set=setting):
 ```
 
 **Đơn giản vậy thôi!** 🎉
