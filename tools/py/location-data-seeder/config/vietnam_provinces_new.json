@@ -6,7 +6,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 3358.6,
     "population": 8246540,
-    "type": "Thành phố"
+    "type": "Thành phố",
+    "has_merge": false,
+    "administrative_units_count": 127
   },
   {
     "id": 2,
@@ -15,7 +17,9 @@
     "region": "Đông Nam Bộ",
     "area": 2061.4,
     "population": 9038800,
-    "type": "Thành phố"
+    "type": "Thành phố",
+    "has_merge": true,
+    "administrative_units_count": 169
   },
   {
     "id": 3,
@@ -24,7 +28,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 1523.9,
     "population": 2034931,
-    "type": "Thành phố"
+    "type": "Thành phố",
+    "has_merge": true,
+    "administrative_units_count": 115
   },
   {
     "id": 4,
@@ -33,7 +39,9 @@
     "region": "Đồng bằng sông Cửu Long",
     "area": 1439.2,
     "population": 1236000,
-    "type": "Thành phố"
+    "type": "Thành phố",
+    "has_merge": true,
+    "administrative_units_count": 104
   },
   {
     "id": 5,
@@ -42,7 +50,9 @@
     "region": "Nam Trung Bộ",
     "area": 1284.9,
     "population": 1145619,
-    "type": "Thành phố"
+    "type": "Thành phố",
+    "has_merge": true,
+    "administrative_units_count": 95
   },
   {
     "id": 6,
@@ -51,7 +61,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 1668.2,
     "population": 1897078,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 7,
@@ -60,7 +72,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 926.4,
     "population": 1257146,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 105
   },
   {
     "id": 8,
@@ -69,7 +83,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 822.7,
     "population": 1378287,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 100
   },
   {
     "id": 9,
@@ -78,7 +94,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 1570.2,
     "population": 1860306,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 10,
@@ -87,7 +105,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 1668.6,
     "population": 1780391,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 11,
@@ -96,7 +116,9 @@
     "region": "Đồng bằng sông Hồng",
     "area": 1386.8,
     "population": 984662,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 130
   },
   {
     "id": 12,
@@ -105,7 +127,9 @@
     "region": "Bắc Trung Bộ",
     "area": 11114.6,
     "population": 3641505,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 167
   },
   {
     "id": 13,
@@ -114,7 +138,9 @@
     "region": "Bắc Trung Bộ",
     "area": 16481.4,
     "population": 3337158,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 131
   },
   {
     "id": 14,
@@ -123,7 +149,9 @@
     "region": "Bắc Trung Bộ",
     "area": 5990.7,
     "population": 1291059,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 70
   },
   {
     "id": 15,
@@ -132,7 +160,9 @@
     "region": "Bắc Trung Bộ",
     "area": 8065.3,
     "population": 895430,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 16,
@@ -141,7 +171,9 @@
     "region": "Bắc Trung Bộ",
     "area": 4739.8,
     "population": 623375,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 79
   },
   {
     "id": 17,
@@ -150,7 +182,9 @@
     "region": "Bắc Trung Bộ",
     "area": 5033.2,
     "population": 1128624,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 41
   },
   {
     "id": 18,
@@ -159,7 +193,9 @@
     "region": "Nam Trung Bộ",
     "area": 10438.4,
     "population": 1495900,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 19,
@@ -168,7 +204,9 @@
     "region": "Nam Trung Bộ",
     "area": 5155.8,
     "population": 1231452,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 97
   },
   {
     "id": 20,
@@ -177,7 +215,9 @@
     "region": "Nam Trung Bộ",
     "area": 6050.6,
     "population": 1487700,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 21,
@@ -186,7 +226,9 @@
     "region": "Nam Trung Bộ",
     "area": 5060.6,
     "population": 873196,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 22,
@@ -195,7 +237,9 @@
     "region": "Nam Trung Bộ",
     "area": 5137.8,
     "population": 1231108,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 66
   },
   {
     "id": 23,
@@ -204,7 +248,9 @@
     "region": "Nam Trung Bộ",
     "area": 3355.3,
     "population": 591658,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 24,
@@ -213,7 +259,9 @@
     "region": "Nam Trung Bộ",
     "area": 7812.8,
     "population": 1231964,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 25,
@@ -222,7 +270,9 @@
     "region": "Tây Nguyên",
     "area": 9674.2,
     "population": 543223,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 26,
@@ -231,7 +281,9 @@
     "region": "Tây Nguyên",
     "area": 15536.9,
     "population": 1520465,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 136
   },
   {
     "id": 27,
@@ -240,7 +292,9 @@
     "region": "Tây Nguyên",
     "area": 13030.5,
     "population": 1873358,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 103
   },
   {
     "id": 28,
@@ -249,7 +303,9 @@
     "region": "Tây Nguyên",
     "area": 6509.3,
     "population": 623396,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 29,
@@ -258,7 +314,9 @@
     "region": "Tây Nguyên",
     "area": 9773.5,
     "population": 1297547,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 125
   },
   {
     "id": 30,
@@ -267,7 +325,9 @@
     "region": "Đông Nam Bộ",
     "area": 6876.8,
     "population": 1002028,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 31,
@@ -276,7 +336,9 @@
     "region": "Đông Nam Bộ",
     "area": 4041.3,
     "population": 1171585,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 97
   },
   {
     "id": 32,
@@ -285,7 +347,9 @@
     "region": "Đông Nam Bộ",
     "area": 2694.6,
     "population": 2465900,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 33,
@@ -294,7 +358,9 @@
     "region": "Đông Nam Bộ",
     "area": 5863.6,
     "population": 3103000,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 96
   },
   {
     "id": 34,
@@ -303,7 +369,9 @@
     "region": "Đông Nam Bộ",
     "area": 1981.0,
     "population": 1154000,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": null
   },
   {
     "id": 35,
@@ -312,7 +380,9 @@
     "region": "Đông Bắc Bộ",
     "area": 6703.1,
     "population": 530341,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 57
   },
   {
     "id": 36,
@@ -321,7 +391,9 @@
     "region": "Đông Bắc Bộ",
     "area": 5867.9,
     "population": 784811,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 125
   },
   {
     "id": 37,
@@ -330,7 +402,9 @@
     "region": "Tây Bắc Bộ",
     "area": 6364.0,
     "population": 733971,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 100
   },
   {
     "id": 38,
@@ -339,7 +413,9 @@
     "region": "Tây Bắc Bộ",
     "area": 9541.3,
     "population": 601801,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 46
   },
   {
     "id": 39,
@@ -348,7 +424,9 @@
     "region": "Tây Bắc Bộ",
     "area": 9068.8,
     "population": 460196,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 39
   },
   {
     "id": 40,
@@ -357,7 +435,9 @@
     "region": "Tây Bắc Bộ",
     "area": 14123.5,
     "population": 1253645,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 76
   },
   {
     "id": 41,
@@ -366,7 +446,9 @@
     "region": "Đông Bắc Bộ",
     "area": 3526.6,
     "population": 1297532,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 93
   },
   {
     "id": 42,
@@ -375,7 +457,9 @@
     "region": "Đông Bắc Bộ",
     "area": 8312.3,
     "population": 781655,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 66
   },
   {
     "id": 43,
@@ -384,7 +468,9 @@
     "region": "Đông Bắc Bộ",
     "area": 6178.2,
     "population": 1320328,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": false,
+    "administrative_units_count": 55
   },
   {
     "id": 44,
@@ -393,7 +479,9 @@
     "region": "Đông Bắc Bộ",
     "area": 3534.6,
     "population": 1463728,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 149
   },
   {
     "id": 45,
@@ -402,7 +490,9 @@
     "region": "Đồng bằng sông Cửu Long",
     "area": 1474.8,
     "population": 1022797,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 125
   },
   {
     "id": 46,
@@ -411,7 +501,9 @@
     "region": "Đồng bằng sông Cửu Long",
     "area": 3383.8,
     "population": 1594676,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 103
   },
   {
     "id": 47,
@@ -420,7 +512,9 @@
     "region": "Đồng bằng sông Cửu Long",
     "area": 3536.7,
     "population": 1907542,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 103
   },
   {
     "id": 48,
@@ -429,6 +523,8 @@
     "region": "Đồng bằng sông Cửu Long",
     "area": 5221.2,
     "population": 1197404,
-    "type": "Tỉnh"
+    "type": "Tỉnh",
+    "has_merge": true,
+    "administrative_units_count": 65
   }
 ]
